@@ -1,4 +1,4 @@
-function [c_allowed,m_allowedindices] = f_epithelium_mrule2_cm(c_x,c_y,m_allindices,m_cell,v_parameters)
+function [c_allowed,m_allowedindices] = f_epithelium_mrule3_cm(c_x,c_y,m_allindices,m_cell,v_parameters)
 % A function which finds only those indices which allows moves if the
 % active (moving) cell is not going to be unconnected
 
@@ -12,7 +12,7 @@ k = 1;
 for i = 1:cd_indicesmax
     % Allow a move only if cell is nonvacant and cell which moves is not
     % disconnected after move
-    if and(m_cell(m_allindices(i,1),m_allindices(i,2)) == 0,f_activeconnected_c(c_x,c_y,m_allindices(i,1),m_allindices(i,2),m_cell,v_parameters)==1)
+    if and(m_cell(m_allindices(i,1),m_allindices(i,2)) == 0,f_anyconnected_c(c_x,c_y,m_allindices(i,1),m_allindices(i,2),m_cell,v_parameters)==1)
         m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
         k = k + 1;
     end

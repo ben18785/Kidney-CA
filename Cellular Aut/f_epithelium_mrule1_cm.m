@@ -1,4 +1,4 @@
-function [c_allowed,m_allowedindices] = f_epithelium_mrule1_cm(c_x,c_y,m_allindices,m_cell)
+function [c_allowed,m_allowedindices] = f_epithelium_mrule1_cm(c_x,c_y,m_allindices,m_cell,v_parameters)
 % A function which finds only those indices which allows all possible moves
 % if the cells are vacant
 

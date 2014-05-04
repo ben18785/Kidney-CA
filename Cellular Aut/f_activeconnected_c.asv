@@ -10,7 +10,11 @@ m_cell_copy = m_cell;
 m_cell_copy(c_x,c_y) = 0;
 m_cell_copy(c_xnew,c_ynew) = 1;
 
+% Get the dimensions of the matrix being used
+c_depth_full = v_parameters(6);
+c_width_full = v_parameters(7);
+
 % Work out whether the active cell is connected in the hypothetical state
 % of the world
-c_connected = f_cellconnected_c(c_xnew,c_ynew,m_cell_copy,v_parameters);
+c_connected = f_cellconnected_c(c_xnew,c_ynew,m_cell_copy);
 
