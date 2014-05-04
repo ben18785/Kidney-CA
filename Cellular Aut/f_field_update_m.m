@@ -34,7 +34,7 @@ m_GDNF = m_lap;
 c_tests = 100;
 a = f_laplacian_test_null(m_lap,m_cell,c_tests,c_depth_full,c_width_full,c_dg);
 if a == 1
-    'An error has been made with the Laplacian.....'
+    'An error has been made with the Laplacian...'
     return;
 end
 

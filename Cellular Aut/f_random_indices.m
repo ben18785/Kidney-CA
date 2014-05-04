@@ -5,6 +5,7 @@ function [m_indices] = f_random_indices(m_indices)
 
 % Calculate the length of the m_indices
 c_indices = size(m_indices);
+c_width = c_indices(2);
 c_indices = c_indices(1);
 
 % Now create a vector of random numbers so that we can randomly sort the
@@ -15,4 +16,4 @@ v_rand = rand(c_indices,1);
 % then the indices in the second two columns
 m_indices = [v_rand m_indices];
 m_indices = sortrows(m_indices,1);
-m_indices = m_indices(:,2:3);
+m_indices = m_indices(:,2:2+c_width-1);
