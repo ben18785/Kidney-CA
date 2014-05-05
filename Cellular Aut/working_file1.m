@@ -24,8 +24,12 @@ ck_neighbours = 4; % Choose the number of nearest neighbours for movement/prolif
 ck_movement_rule = 1; % Choose a particular rule for allowed moves. 1 is allow all possible moves; 2 is don't allow movements into cells which
 % are unconnected only for the active cell in question; 3 doesn't allow
 % moves which create any cells which are unconnected (so not just for the active cell)
-
-v_parameters = [ck_dg;ck_gamma; ckp_moveprob; ck_neighbours;ck_movement_rule;c_depth_full;c_width_full];
+ck_moveprob_rule = 1; % Select the type of rule to use for P(move)
+ck_moveprob_cons = 0.5; % The constant used in rule 1 for P(move)
+ck_move_norm_cons = 0; % The constant to be used in the argument of the norm cdf function used in rule 2/3
+ck_move_norm_slope = 0; % The constant to be used to multiply the local GDNF concentration by in the argument to the normal cdf in rule 2/3
+ck_move_norm_grad = 0;
+v_parameters = [ck_dg;ck_gamma; ckp_moveprob; ck_neighbours;ck_movement_rule;c_depth_full;c_width_full;ck_moveprob_rule;ck_moveprob_cons;ck_move_norm_cons;ck_move_norm_slope;ck_move_norm_grad];
 
 
 %% Initial area of epithelium and mesenchyme created, and the initial field of GDNF calculated

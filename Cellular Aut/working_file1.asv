@@ -20,10 +20,14 @@ c_depth_mesenstart = c_depth_e+c_separation;
 ck_dg = 10;
 ck_gamma = 10;
 ckp_moveprob = 0.5; % Probability of move vs proliferate. 1 means always move. 0 always proliferate
-ck_neighbours = 4; % Choose the number of nearest neighbours: 4 or 8
-
-
-v_parameters = [ck_dg;ck_gamma; ckp_moveprob; ck_neighbours];
+ck_neighbours = 4; % Choose the number of nearest neighbours for movement/proliferation: 4 or 8
+ck_movement_rule = 1; % Choose a particular rule for allowed moves. 1 is allow all possible moves; 2 is don't allow movements into cells which
+% are unconnected only for the active cell in question; 3 doesn't allow
+% moves which create any cells which are unconnected (so not just for the active cell)
+ck_moveprob_rule = 1; % Select the type of rule to use for P(move)
+ck_moveprob_cons = 0.5; % The constant used in the various rules for P(move)
+ck_move_norm_cons = 0
+v_parameters = [ck_dg;ck_gamma; ckp_moveprob; ck_neighbours;ck_movement_rule;c_depth_full;c_width_full];
 
 
 %% Initial area of epithelium and mesenchyme created, and the initial field of GDNF calculated
