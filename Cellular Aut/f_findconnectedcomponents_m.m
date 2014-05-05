@@ -23,6 +23,7 @@ c_y = c_y + 1;
 % Work out whether the new cell is connected by looking at its top, right,
 % left and below neighbours
 cn_connections = 0;
+m_connections = zeros(4,2); % Maximum number of connected components is 4
 k = 1;
 if and(c_x>1,c_x<c_depth_full)
     if m_cell(c_x-1,c_y) == 1 % Bottom
@@ -83,4 +84,10 @@ else
     'Something has gone wrong. X Is taking on a value that it shouldnt in f_findconnectedcomponents_m'
     return;
 end
-
+if cn_connections > 0
+    m_connections = m_connections(1:cn_connections,:);
+elseif cn_connections == 0
+    m_connections = [];
+else
+    'Something has gone wrong with f_findconnectedcomponents_m..the number of connections is negative'
+end

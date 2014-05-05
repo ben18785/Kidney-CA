@@ -1,0 +1,10 @@
+function c_move = f_probmove_c(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+% A function which determines whether or not a move takes place
+% probabilistically; returning a 1 if it does, 0 if not. The user can
+% determine the method used here via v_parameters
+
+switch v_parameters(8)
+    case 1 % Assume probability of move is a constant
+        c_move = 
+    case 2
+        
