@@ -1,4 +1,4 @@
-function c_move = f_probmove_rule2_c(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function c_move = f_probmove_rule2_c(c_x,c_y,m_allowedindices,m_GDNF,v_parameters)
 % A function which returns a 1 if a move is to occur; 0 if not. The rule
 % used here is that the probability of a move is proportional to the local
 % level of GDNF
@@ -16,7 +16,7 @@ ck_move_prob = normcdf(c_xnorm);
 % determine whether or not a move takes place
 cr_a = rand();
 
-if c_xnorm > cr_a
+if ck_move_prob> cr_a
     c_move = 1;
 else
     c_move = 0;

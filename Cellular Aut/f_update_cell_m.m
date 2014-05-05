@@ -15,7 +15,7 @@ switch c_celltype
     case 1
         m_cell = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters);
     case -1
-        m_cell = f_update_mesenchyme_m(c_x,c_y,m_cell,m_GDNF);
+%         m_cell = f_update_mesenchyme_m(c_x,c_y,m_cell,m_GDNF);
     otherwise
         'An error has occurred. A cell has been included in the cell list which is vacant'
         return;

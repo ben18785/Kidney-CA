@@ -5,7 +5,7 @@ function m_cell = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_p
 % Determine whether or not a move takes place probabilistically.
 % Allow for user to select the
 % rule used here through v_parameters
-c_move = f_probmove_c(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+c_move = f_probmove_c(c_x,c_y,m_allowedindices,m_GDNF,v_parameters);
 
 
 % If don't move, then just return the original matrix

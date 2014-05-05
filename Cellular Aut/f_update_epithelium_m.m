@@ -27,5 +27,5 @@ switch cp_move
     case 1
         m_cell = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
     case 0 
-        m_cell = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+%         m_cell = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
 end
