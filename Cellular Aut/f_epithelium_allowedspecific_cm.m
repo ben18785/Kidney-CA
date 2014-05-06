@@ -16,6 +16,13 @@ switch ck_movement_rule
         [c_allowed,m_allowedindices] = f_epithelium_mrule2_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
     case 3 % Moves to vacant cells are only allowed if the resultant distribution of neighbouring cells are ALL fully connected
         [c_allowed,m_allowedindices] = f_epithelium_mrule3_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
+    case 4 % All nonvacant cells and mesenchyme are allowed
+        [c_allowed,m_allowedindices] = f_epithelium_mrule4_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
+    case 5 % Same as rule 2, but allows movement into Mesenchyme
+        [c_allowed,m_allowedindices] = f_epithelium_mrule5_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
+    case 6 % Same as rule 5, but displace mesenchyme rather than kill it. Hence movement is only allowed here if there is a space for MM to move into
+        [c_allowed,m_allowedindices] = f_epithelium_mrule6_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
+        
     otherwise 
         'An error has occurred. Please choose only 1,2,3 for the allowed movement rule'
         return;

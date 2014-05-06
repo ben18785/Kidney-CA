@@ -1,4 +1,4 @@
-function [m_cell] = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_density,c_depth_mesenstart)
+function [m_cell] = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_density,c_depth_mesenstart,c_width_mesenstart)
 % A function which creates the mesenchyme cells (in the appropriate layer)
 % in accordance with its density (<< than epithelium)
 
@@ -22,10 +22,11 @@ c_num_m = round(c_width_m*c_depth_m*c_mesenchyme_density);
 % This is a rectangular area.
 m_mesenchyme_indices = zeros(c_width_m*c_depth_m,2);
 
-
+k = 1;
 for i = c_depth_mesenstart:c_depth_full
-    for j = 1:c_width_m
-        m_mesenchyme_indices((i-c_depth_mesenstart)*c_width_m + j,:) = [i,j];
+    for j = c_width_mesenstart:(c_width_mesenstart+c_width_m)
+        m_mesenchyme_indices(k,:) = [i,j];
+        k = k + 1;
     end
 end
 

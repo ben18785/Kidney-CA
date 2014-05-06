@@ -3,8 +3,7 @@ function m_cell = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_p
 % so, moves the cell to one of the allowed cells probabilistically.
 
 % Determine whether or not a move takes place probabilistically.
-% Allow for user to select the
-% rule used here through v_parameters
+% Allow for user to select the rule used here through v_parameters
 c_move = f_probmove_c(c_x,c_y,m_allowedindices,m_GDNF,v_parameters);
 
 
