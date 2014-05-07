@@ -22,7 +22,6 @@ switch ck_movement_rule
         [c_allowed,m_allowedindices] = f_epithelium_mrule5_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
     case 6 % Same as rule 5, but displace mesenchyme rather than kill it. Hence movement is only allowed here if there is a space for MM to move into
         [c_allowed,m_allowedindices] = f_epithelium_mrule6_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
-        
     otherwise 
         'An error has occurred. Please choose only 1,2,3 for the allowed movement rule'
         return;

@@ -13,7 +13,6 @@ if c_move == 0
     return;
 end
 
-
 % If move is to happen, probabilistically select the move from the list of
 % available moves, and return the new cell matrix
 m_cell = f_pmoveselector_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);

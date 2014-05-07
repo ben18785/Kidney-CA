@@ -1,14 +1,16 @@
-function m_cell = f_pprolif_rule1_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
-% A function which chooses between the allowed movements and implements one
-% of them for the daugter cell. In this rule the probability of one particular move is equal to
-% 1/#moves; ie the same across all the available moves
+function m_cell = f_move_mesenchyme_outofway_m(c_xmes,c_ymes,m_mesenchyme_available,m_cell,v_parameters)
+% A function which moves a mesenchyme located at (c_xmes,c_ymes) to one of
+% the available spots given in m_mesenchyme_available; choosing one at
+% random
 
-cn_nummoves = size(m_allowedindices);
+cn_nummoves = size(m_mesenchyme_available);
 cn_nummoves = cn_nummoves(1);
+
 
 % If there is only one move, make it
 if cn_nummoves == 1
-    m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
+    m_cell(c_xmes,c_ymes) = 0;
+    m_cell(m_mesenchyme_available(1,1),m_mesenchyme_available(1,2)) = -1;
     return;
 end
 
@@ -34,6 +36,8 @@ for i = 1:cn_nummoves
    end
 end
 
+
 % Now implementing the move
-m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
+m_cell(c_xmes,c_ymes) = 0;
+m_cell(m_mesenchyme_available(c_move_index,1),m_mesenchyme_available(c_move_index,2)) = -1;
 

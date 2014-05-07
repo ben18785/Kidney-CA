@@ -21,15 +21,17 @@ c_num_m = round(c_width_m*c_depth_m*c_mesenchyme_density);
 % within 1:c_depth_e (of the WD), or within 1:c_width_e of the LH boundary.
 % This is a rectangular area.
 m_mesenchyme_indices = zeros(c_width_m*c_depth_m,2);
+c_width_m*c_depth_m
 
 k = 1;
-for i = c_depth_mesenstart:c_depth_full
-    for j = c_width_mesenstart:(c_width_mesenstart+c_width_m)
+for i = c_depth_mesenstart:c_depth_mesenstart+c_depth_m-1
+    for j = c_width_mesenstart:(c_width_mesenstart+c_width_m-1)
         m_mesenchyme_indices(k,:) = [i,j];
         k = k + 1;
     end
 end
-
+k
+length(m_mesenchyme_indices)
 % Now to get a random list of the indices
 m_mesenchyme_indices = f_random_indices(m_mesenchyme_indices);
 

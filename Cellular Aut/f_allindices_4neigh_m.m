@@ -1,6 +1,6 @@
 function m_allindices = f_allindices_4neigh_m(c_x,c_y,v_parameters)
 % A function which calculates the relevant neighbour indices for a cell at
-% position (c_x,c_y) for 8 nearest neighbours
+% position (c_x,c_y) for 4 nearest neighbours
 
 % Get the dimensions of the matrix being used
 c_depth_full = v_parameters(6);

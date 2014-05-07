@@ -5,22 +5,23 @@ clear; close all; clc;
 c_T = 100;
 
 % Specify the parameters for the area
-c_width_full = 300;
-c_depth_full = 60;
+c_size = 200; 
+c_width_full = c_size;
+c_depth_full = c_size;
 c_width_e = c_width_full;
 c_width_m = c_width_full;
-c_depth_e = 20;
-c_separation = 5;
-c_depth_m = 50;
+c_depth_e = 1;
+c_separation = 0;
+c_depth_m = c_size;
 c_epithelium_density = 1; 
-c_mesenchyme_density = 0.3;
-c_depth_mesenstart = c_depth_e+c_separation;
+c_mesenchyme_density = 0.1;
+c_depth_mesenstart = 1;
 c_width_mesenstart = 1;
 
 
 % Specify the parameters for solving the diffusion equation
 ck_dg = 10;
-ck_gamma = 10;
+ck_gamma = 1;
 ckp_moveprob = 0.5; % Probability of move vs proliferate. 1 means always move. 0 always proliferate
 ck_neighbours = 8; % Choose the number of nearest neighbours for movement/proliferation: 4 or 8
 ck_movement_rule = 6; % Choose a particular rule for allowed moves. 1 is allow all possible moves; 2 is don't allow movements into cells which
@@ -48,7 +49,7 @@ v_parameters = [ck_dg;ck_gamma; ckp_moveprob; ck_neighbours;ck_movement_rule;c_d
 %% Initial area of epithelium and mesenchyme created, and the initial field of GDNF calculated
 % Create the epithelium layer, and the mesenchyme
 m_cell = f_create_area_m(c_width_full, c_depth_full);
-m_cell = f_create_epithelium_m(m_cell, c_width_e, c_depth_e, c_epithelium_density);
+m_cell = f_create_random_epithelium_m(m_cell, c_depth_full/2,c_width_full/2, 500,v_parameters);
 m_cell = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_density, c_depth_mesenstart,c_width_mesenstart);
 
 
