@@ -11,7 +11,7 @@ for t = 1:c_T
     c_mesen_running = sum(sum(m_cell==-1));
     if c_mesen_running ~=c_mesen_tot
         'A mesenchyme has gone missing (f_lifecyle_iterator_ms)'
-        return;
+%         return;
     end
         
     m_cell = f_update_cells_m(m_cell,m_GDNF,v_parameters);

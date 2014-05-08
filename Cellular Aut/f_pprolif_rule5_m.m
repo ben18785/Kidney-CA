@@ -1,6 +1,6 @@
-function m_cell = f_pmoving_rule5_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
-% A function which chooses between the allowed movements and implements one
-% of them. In this rule the probability of one particular move is given by
+function m_cell = f_pprolif_rule5_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+% A function which chooses between the target cells and creates a daughter
+% cells in one of them. In this rule the probability of one particular move is given by
 % the multinomial logit distribution
 
 
@@ -9,7 +9,6 @@ cn_nummoves = cn_nummoves(1);
 
 % If there is only one move, make it
 if cn_nummoves == 1
-    m_cell(c_x,c_y) = 0;
     m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
     return;
 end
@@ -59,6 +58,5 @@ for i = 1:cn_nummoves
 end
 
 % Now implementing the move
-m_cell(c_x,c_y) = 0;
 m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
 

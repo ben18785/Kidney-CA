@@ -25,6 +25,16 @@ switch ck_prolif_choosecell_rule
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
         end
+    case 5 % Move probability here is given by a multinomial logit distribution
+        m_cell = f_pprolif_rule5_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        
+    case 6 % Same as case 5, but now the mesenchyme are moved if the epithelium wants to move into their spot
+        if ck_movement_rule == 6
+            m_cell = f_pprolif_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        else
+           'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
+        end 
+        
     otherwise
         'Something has gone wrong with the parameter for specifying how to probabilistically choose between cells in f_pmoveselector_m...'
         return;
