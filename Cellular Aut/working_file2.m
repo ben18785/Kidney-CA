@@ -20,7 +20,7 @@ c_width_mesenstart = 1;
 
 
 % Specify the parameters for solving the diffusion equation
-ck_dg = 10;
+ck_dg = 100;
 ck_gamma = 1;
 ckp_moveprob = 0.5; % Probability of move vs proliferate. 1 means always move. 0 always proliferate
 ck_neighbours = 8; % Choose the number of nearest neighbours for movement/proliferation: 4 or 8
@@ -36,7 +36,7 @@ ck_moveprob_rule = 2; % Select the type of rule to use for P(move). 1 for a cons
 % a movement is dependent on the sum of all positive local GDNF gradients
 ck_moveprob_cons = 1; % The constant used in rule 1 for P(move)
 ck_move_norm_cons = -150; % The constant to be used in the argument of the norm cdf function used in rule 2/3
-ck_move_norm_slope = 30; % The constant to be used to multiply the local GDNF concentration by in the argument to the normal cdf in rule 2/3
+ck_move_norm_slope = 50; % The constant to be used to multiply the local GDNF concentration by in the argument to the normal cdf in rule 2/3
 ck_moving_rule = 4; % Select the type of move for probabilistically choosing between the available moves 
 c_pmove_grad = 10;
 ck_prolifprob_rule = 2; % Select the type of rule to use for P(prolif). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
