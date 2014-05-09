@@ -1,6 +1,6 @@
 \documentclass[pdftex,10pt,a4paper]{article}
 \title{\textbf{Kidney Morphogenesis Cellular Automaton - Model Details}\newline }
-\author{}
+\author{Ben Lambert}
 \usepackage[authoryear]{natbib}
 \usepackage[titletoc,toc]{appendix}
 \usepackage[pdftex]{graphicx}
@@ -35,7 +35,7 @@
 \maketitle
 \doublespacing
 \section{Introduction}
-The aim of this model is to recapitulate the development of the Uretic Bud \textit{in vivo} in 2D. It is also hoped that the model may be useful for the study of \textit{in vitro} explants. The details of the model are described in brief below:
+The aim of this model is to recapitulate the development of the Uretic Bud \textit{in vivo} in 2D. However, it is also hoped that the model may be useful for the study of \textit{in vitro} explants. The details of the model are described in brief below:
 \begin{itemize}
 \item A 2 dimensional rectangular domain, where the points in the array represent the presence of:
 \begin{itemize}
@@ -45,10 +45,10 @@ The aim of this model is to recapitulate the development of the Uretic Bud \text
 \end{itemize}
 \item Epithelium cells comprising either:
 \begin{itemize}
-\item A \textit{flat} membrane at the base of the simulation domain (aimed at recapitulating the \textit{in vivo} initial conditions)
-\item A mass of epithelium cells with in general, curved boundaries, suspended towards the centre of the simulation domain (representative of the \textit{in vitro} explant experiment initial conditions)
+\item A \textit{flat} membrane at the base of the simulation domain (aimed at recapitulating the \textit{in vivo} conditions from which the UB initially forms \textit{in utero}.)
+\item A mass of epithelium cells with in general, curved boundaries, suspended towards the centre of the simulation domain (representative of the \textit{in vitro} explant experiment initial conditions.)
 \end{itemize}
-\item A diffuse collection of mesenchymal cells initially separate from the epithelium
+\item A diffuse collection of mesenchymal cells initially separate from the epithelium.
 \end{itemize}
 
 \section{GDNF field}
@@ -68,7 +68,7 @@ K_G G, & \text{for epithelium}.\\
 \end{cases}
 \end{equation}
 
-It is assumed that the rate of GDNF consumption is linearly-dependent on the concentration of substrate. This assumption is likely violated when the GDNF concentration is high, and the cell Ret-receptors are saturated. In  later versions of this model, it may be better to assume a Hill-type reaction rate. (Although it is unclear as to what range of concentrations of GDNF are likely to saturate the Ret receptors, and whether these are likely to be encountered either \textit{in vivo} or \textit{in vitro}.)
+It is assumed that the rate of GDNF consumption is linearly-dependent on the concentration of substrate. This assumption is likely violated when the GDNF concentration is high, and the cell Ret-receptors are saturated. In  later versions of this model, it may be better to assume a Hill-type reaction rate. (Although it is unclear as to what range of concentrations of GDNF are likely to saturate the Ret receptors, and whether these are likely to be encountered either \textit{in vivo} or in experiments conducted thus far \textit{in vitro}.) It is assumed to begin with that the mesenchyme GDNF production rate is constant, partly for simplicity, although this will be relaxed in latter models which, for example, allow mesenchymal GDNF production rates to be a positive function of their proximity to epithelium cells (perhaps as a proxy for Wnt11 levels).
 
 The equation in (\ref{eq:diffnorm}) is non-dimensionalised using the following transformations:
 \begin{equation}\label{eq:difftrans1}
@@ -79,13 +79,13 @@ The equation in (\ref{eq:diffnorm}) is non-dimensionalised using the following t
 g = \frac{G}{G_x}
 \end{equation}
 
-Where in (\ref{eq:difftrans1}) $\Delta$ refers to the typical cell dimensions (approximated as 5 $\mu m$),and $G_x$ is the concentration of GDNF typically found \textit{in vivo}. These transformations result in the following non-dimensional form of the steady-state reaction-diffusion equation:
+Where in (\ref{eq:difftrans1}) $\Delta$ refers to the typical cell dimensions (approximated as 5 $\mu m$),and $G_x$ is the concentration of GDNF typically found \textit{in vivo} (a value is currently not assigned here, since it is not strictly necessary for the non-dimensionalised simulation). These transformations result in the following non-dimensional form of the steady-state reaction-diffusion equation:
 
 \begin{equation}\label{eq:diff-dimensionless}
 \nabla_\eta^2 g = \frac{\phi_g}{d_g}
 \end{equation}
 
-Where in (\ref{eq:diff-dimensionless}), $d_g = \frac{D_G}{K_G \Delta^2}$, and $\phi_g = \frac{\Phi_G}{K_G G_x}$.
+Where in (\ref{eq:diff-dimensionless}), $d_g = \frac{D_G}{K_G \Delta^2}$, $\phi_g = \frac{\Phi_G}{K_G G_x}$, and $\nabla_\eta^2$ is the laplacian in the non-dimensional $\eta$ spatial coordinates.
 
 The boundary conditions which are assumed are: no-flux at the base of the Wolffian Duct, and periodic boundary conditions at either width. A finite difference approximation is used, with the no-flux boundary conditions at the top and bottom of the domain represented by the following relations for the non-dimensional GDNF field:
 
@@ -94,14 +94,14 @@ g_{0,j}& = g_{1,j}\\
 g_{M,j}& = g_{M+1,j}\\
 \end{align*}
 
-where this holds $\forall j = 1,...,N$. Similarly, for the periodic boundary conditions:
+where this holds $\forall j = 1,...,N$. $M$ here is the depth of the simulation domain in terms of cell dimensions. Similarly, for the periodic boundary conditions:
 
 \begin{align*}
 g_{i,0}& = g_{i,N}\\
 g_{i,N+1}& = g_{i,1}\\
 \end{align*}
 
-where this holds $\forall i = 1,...,M$.
+where this holds $\forall i = 1,...,M$. $N$ here is the width of the simulation domain in terms of cell dimensions.
 
 The finite-difference approximation for solving the steady-state reaction-diffusion equation is hence of the form:
 
@@ -118,7 +118,7 @@ Where in (\ref{eq:finitediff}):
 \end{cases}
 \end{equation}
 
-Similarly, in (\ref{eq:finitediff}):
+Also, in (\ref{eq:finitediff}):
 \begin{equation} \label{eq:psi}
 \psi_{i,j} =\begin{cases}
 0, & \text{for epithelium}.\\
@@ -127,7 +127,7 @@ Similarly, in (\ref{eq:finitediff}):
 \end{cases}
 \end{equation}
 
-Where in (\ref{eq:psi}), $\gamma = \frac{\rho_G}{K_G G_x}$ captures the relative rate of GDNF production by the mesenchyme compared to the rate of GDNF consumption by epithelium under normal cellular conditions. It is assumed that $\gamma = 1$ in the simulations, in the absence of information regarding the relative importance of these two mechanisms. The diffusion rate constant, $D_G$, is assumed to be 10 $\mu m^2 s^{-1}$, and $K_G = 4 \times 10^{-2} s^{-1}$ (for this I currently have not thought of a way to estimate this parameter value - the \textit{in vitro} experiments I have read have, thus far, not provided sufficient information to estimate this parameter); making $d_g = 100$. 
+Where in (\ref{eq:psi}), $\gamma = \frac{\rho_G}{K_G G_x}$ captures the relative rate of GDNF production by the mesenchyme compared to the rate of GDNF consumption by epithelium under normal cellular conditions. It is assumed that $\gamma = 1$ in the simulations, in the absence of information regarding the relative weight of these two mechanisms. The diffusion rate constant, $D_G$, is assumed to be 10 $\mu m^2 s^{-1}$ (following Menshykau and Iber), and $K_G = 4 \times 10^{-2} s^{-1}$ (for this I currently have not thought of a way to estimate this parameter value - the \textit{in vitro} experiments I have read have, thus far, not provided enough relevant information); making $d_g = 100$. 
 
 In the simulation, it is assumed that the GDNF field does not vary significantly within a particular time step. As such (in order to improve computational speed), the GDNF field is only updated at the end of each time step, not after each cell movement or proliferation. Ultimately however, it will be important to test whether the model conclusions are sensitive to this assumption.
 
@@ -142,43 +142,38 @@ In this section I describe the behaviours of the epithelium cells in the cellula
 \begin{enumerate}
 \item \textit{Calculate the probability that a move takes place, $P_m$} - Based on the specific rules in place calculate the probability that a move takes place (see section \ref{sec:rule_pmove} for more details).
 \item \textit{Does a move take place?} - Draw a random number $X\sim unif(0,1)$. If $P_{m}>X$ then proceed to next step. Otherwise, consider next epithelium cell.
-\item \textit{Calculate the weights for probabilities of moving to each of the allowed cells} - Based on the specific rules being used, calculate a set of weights which will be used (in the next step) to calculate the probability of moving to each of the allowed cells (see section \ref{sec:rule_selection} for more details about the options for rules used here). 
-\item \textit{Calculate probability of moving to each of the available cells} - using the weights from the last step as parameters in a \textit{Dirichlet} distribution, calculate a probability of moving to each of the cells. 
-\item \textit{Choose amongst the available cells in accordance to their probability and move the cell in question}
+\item \textit{Calculate probability of moving to each of the available cells} - Based on the specific rules being used, calculate a probabilities of moving to each of the available target cells (see section \ref{sec:rule_selection} for more details about the options for rules used here). 
+\item \textit{Choose amongst the available cells in accordance to their probability and move the cell in question}.
 \end{enumerate} 
 \item \textit{Proliferate}
-\begin{enumerate}
-\item \textit{Calculate the probability that a proliferation takes place, $P_p$} - Based on the specific rules in place calculate the probability that a proliferation takes place (see section \ref{sec:rule_pmove} for more details).
-\item \textit{Does a proliferation take place?} - Draw a random number $X\sim unif(0,1)$. If $P_{p}>X$ then proceed to next step. Otherwise, consider next epithelium cell.
-\item \textit{Calculate the weights for probabilities of creating a daughter cell in each of the allowed cells} - Based on the specific rules being used (see section \ref{sec:rule_selection} for more details), calculate a set of weights which will be used (in the next step) to calculate the probability of creating a daughter cell in each of the allowed cells (see section \ref{sec:rule_pmove} for more details).
-\item \textit{Calculate probability of proliferating into each of the available cells} - using the weights from the last step as parameters in a \textit{Dirichlet} distribution, calculate a probability of proliferating into each of the cells. 
-\item \textit{Choose amongst the available cells in accordance to their probability and create a daughter cell in the selected location}
-\end{enumerate} 
+\begin{itemize}
+\item The framework is exactly analogous to that of \textit{Move} detailed above. However, the rules chosen for proliferation or moving are allowed to be different in the simulation. In proliferation, the mechanism is slightly different due to the fact that a daughter cell is created in the target cell, rather than a cell simply moved there.
+\end{itemize}
 \item Consider next cell, returning to first step.
 \end{itemize}
 
-The program has been created in Matlab which allows for as many permutations of the rules to be tried by the individual carrying out the simulation as possible. However, there are some combinations which are not allowed due to internal inconsistency amongst them. The idea is to allow the model's results to be easily tested for robustness to assumptions made.
+The program has been created in Matlab which allows for a number of permutations of the rules to be tried by the user. However, there are some combinations which are not allowed due to internal inconsistency amongst them. The idea is to allow the model's results to be easily tested for robustness to assumptions made.
 
 \subsection{Rules governing whether neighbouring cells are available}\label{sec:rule_available}
-In this section I will detail the various different rules which govern which cells are available to move or proliferate into. These rules are allowed to be different for moving and proliferating.
+In this section I will detail the various different rules which govern into which cells an active cell (the one being updated) can move or proliferate. These rules are allowed to be different for cells which are moving or proliferating.
 
 \begin{enumerate}
-\item \textit{Number of neigbours} - the choice here governs whether 4 (up, down, left, and right) or 8 (all points of a compass) are surveyed as potential candidates for a move or proliferation.
+\item \textit{Number of neighbours} - the choice here governs whether 4 (up, down, left, and right) or 8 (all points of a compass) are surveyed as potential candidates for a move or proliferation.
 \item \textit{Connectivity of cells}
 \begin{enumerate}
 \item All vacant cells are allowed.
 \item Moves or proliferations are allowed into vacant cells only if the active cell (the one being moved, or the daughter cell being created) are connected to other cells. Here connectivity means that there is at least one 4-neighbour (up, down, left or right) which is occupied by an epithelium cell \label{item:sticky1}
 \item Same as above, but more stringent. Only allow moves if all cells are connected. This allows for the possiblity of a move leaving one cell unconnected.\label{item:sticky2}
 \item All vacant cells and mesenchyme are allowed as possible move/proliferation locations. If a movement into a cell occupied by a mesenchymal cell occurs, then the mesenchyme cell is removed from the simulation.\label{item:mes1}
-\item Same as above, although only allow movement into a space if that active cell remains connected. \label{item:sticky3}
-\item Same as above, although instead of killing mesenchyme cell (upon movement into its space), move the mesenchyme into a vacant space neighbouring it. If there are no vacant space available for the mesenchyme cell to move into, then the move is not allowed. If multiple spaces are available for the cell to move into, then choose one of them at random.\label{item:sticky4}
+\item Same as \ref{item:mes1}, although only allow movement into a space if that active cell remains connected. \label{item:sticky3}
+\item Same as \ref{item:sticky3}, although instead of killing mesenchyme cell (upon movement into its space), move the mesenchyme into a vacant space neighbouring it. If there are no vacant spaces available for the mesenchyme cell to move into, then the move is not allowed. If multiple spaces are available for the cell to move into, then choose one of them at random.\label{item:sticky4}
 \end{enumerate}
 \end{enumerate}
 
-The above rules \ref{item:sticky1}, \ref{item:sticky2}, \ref{item:sticky3} and \ref{item:sticky4} are phenomenlogical, but are aimed at mimicking the cell-cell adhesion experienced by the epithelium. Rules \ref{item:mes1}, \ref{item:sticky3}, \ref{item:sticky4} are included as to allow an interaction between the epithelium cells and the mesenchyme, when the former move into the area occupied by the latter.
+The above rules \ref{item:sticky1}, \ref{item:sticky2}, \ref{item:sticky3} and \ref{item:sticky4} are phenomenlogical, but are aimed at mimicking the cell-cell adhesion experienced by the epithelium. Rules \ref{item:mes1}, \ref{item:sticky3}, \ref{item:sticky4} are included as to allow an interaction between the epithelium cells and the mesenchyme, when the former move into the area occupied by the latter. It is thought that \ref{item:sticky4} is the most biologically realistic, since excess cell death is not typically observed. However, the current way in which cells are chosen for the moved mesenchyme is thought to be an over-simplification, since it is likely that cells which are displaced move more frequently in a direction in which they are pushed. Later models may give more weight towards those directions probabilistically.
 
 \subsection{Rules governing the calculation of $P_{m}$ or $P_p$ - the probability of a move or proliferation occurring after the action has been chosen}\label{sec:rule_pmove}
-In this section I describe the available choices of model rules which govern the calculation of the probability of a move/proliferation occurring takes place. To be clear, this is the step after the choice has been made to either go down the algorithmic branches corresponding to \textit{Move} or \textit{Proliferate} respectively. The rules available for calculating whether or not a move takes place are given below:
+In this section I describe the available choices of model rules which govern the calculation of the probability of a move/proliferation occurring takes place. To be clear, this is the step after the choice has been made to either go down the algorithmic branches corresponding to \textit{Move} or \textit{Proliferate} respectively. It is chosen to make the decision as to whether to continue along each branch here, rather than at the stage before to allow for potentially different rules governing moving and proliferating respectively. The rules available for calculating whether or not a move/daughter cell creation takes place are given below:
 
 \begin{enumerate}
 \item The probability of a move/proliferation is a constant specified by the user.
@@ -189,15 +184,15 @@ P(action) = \Phi(c_1 + c_2 g)
 Where in (\ref{eq:probit}), $\Phi$ is the standard normal CDF, and $action$ can either be a move or a proliferation event.\label{item:pmove_GDNF}
 \item Move/proliferation probability is determined by the sum of all local positive GDNF gradients, between each of the available neighbours and the current location. Again, the model used here for the probability is the probit model:
 \begin{equation}\label{eq:probit2}
-P(action) = \Phi(c_1 + c_2 \sum\limits_{allowed}} (g^{neighbours} - g^{current})\times \mathbbm{1}(g^{neighbours} > g)
+P(action) = \Phi(c_1 + c_2 \sum\limits_{allowed}} (g^{neighbours} - g^{current})\times \mathbbm{1}(g^{neighbours} > g^{current})
 \end{equation}
-Where in (\ref{eq:probit2}), the indicator function $\mathbbm{1}(g^{neighbours} > g)$, is equal to one if the gradient in GDNF allowed by the move is positive, and zero otherwise.\label{item:pmove_gradient}
+Where in (\ref{eq:probit2}), the indicator function $\mathbbm{1}(g^{neighbours} > g^{current})$, is equal to one if the gradient in GDNF allowed by the move is positive, and zero otherwise.\label{item:pmove_gradient}
 \end{enumerate}
 
-Rule \ref{item:pmove_GDNF} is aimed at allowing more cellular activity (moves or proliferations) in areas where GDNF concentration is higher. Rule \ref{item:pmove_gradient} allows more cellular activity in areas where there is more GDNF to be gained by a potential move or proliferation. I am less sure as to the biological realism of this latter rule.
+Rule \ref{item:pmove_GDNF} is aimed at allowing more cellular activity (moves or proliferations) in areas where GDNF concentration is higher. The use of a normal CDF here is partly to constrain the probability to lie in the appropriate (0,1) range, but can also act to provide thresholding-type behaviour, which may be necessary to generate discrete bud formation from the Wolffian Duct \textit{in vivo} opposed to a general 'swelling'. Rule \ref{item:pmove_gradient} allows more cellular activity in areas where there is more GDNF to be gained by a potential move or proliferation. I am less sure as to the biological realism of this latter rule, although for it could be thought of as a type of chemotaxis for moving cells, or orientated cell division for proliferating cells.
 
 \subsection{Rules governing selection of move target or daughter cell location}\label{sec:rule_selection}
-This last section on rules is that governing how to determine the location (amongst the available, allowed neighbouring cells) into which either a cell should move or create a daughter cell. The rules governing how the  probabilities of choosing a given target location are given below:
+This last section on rules details how to determine the location (amongst the available, allowed neighbouring cells) into which either a cell should move or create a daughter cell. The rules governing how the probabilities of choosing a given target location are given below:
 
 \begin{enumerate}
 \item The probabilities of choosing each of the possible target cell are equal, and given by:
@@ -207,21 +202,21 @@ P(target) = \frac{1}{N_{target}}
 \end{equation}
 Where in (\ref{eq:tot_target}), $N_{target}$ specifies the total number of allowed possible target cells.
 
-\item The weights given to a specific target cell are given by:
+\item The weights given to a specific target cell are given by:\label{eq:Dirichlet1}
 \begin{equation}
 W(target) = \Phi (c_3 + c_4(g^{target} - g^{current}))
 \end{equation}
 
 The weights across all targets are then used as weights in a Dirichlet distribution to calculate probabilities which sum to 1; with the higher weights corresponding to higher probabilities.
 
-\item The weights given to a specific target cell are given by:
+\item The weights given to a specific target cell are related to the percentage changes in GDNF:\label{eq:Dirichlet2}
 \begin{equation}
 W(target) = \Phi (c_3 + c_4\frac{g^{target} - g^{current}}{g^{current}})
 \end{equation}
 
 The weights across all targets are then used as weights in a Dirichlet distribution to calculate probabilities which sum to 1; with the higher weights corresponding to higher probabilities.
 
-\item The probabilities of choosing a specific target cell are given by a multinomial logistic distribution:
+\item The probabilities of choosing a specific target cell are given by a multinomial logistic distribution:\label{rule:multinomial}
 
 \begin{equation} \label{eq:multilogit}
 P(target_n) = \frac{exp(c_3 + c_4(g^{target} - g^{current}))}{\sum\limits_{all targets} exp(c_3 + c_4(g^{target} - g^{current}))}
@@ -229,7 +224,25 @@ P(target_n) = \frac{exp(c_3 + c_4(g^{target} - g^{current}))}{\sum\limits_{all t
 Where in (\ref{eq:multilogit}), the benefit of this particular form is that the probabilities naturally sum to 1.
 \end{enumerate}
 
-After conducting the simulations, it does not appear that there are significant differences between these different methods.
+Rules \ref{eq:Dirichlet1}, \ref{eq:Dirichlet2}, and \ref{rule:multinomial} represent chemotaxis (when considering movement), and orientated cell division (when considering proliferation). It is not clear to me whether orientated cell division can occur along concentration gradients, but this is provided for model completeness.
+
+After conducting the simulations, it does not appear that there are significant differences between these different methods. In terms of those rules which weight towards those target cells which have the highest (positive) gradient in 
+GDNF, the preferred rule is \ref{rule:multinomial}, which naturally provides a way of creating probabilities which sum to 1 overall.
+
+
+\section{Mesenchyme cell behaviour}
+The current version of the simulation does not allow for 'non-directed' behaviour of the mesenchyme. Their only movement behaviour is their ability to be either 'killed' or moved out of the way, by advancing epithelium cells. Later versions of the simulation will allow for autonomous mesenchymal behaviour; for example attraction towards epithelium (or Wnt11 released by the epithelium), or other mesenchyme cells.
+
+
+\section{Cell death}
+The current version of the simulation does not allow cell death directly; only indirectly through the epithelium's ability to (dependent on the exact rules implemented) 'overtake' a position currently occupied by the mesenchyme. Later versions will allow the user to stipulate differing death rates for the epithelium and mesenchyme, and also allow these to be context-dependent (dependent on, for example, the connectivity of the cell in question).
+
+\section{Creation of the epithelium layer}
+Two different schema are considered for the creation of an epithelium layer:
+\begin{itemize}
+\item A flat layer of epithelium at the base of the simulation domain to emulate \textit{in vivo} formation of the initial Uretic Bud. Although this layer is \textit{in rerum natura} mono-layered, I choose to use a multi-layered epithelium. This is to allow for the fact that the simulation domain is two dimensional whereas in practice it is three dimensional. Making the layer multi-layered allows cells which are outside of the simulation plane to pass into the layer bordering on the ECM/mesenchyme.
+\item A randomised mass of epithelium cells towards middle of the simulation domain representing \textit{in vitro} experimental conditions. The idea here is that branching arises partly as a result of local depletion of GDNF concentration in areas 'crypts' of epithelium next to outgrowths.
+\end{itemize}
 
 
 \end{document}

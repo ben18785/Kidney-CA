@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  8 MAY 2014 15:39
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  8 MAY 2014 23:29
 entering extended mode
 **Kidney*-*CA*-*model*details.tex
 
@@ -1065,7 +1065,7 @@ Non-PDF special ignored!
 Non-PDF special ignored!{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
 [2] [3] [4] [5]
 ! Extra }, or forgotten $.
-l.192 ...) = \Phi(c_1 + c_2 \sum\limits_{allowed}}
+l.187 ...) = \Phi(c_1 + c_2 \sum\limits_{allowed}}
                                                    (g^{neighbours} - g^{curr...
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1073,17 +1073,17 @@ you forgot something else, as in `\hbox{$x}'. In such cases
 the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
-LaTeX Font Info:    Try loading font information for U+bbm on input line 192.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 187.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\bbm\ubbm.fd"
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [6] [7]
+) [6] [7] [8]
 ("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
 dney - CA - model details.aux") ) 
 Here is how much of TeX's memory you used:
- 13477 strings out of 494045
- 190889 string characters out of 3148393
- 383492 words of memory out of 3000000
- 16450 multiletter control sequences out of 15000+200000
+ 13481 strings out of 494045
+ 190952 string characters out of 3148393
+ 384536 words of memory out of 3000000
+ 16454 multiletter control sequences out of 15000+200000
  38056 words of font info for 119 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  52i,10n,92p,3256b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1096,9 +1096,9 @@ eX 2.9/fonts/type1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
 ype1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palat
 ino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pf
 b>
-Output written on "Kidney - CA - model details.pdf" (7 pages, 87685 bytes).
+Output written on "Kidney - CA - model details.pdf" (8 pages, 91937 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
+ 63 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
