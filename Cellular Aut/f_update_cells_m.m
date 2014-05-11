@@ -1,4 +1,4 @@
-function m_cell = f_update_cells_m(m_cell,m_GDNF,v_parameters)
+function [m_cell,c_move] = f_update_cells_m(m_cell,m_GDNF,v_parameters)
 % A function which goes through and updates each of the cells in the
 % simulation area in random order in accordance to rules governing their
 % specific behaviour
@@ -19,6 +19,8 @@ cn_cells = cn_cells(1);
 
 % Now update the cells in accordance to GDNF concentration, occupancy of
 % adjacent cells etc
+c_move = 0;
 for i = 1:cn_cells
-    m_cell = f_update_cell_m(m_cellindices(i,:),m_cell,m_GDNF,v_parameters);
+    [m_cell,c_move_addition] = f_update_cell_m(m_cellindices(i,:),m_cell,m_GDNF,v_parameters);
+    c_move = c_move + c_move_addition;
 end

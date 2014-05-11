@@ -1,4 +1,4 @@
-function m_cell = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters)
+function [m_cell,c_move] = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters)
 % A function which updates the cell matrix, by applying the rules of
 % movement and proliferation for a cell located at (c_x,c_y)
 
@@ -13,6 +13,7 @@ function m_cell = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters)
 % If no positions are available, then just return the original matrix
 if c_allowed == 0
     m_cell = m_cell; % Not sure if I need to do this. Must be redundant.
+    c_move = 0;
     return;
 end
 
@@ -25,7 +26,7 @@ cp_move = f_moveprolif_c(ck_moveprob);
 % vector of parameters to allow user to select different rules.
 switch cp_move
     case 1
-        m_cell = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        [m_cell,c_move] = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
     case 0 
-        m_cell = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        [m_cell,c_move] = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
 end

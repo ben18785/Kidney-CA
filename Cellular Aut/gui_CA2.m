@@ -1,35 +1,35 @@
-function varargout = gui_CA1(varargin)
-% GUI_CA1 MATLAB code for gui_CA1.fig
-%      GUI_CA1, by itself, creates a new GUI_CA1 or raises the existing
+function varargout = gui_CA2(varargin)
+% GUI_CA2 MATLAB code for gui_CA2.fig
+%      GUI_CA2, by itself, creates a new GUI_CA2 or raises the existing
 %      singleton*.
 %
-%      H = GUI_CA1 returns the handle to a new GUI_CA1 or the handle to
+%      H = GUI_CA2 returns the handle to a new GUI_CA2 or the handle to
 %      the existing singleton*.
 %
-%      GUI_CA1('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GUI_CA1.M with the given input arguments.
+%      GUI_CA2('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in GUI_CA2.M with the given input arguments.
 %
-%      GUI_CA1('Property','Value',...) creates a new GUI_CA1 or raises the
+%      GUI_CA2('Property','Value',...) creates a new GUI_CA2 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before gui_CA1_OpeningFcn gets called.  An
+%      applied to the GUI before gui_CA2_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to gui_CA1_OpeningFcn via varargin.
+%      stop.  All inputs are passed to gui_CA2_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help gui_CA1
+% Edit the above text to modify the response to help gui_CA2
 
-% Last Modified by GUIDE v2.5 11-May-2014 19:48:54
+% Last Modified by GUIDE v2.5 11-May-2014 20:40:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @gui_CA1_OpeningFcn, ...
-                   'gui_OutputFcn',  @gui_CA1_OutputFcn, ...
+                   'gui_OpeningFcn', @gui_CA2_OpeningFcn, ...
+                   'gui_OutputFcn',  @gui_CA2_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,13 +44,13 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before gui_CA1 is made visible.
-function gui_CA1_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before gui_CA2 is made visible.
+function gui_CA2_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to gui_CA1 (see VARARGIN)
+% varargin   command line arguments to gui_CA2 (see VARARGIN)
 
 
 
@@ -132,7 +132,7 @@ end
 set(handles.text11,'String','0');
 
 
-% Choose default command line output for gui_CA1
+% Choose default command line output for gui_CA2
 handles.output = hObject;
 
 
@@ -152,12 +152,12 @@ f_simulation_selector_void(hObject,handles);
 
 
 
-% UIWAIT makes gui_CA1 wait for user response (see UIRESUME)
+% UIWAIT makes gui_CA2 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = gui_CA1_OutputFcn(hObject, eventdata, handles) 
+function varargout = gui_CA2_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -238,7 +238,16 @@ c_mesen_tot = sum(sum(m_cell==-1));
 handles = guidata(hObject);
 handles.test1 = 0;
 
+% Graph selector
+handles.graph_selector = 0;
+set(handles.text7,'String','Cell distribution');
+set(handles.text9,'String','GDNF distribution');
+
 guidata(hObject, handles);
+
+% Create the acceptance and epithelium number vectors
+v_acceptance = zeros(1,1);
+v_epithelium = zeros(1,1);
 
 
 % Go through the time steps 
@@ -262,29 +271,51 @@ for t = 1:handles.c_T
         % Update GDNF field
         m_GDNF = f_field_update_m(m_cell,handles.v_parameters);
         
+        handles.m_cell = m_cell;
+        handles.m_GDNF = m_GDNF;
+        
         % Get the total number of epithelium cells
         c_epithelium = sum(sum(m_cell==1));
         
+        % Now put it as a % of size of total region
+        c_total = handles.c_depth_full*handles.c_width_full;
+        c_epithelium_per = 100*c_epithelium/c_total;
+        v_epithelium(t) = c_epithelium_per;
+        
         % Work out the acceptance rate
         c_acceptance = 100*c_move/c_epithelium
+        v_acceptance(t) = c_acceptance;
         
-        axes(handles.axes1)
-        imagesc(m_cell)
+        if handles.graph_selector == 0
+            axes(handles.axes1)
+            imagesc(m_cell)
 
-        handles.m_cell = m_cell;
-        handles.m_GDNF = m_GDNF;
+            
 
+            axes(handles.axes2)
+            imagesc(m_GDNF)
+            hold on
+            c=contour(m_GDNF);
+            clabel(c)
+            hold off
+            pause(0.01)
+            
+        else
+            
+            axes(handles.axes1)
+            plot(1:t,v_epithelium)
+            xlim([1 handles.c_T])
+            ylim([0 25])
 
-
-        axes(handles.axes2)
-        imagesc(m_GDNF)
-        hold on
-        c=contour(m_GDNF);
-        clabel(c)
-        hold off
-
-
-        pause(0.01)
+            handles.m_cell = m_cell;
+            handles.m_GDNF = m_GDNF;
+            
+            axes(handles.axes2)
+            plot(1:t,v_acceptance)
+            xlim([1 handles.c_T])
+            ylim([0 60])
+            pause(0.01)
+        end
 
         
     else
@@ -383,22 +414,50 @@ for t = 1:handles.c_T
 
         [m_cell,c_move] = f_update_cells_m(m_cell,m_GDNF,handles.v_parameters);
         m_GDNF = f_field_update_m(m_cell,handles.v_parameters);
-        axes(handles.axes1)
-        imagesc(m_cell)
+        
+        % Get the total number of epithelium cells
+        c_epithelium = sum(sum(m_cell==1));
+        
+        % Now put it as a % of size of total region
+        c_total = handles.c_depth_full*handles.c_width_full;
+        c_epithelium_per = 100*c_epithelium/c_total;
+        v_epithelium(t) = c_epithelium_per;
+        
+        % Work out the acceptance rate
+        c_acceptance = 100*c_move/c_epithelium
+        v_acceptance(t) = c_acceptance;
+        
+        if handles.graph_selector == 0
+            axes(handles.axes1)
+            imagesc(m_cell)
 
-        handles.m_cell = m_cell;
-        handles.m_GDNF = m_GDNF;
+            
 
+            axes(handles.axes2)
+            imagesc(m_GDNF)
+            hold on
+            c=contour(m_GDNF);
+            clabel(c)
+            hold off
+            pause(0.01)
+            
+        else
+            
+            axes(handles.axes1)
+            plot(1:t,v_epithelium)
+            xlim([1 handles.c_T])
+            ylim([0 25])
 
-        axes(handles.axes2)
-        imagesc(m_GDNF)
-        hold on
-        c=contour(m_GDNF);
-        clabel(c)
-        hold off
-
-
-        pause(0.01)
+            handles.m_cell = m_cell;
+            handles.m_GDNF = m_GDNF;
+            
+            axes(handles.axes2)
+            plot(1:t,v_acceptance)
+            xlim([1 handles.c_T])
+            ylim([0 60])
+            pause(0.01)
+        end
+        
         
     else
             while handles.test1 == 1
@@ -738,3 +797,30 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+% --- Executes on button press in pushbutton6.
+function pushbutton6_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton6 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Update handles structure
+guidata(hObject, handles)
+f_graphselector_void(hObject,handles);
+
+function f_graphselector_void(hObject,handles)
+% A function which chooses the type of plot to show
+% get(handles.pushbutton2)
+% get(handles.pushbutton2,'Value')
+handles = guidata(hObject);
+handles.graph_selector = mod(handles.graph_selector + 1,2); % Let it alternate between 0 and 1
+
+if handles.graph_selector == 0
+    set(handles.text7,'String','Cell distribution');
+    set(handles.text9,'String','GDNF distribution');
+else
+    set(handles.text7,'String','Cell numbers');
+    set(handles.text9,'String','Acceptance rate');
+end
+
+
+guidata(hObject,handles);

@@ -1,4 +1,4 @@
-function m_cell = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function [m_cell,c_move] = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
 % A function which first decides whether a move should take place (probabilistically), then if
 % so, moves the cell to one of the allowed cells probabilistically.
 

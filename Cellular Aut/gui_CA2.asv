@@ -1,35 +1,35 @@
-function varargout = gui_CA1(varargin)
-% GUI_CA1 MATLAB code for gui_CA1.fig
-%      GUI_CA1, by itself, creates a new GUI_CA1 or raises the existing
+function varargout = gui_CA2(varargin)
+% GUI_CA2 MATLAB code for gui_CA2.fig
+%      GUI_CA2, by itself, creates a new GUI_CA2 or raises the existing
 %      singleton*.
 %
-%      H = GUI_CA1 returns the handle to a new GUI_CA1 or the handle to
+%      H = GUI_CA2 returns the handle to a new GUI_CA2 or the handle to
 %      the existing singleton*.
 %
-%      GUI_CA1('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GUI_CA1.M with the given input arguments.
+%      GUI_CA2('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in GUI_CA2.M with the given input arguments.
 %
-%      GUI_CA1('Property','Value',...) creates a new GUI_CA1 or raises the
+%      GUI_CA2('Property','Value',...) creates a new GUI_CA2 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before gui_CA1_OpeningFcn gets called.  An
+%      applied to the GUI before gui_CA2_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to gui_CA1_OpeningFcn via varargin.
+%      stop.  All inputs are passed to gui_CA2_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help gui_CA1
+% Edit the above text to modify the response to help gui_CA2
 
-% Last Modified by GUIDE v2.5 11-May-2014 19:48:54
+% Last Modified by GUIDE v2.5 11-May-2014 20:11:07
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @gui_CA1_OpeningFcn, ...
-                   'gui_OutputFcn',  @gui_CA1_OutputFcn, ...
+                   'gui_OpeningFcn', @gui_CA2_OpeningFcn, ...
+                   'gui_OutputFcn',  @gui_CA2_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,13 +44,13 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before gui_CA1 is made visible.
-function gui_CA1_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before gui_CA2 is made visible.
+function gui_CA2_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to gui_CA1 (see VARARGIN)
+% varargin   command line arguments to gui_CA2 (see VARARGIN)
 
 
 
@@ -132,7 +132,7 @@ end
 set(handles.text11,'String','0');
 
 
-% Choose default command line output for gui_CA1
+% Choose default command line output for gui_CA2
 handles.output = hObject;
 
 
@@ -152,12 +152,12 @@ f_simulation_selector_void(hObject,handles);
 
 
 
-% UIWAIT makes gui_CA1 wait for user response (see UIRESUME)
+% UIWAIT makes gui_CA2 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = gui_CA1_OutputFcn(hObject, eventdata, handles) 
+function varargout = gui_CA2_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -240,6 +240,10 @@ handles.test1 = 0;
 
 guidata(hObject, handles);
 
+% Create the acceptance and epithelium number vectors
+v_acceptance = zeros(1,1);
+v_epithelium = zeros(1,1);
+
 
 % Go through the time steps 
 for t = 1:handles.c_T
@@ -264,9 +268,11 @@ for t = 1:handles.c_T
         
         % Get the total number of epithelium cells
         c_epithelium = sum(sum(m_cell==1));
+        v_epithelium
         
         % Work out the acceptance rate
         c_acceptance = 100*c_move/c_epithelium
+        v_acceptance(t) = c_acceptance;
         
         axes(handles.axes1)
         imagesc(m_cell)
@@ -736,5 +742,3 @@ function popupmenu6_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
