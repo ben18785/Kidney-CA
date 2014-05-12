@@ -22,7 +22,7 @@ function varargout = gui_CA2(varargin)
 
 % Edit the above text to modify the response to help gui_CA2
 
-% Last Modified by GUIDE v2.5 11-May-2014 20:40:38
+% Last Modified by GUIDE v2.5 12-May-2014 17:17:45
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -52,6 +52,8 @@ function gui_CA2_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to gui_CA2 (see VARARGIN)
 
+% Set the various panels to be off or on
+set(handles.uipanel5,'Visible','off')
 
 
 handles.c_T = 100;
@@ -83,7 +85,7 @@ handles.ck_movement_rule = 1; % Choose a particular rule for allowed moves. 1 is
 % mesenchyme spot; 5 is the same as 2 but allows for movement into
 % mesenchyme; 6 allows all moves and allows the movement into the
 % mesenchyme iff there are available spots for the mesenchyme cell
-handles.ck_moveprob_rule = 2; % Select the type of rule to use for P(move). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
+handles.ck_moveprob_rule = 1; % Select the type of rule to use for P(move). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
 % if the concentration of GDNF is higher. 3 is for when the probability of
 % a movement is dependent on the sum of all positive local GDNF gradients
 handles.ck_moveprob_cons = 1; % The constant used in rule 1 for P(move)
@@ -103,6 +105,22 @@ set(handles.slider1,'Value',handles.ck_dg);
 set(handles.slider2,'Value',handles.ck_gamma);
 set(handles.slider3,'Value',handles.c_mesenchyme_density);
 set(handles.slider7,'Value',handles.ckp_moveprob);
+set(handles.slider8,'Value',handles.ck_moveprob_cons);
+set(handles.slider16,'Value',handles.ck_move_norm_cons);
+set(handles.slider19,'Value',handles.ck_move_norm_slope);
+set(handles.slider20,'Value',handles.c_pmove_grad);
+
+if handles.ck_neighbours == 4
+    set(handles.popupmenu4,'Value',1);
+else
+    set(handles.popupmenu4,'Value',2);
+end
+    
+set(handles.popupmenu5,'Value',handles.ck_movement_rule);
+set(handles.popupmenu6,'Value',handles.ck_moveprob_rule);
+set(handles.popupmenu7,'Value',handles.ck_moving_rule);
+
+
 c_dg_rounded = num2str(handles.ck_dg);
 c_gamma_rounded = num2str(handles.ck_gamma);
 c_mes_rounded = num2str(100*handles.c_mesenchyme_density);
@@ -135,6 +153,8 @@ set(handles.text11,'String','0');
 % Choose default command line output for gui_CA2
 handles.output = hObject;
 
+% Initially choose image
+handles.graph_selector = 0;
 
 
 % Update handles structure
@@ -171,6 +191,25 @@ function [] = f_invitro_plotter_void(hObject,handles)
 % A function which allows user to input parameters and plots the result
 
 
+% Diagnostic box visualisation
+set(handles.text26,'String',handles.v_parameters(1));
+set(handles.text27,'String',handles.v_parameters(2));
+set(handles.text28,'String',handles.v_parameters(3));
+set(handles.text29,'String',handles.v_parameters(4));
+set(handles.text30,'String',handles.v_parameters(5));
+set(handles.text31,'String',handles.v_parameters(6));
+set(handles.text32,'String',handles.v_parameters(7));
+set(handles.text33,'String',handles.v_parameters(8));
+set(handles.text34,'String',handles.v_parameters(9));
+set(handles.text35,'String',handles.v_parameters(10));
+set(handles.text36,'String',handles.v_parameters(11));
+set(handles.text37,'String',handles.v_parameters(12));
+set(handles.text38,'String',handles.v_parameters(13));
+set(handles.text39,'String',handles.v_parameters(14));
+set(handles.text40,'String',handles.v_parameters(15));
+
+
+%
 %% Parameters
 % Specify the number of time cycles to iterate through
 % c_T = 100;
@@ -181,8 +220,8 @@ function [] = f_invitro_plotter_void(hObject,handles)
 
 % Update and round parameters to print them off
 guidata(hObject, handles);
-c_dg_rounded = num2str(handles.ck_dg);
-c_gamma_rounded = num2str(handles.ck_gamma);
+c_dg_rounded = num2str(handles.v_parameters(1));
+c_gamma_rounded = num2str(handles.v_parameters(2));
 c_mes_rounded = num2str(100*handles.c_mesenchyme_density);
 c_dg_num = findstr('.',c_dg_rounded);
 c_gamma_num = findstr('.',c_gamma_rounded);
@@ -191,13 +230,13 @@ if length(c_dg_num) > 0
     c_dg_rounded=c_dg_rounded(1:c_dg_num-1)
     set(handles.text3,'String',c_dg_rounded);
 else
-    set(handles.text3,'String',handles.ck_dg);
+    set(handles.text3,'String',handles.v_parameters(1));
 end
 if length(c_gamma_num) > 0
     c_gamma_rounded = c_gamma_rounded(1:c_gamma_num-1);
     set(handles.text4,'String',c_gamma_rounded);
 else
-    set(handles.text4,'String',handles.ck_gamma);
+    set(handles.text4,'String',handles.v_parameters(2));
 end
 if length(c_mes_num) > 0
     c_mes_rounded = c_mes_rounded(1:c_mes_num-1);
@@ -207,7 +246,11 @@ else
     a = strcat(num2str(c_mes_rounded),'%');
     set(handles.text6,'String',a);
 end
+set(handles.text6,'String',handles.c_mesenchyme_density);
+set(handles.text25,'String',num2str(handles.v_parameters(4)));
+set(handles.text23,'String',handles.v_parameters(3));
 
+guidata(hObject, handles);
 
 
 handles.c_depth_e = 1;
@@ -239,9 +282,14 @@ handles = guidata(hObject);
 handles.test1 = 0;
 
 % Graph selector
-handles.graph_selector = 0;
-set(handles.text7,'String','Cell distribution');
-set(handles.text9,'String','GDNF distribution');
+if handles.graph_selector == 0;
+    set(handles.text7,'String','Cell distribution');
+    set(handles.text9,'String','GDNF distribution');
+else
+    set(handles.text7,'String','Cell numbers');
+    set(handles.text9,'String','Acceptance probability');
+end
+
 
 guidata(hObject, handles);
 
@@ -252,6 +300,8 @@ v_epithelium = zeros(1,1);
 
 % Go through the time steps 
 for t = 1:handles.c_T
+    
+    
     
     % Update handles structure globally each iteration
     handles = guidata(hObject);
@@ -266,6 +316,7 @@ for t = 1:handles.c_T
 
         % Update the cells and get the number of accepted epithelium
         % transitions
+        
         [m_cell,c_move] = f_update_cells_m(m_cell,m_GDNF,handles.v_parameters);
         
         % Update GDNF field
@@ -283,7 +334,7 @@ for t = 1:handles.c_T
         v_epithelium(t) = c_epithelium_per;
         
         % Work out the acceptance rate
-        c_acceptance = 100*c_move/c_epithelium
+        c_acceptance = 100*c_move/c_epithelium;
         v_acceptance(t) = c_acceptance;
         
         if handles.graph_selector == 0
@@ -334,12 +385,29 @@ function [] = f_invivo_plotter_void(hObject,handles)
 % A function which allows user to input parameters and plots the result
 
 
+% Diagnostic box visualisation
+set(handles.text26,'String',handles.v_parameters(1));
+set(handles.text27,'String',handles.v_parameters(2));
+set(handles.text28,'String',handles.v_parameters(3));
+set(handles.text29,'String',handles.v_parameters(4));
+set(handles.text30,'String',handles.v_parameters(5));
+set(handles.text31,'String',handles.v_parameters(6));
+set(handles.text32,'String',handles.v_parameters(7));
+set(handles.text33,'String',handles.v_parameters(8));
+set(handles.text34,'String',handles.v_parameters(9));
+set(handles.text35,'String',handles.v_parameters(10));
+set(handles.text36,'String',handles.v_parameters(11));
+set(handles.text37,'String',handles.v_parameters(12));
+set(handles.text38,'String',handles.v_parameters(13));
+set(handles.text39,'String',handles.v_parameters(14));
+set(handles.text40,'String',handles.v_parameters(15));
+
 
 
 % Update and round parameters to print them off
 guidata(hObject, handles);
-c_dg_rounded = num2str(handles.ck_dg);
-c_gamma_rounded = num2str(handles.ck_gamma);
+c_dg_rounded = num2str(handles.v_parameters(1));
+c_gamma_rounded = num2str(handles.v_parameters(2));
 c_mes_rounded = num2str(100*handles.c_mesenchyme_density);
 c_dg_num = findstr('.',c_dg_rounded);
 c_gamma_num = findstr('.',c_gamma_rounded);
@@ -348,13 +416,13 @@ if length(c_dg_num) > 0
     c_dg_rounded=c_dg_rounded(1:c_dg_num-1)
     set(handles.text3,'String',c_dg_rounded);
 else
-    set(handles.text3,'String',handles.ck_dg);
+    set(handles.text3,'String',handles.v_parameters(1));
 end
 if length(c_gamma_num) > 0
     c_gamma_rounded = c_gamma_rounded(1:c_gamma_num-1);
     set(handles.text4,'String',c_gamma_rounded);
 else
-    set(handles.text4,'String',handles.ck_gamma);
+    set(handles.text4,'String',handles.v_parameters(2));
 end
 if length(c_mes_num) > 0
     c_mes_rounded = c_mes_rounded(1:c_mes_num-1);
@@ -364,6 +432,18 @@ else
     a = strcat(num2str(c_mes_rounded),'%');
     set(handles.text6,'String',a);
 end
+set(handles.text23,'String',handles.v_parameters(3));
+
+% Graph selector
+if handles.graph_selector == 0;
+    set(handles.text7,'String','Cell distribution');
+    set(handles.text9,'String','GDNF distribution');
+else
+    set(handles.text7,'String','Cell numbers');
+    set(handles.text9,'String','Acceptance probability');
+end
+
+
 
 
 % Specify the parameters for the area
@@ -424,7 +504,7 @@ for t = 1:handles.c_T
         v_epithelium(t) = c_epithelium_per;
         
         % Work out the acceptance rate
-        c_acceptance = 100*c_move/c_epithelium
+        c_acceptance = 100*c_move/c_epithelium;
         v_acceptance(t) = c_acceptance;
         
         if handles.graph_selector == 0
@@ -474,6 +554,8 @@ end
 function [] = f_simulation_selector_void(hObject,handles)
 % A function which plots either the in vitro or in vivo simulation
 % dependent on the handles
+
+f_parameters_visible(hObject,handles);
 
 
 switch handles.c_simulation
@@ -533,7 +615,8 @@ function slider1_Callback(hObject, eventdata, handles)
 
 handles.ck_dg = get(hObject,'Value');
 a = handles.ck_dg;
-set(handles.text3,'String',num2str(a));
+
+handles.v_parameters(1) = a;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -565,7 +648,7 @@ function slider2_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 handles.ck_gamma = get(hObject,'Value');
-set(handles.text4,'String',handles.ck_gamma);
+handles.v_parameters(2) = handles.ck_gamma;
 
 % Update handles structure
 guidata(hObject, handles)
@@ -597,7 +680,7 @@ function slider3_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 handles.c_mesenchyme_density = get(hObject,'Value');
-set(handles.text6,'String',handles.c_mesenchyme_density);
+
 
 % Update handles structure
 guidata(hObject, handles)
@@ -653,6 +736,8 @@ switch c_neighbours
         handles.ck_neighbours = 8;
 end
 
+handles.v_parameters(4) = handles.ck_neighbours;
+
 % Update handles structure
 guidata(hObject, handles);
 
@@ -703,6 +788,8 @@ switch c_movement_rule
         handles.ck_movement_rule  = 6;
 end
 
+handles.v_parameters(5) = handles.ck_movement_rule;
+
 % Update handles structure
 guidata(hObject, handles);
 
@@ -734,7 +821,7 @@ function slider7_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 handles.ckp_moveprob = get(hObject,'Value');
-set(handles.text23,'String',handles.ckp_moveprob);
+handles.v_parameters(3) = handles.ckp_moveprob;
 
 % Update handles structure
 guidata(hObject, handles)
@@ -777,6 +864,8 @@ switch c_moveprob
     case 3
         handles.ck_moveprob_rule  = 3;
 end
+
+handles.v_parameters(8) = handles.ck_moveprob_rule;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -824,3 +913,296 @@ end
 
 
 guidata(hObject,handles);
+
+
+% --- Executes on selection change in popupmenu7.
+function popupmenu7_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu7 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu7
+
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1
+        handles.ck_moving_rule  = 1;
+    case 2
+        handles.ck_moving_rule  = 2;
+    case 3
+        handles.ck_moving_rule  = 3;
+    case 4
+        handles.ck_moving_rule  = 4;
+    case 5
+        handles.ck_moving_rule  = 5;
+    case 6
+        handles.ck_moving_rule  = 6;
+end
+
+handles.v_parameters(12) = handles.ck_moving_rule;
+
+
+% Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu7_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu7 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu8.
+function popupmenu8_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu8 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu8
+
+c_moveprob = get(hObject,'Value');
+switch c_moveprob
+    case 1
+        handles.ck_prolifprob_rule  = 1;
+    case 2
+        handles.ck_prolifprob_rule  = 2;
+    case 3
+        handles.ck_prolifprob_rule  = 3;
+end
+
+handles.v_parameters(14) = handles.ck_moveprob_rule;
+
+% Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu9.
+function popupmenu9_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu9 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu9
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1
+        handles.ck_prolif_choosecell_rule  = 1;
+    case 2
+        handles.ck_prolif_choosecell_rule  = 2;
+    case 3
+        handles.ck_prolif_choosecell_rule  = 3;
+    case 4
+        handles.ck_prolif_choosecell_rule  = 4;
+    case 5
+        handles.ck_prolif_choosecell_rule  = 5;
+    case 6
+        handles.ck_prolif_choosecell_rule  = 6;
+end
+
+handles.v_parameters(15) = handles.ck_moving_rule;
+
+% Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu9_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu9 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on slider movement.
+function slider8_Callback(hObject, eventdata, handles)
+% hObject    handle to slider8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+handles.ck_moveprob_cons = get(hObject,'Value');
+handles.v_parameters(9) = handles.ck_moveprob_cons;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+
+% --- Executes during object creation, after setting all properties.
+function slider8_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+function f_parameters_visible(hObject,handles)
+    if or(handles.ck_moveprob_rule==1, handles.ck_prolifprob_rule==1)
+        set(handles.slider8,'Visible','on')
+        set(handles.text45,'Visible','on')
+        set(handles.text72,'Visible','on')
+        set(handles.text47,'Visible','on')
+    else
+        set(handles.slider8,'Visible','off')
+        set(handles.text45,'Visible','off')
+        set(handles.text72,'Visible','off')
+        set(handles.text47,'Visible','off')
+    end
+
+
+    if or(handles.ck_moveprob_rule~=1, handles.ck_prolifprob_rule~=1)
+        set(handles.text60,'Visible','on')
+        set(handles.text66,'Visible','on')
+        set(handles.text61,'Visible','on')
+        set(handles.text67,'Visible','on')
+        set(handles.text68,'Visible','on')
+        set(handles.slider16,'Visible','on')
+        set(handles.slider19,'Visible','on')
+    else
+        set(handles.text60,'Visible','off')
+        set(handles.text66,'Visible','off')
+        set(handles.text61,'Visible','off')
+        set(handles.text67,'Visible','off')
+        set(handles.text68,'Visible','off')
+        set(handles.slider16,'Visible','off')
+        set(handles.slider19,'Visible','off')
+    end
+    
+    if or(handles.ck_moving_rule~=1,handles.ck_prolif_choosecell_rule~=1)
+        set(handles.text69,'Visible','on')
+        set(handles.text70,'Visible','on')
+        set(handles.text71,'Visible','on')
+        set(handles.slider20,'Visible','on')
+    else
+        set(handles.text69,'Visible','off')
+        set(handles.text70,'Visible','off')
+        set(handles.text71,'Visible','off')
+        set(handles.slider20,'Visible','off')
+    end
+
+
+
+
+% --- Executes on slider movement.
+function slider16_Callback(hObject, eventdata, handles)
+% hObject    handle to slider16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+handles.ck_move_norm_cons = get(hObject,'Value');
+handles.v_parameters(10) = handles.ck_move_norm_cons;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function slider16_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider19_Callback(hObject, eventdata, handles)
+% hObject    handle to slider19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+handles.ck_move_norm_slope = get(hObject,'Value');
+handles.v_parameters(11) = handles.ck_move_norm_slope;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function slider19_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider20_Callback(hObject, eventdata, handles)
+% hObject    handle to slider20 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider20_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider20 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
