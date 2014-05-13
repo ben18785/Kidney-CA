@@ -1,4 +1,4 @@
-function m_cell = f_pmoving_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function [c_heterogeneity, m_cell] = f_pmoving_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is given by the multinomial logit. Here
 % we allow movement into a mesenchyme spot; moving the mesenchyme to one of
@@ -25,6 +25,7 @@ end
 
 % If there is only one move, make it
 if cn_nummoves == 1
+    c_heterogeneity = 0;
     if m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) ~= -1
         m_cell(c_x,c_y) = 0;
         m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
@@ -62,7 +63,11 @@ end
 
 % How much heterogeneity is there is choosing cells based on GDNF
 % concentration?
-sum(v_moves_prob.^2)/cn_nummoves
+c_hetero_numer = sum(v_moves_prob.^2)/cn_nummoves - (1/(cn_nummoves^2));
+c_hetero_denom = (1/cn_nummoves) - (1/(cn_nummoves^2));
+c_heterogeneity = c_hetero_numer/c_hetero_denom;
+
+
 
 % Now creating intervals for the probabities in order to compare a random
 % number and select finally the move

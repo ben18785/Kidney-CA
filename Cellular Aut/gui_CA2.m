@@ -22,7 +22,7 @@ function varargout = gui_CA2(varargin)
 
 % Edit the above text to modify the response to help gui_CA2
 
-% Last Modified by GUIDE v2.5 13-May-2014 15:38:57
+% Last Modified by GUIDE v2.5 13-May-2014 19:20:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -237,7 +237,7 @@ c_dg_rounded = num2str(handles.v_parameters(1));
 c_gamma_rounded = num2str(handles.v_parameters(2));
 c_mes_rounded = num2str(100*handles.c_mesenchyme_density);
 c_dg_num = findstr('.',c_dg_rounded);
-c_gamma_num = findstr('.',c_gamma_rounded);
+c_gamma_num = findstr('.',c_gamma_rounded)+2;
 c_mes_num = findstr('.',c_mes_rounded);
 if length(c_dg_num) > 0
     c_dg_rounded=c_dg_rounded(1:c_dg_num-1)
@@ -304,15 +304,6 @@ c_mesen_tot = sum(sum(m_cell==-1));
 handles = guidata(hObject);
 handles.test1 = 0;
 
-% Graph selector
-if handles.graph_selector == 0;
-    set(handles.text7,'String','Cell distribution');
-    set(handles.text9,'String','GDNF distribution');
-else
-    set(handles.text7,'String','Cell numbers');
-    set(handles.text9,'String','Acceptance probability');
-end
-
 
 guidata(hObject, handles);
 
@@ -323,29 +314,34 @@ v_epithelium = zeros(1,1);
 % Create a vector of the numbers of mesenchyme
 v_mesenchyme = zeros(1,1)
 
+% Create a vector for measuring heterogeneity in target cell selection
+% probabilities
+v_heterogeneity = zeros(1,1);
+
 % Go through the time steps 
 for t = 1:handles.c_T
     
     
-    
     % Update handles structure globally each iteration
     handles = guidata(hObject);
-    
     set(handles.text11,'String',num2str(t));
+    
     if handles.test1 == 0
+        
+        
         
         c_mesen_running = sum(sum(m_cell==-1));
         if c_mesen_running ~=c_mesen_tot
             'A mesenchyme has gone missing (f_lifecyle_iterator_ms)'
         end
         
-        % Count the number of mesenchyme
-        v_mesenchyme(t,1) = c_mesen_running;
+        
 
         % Update the cells and get the number of accepted epithelium
         % transitions
         
-        [m_cell,c_move] = f_update_cells_m(m_cell,m_GDNF,handles.v_parameters);
+        [m_cell,c_move,c_heterogeneity] = f_update_cells_m(m_cell,m_GDNF,handles.v_parameters);
+        v_heterogeneity(t) = c_heterogeneity;
         
         % Update GDNF field
         m_GDNF = f_field_update_m(m_cell,handles.v_parameters);
@@ -360,41 +356,17 @@ for t = 1:handles.c_T
         c_total = handles.c_depth_full*handles.c_width_full;
         c_epithelium_per = 100*c_epithelium/c_total;
         v_epithelium(t) = c_epithelium_per;
+        % Count the number of mesenchyme
+        v_mesenchyme(t) = 100*c_mesen_running/c_total;
         
         % Work out the acceptance rate
         c_acceptance = 100*c_move/c_epithelium;
         v_acceptance(t) = c_acceptance;
         
-        if handles.graph_selector == 0
-            axes(handles.axes1)
-            imagesc(m_cell)
-
-            
-
-            axes(handles.axes2)
-            imagesc(m_GDNF)
-            hold on
-            c=contour(m_GDNF);
-            clabel(c)
-            hold off
-            pause(0.01)
-            
-        else
-            
-            axes(handles.axes1)
-            plot(1:t,v_epithelium,'LineWidth',4)
-            xlim([1 handles.c_T])
-            ylim([0 25])
-
-            handles.m_cell = m_cell;
-            handles.m_GDNF = m_GDNF;
-            
-            axes(handles.axes2)
-            plot(1:t,v_acceptance,'LineWidth',4)
-            xlim([1 handles.c_T])
-            ylim([0 60])
-            pause(0.01)
-        end
+        % Call a fn which plots the correct graph based on
+        % handles.graph_selector
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,t,handles.graph_selector,handles)
+        
 
         
     else
@@ -438,7 +410,7 @@ c_dg_rounded = num2str(handles.v_parameters(1));
 c_gamma_rounded = num2str(handles.v_parameters(2));
 c_mes_rounded = num2str(100*handles.c_mesenchyme_density);
 c_dg_num = findstr('.',c_dg_rounded);
-c_gamma_num = findstr('.',c_gamma_rounded);
+c_gamma_num = findstr('.',c_gamma_rounded)+2;
 c_mes_num = findstr('.',c_mes_rounded);
 if length(c_dg_num) > 0
     c_dg_rounded=c_dg_rounded(1:c_dg_num-1)
@@ -462,14 +434,6 @@ else
 end
 set(handles.text23,'String',handles.v_parameters(3));
 
-% Graph selector
-if handles.graph_selector == 0;
-    set(handles.text7,'String','Cell distribution');
-    set(handles.text9,'String','GDNF distribution');
-else
-    set(handles.text7,'String','Cell numbers');
-    set(handles.text9,'String','Acceptance probability');
-end
 
 handles.c0 = handles.ck_moveprob_cons;
 handles.c1 = handles.ck_move_norm_cons;
@@ -529,10 +493,11 @@ for t = 1:handles.c_T
             'A mesenchyme has gone missing (f_lifecyle_iterator_ms)'
         end
 
-        % Count the number of mesenchyme
-        v_mesenchyme(t,1) = c_mesen_running;
         
-        [m_cell,c_move] = f_update_cells_m(m_cell,m_GDNF,handles.v_parameters);
+        
+        [m_cell,c_move,c_heterogeneity] = f_update_cells_m(m_cell,m_GDNF,handles.v_parameters);
+        v_heterogeneity(t) = c_heterogeneity;
+        
         m_GDNF = f_field_update_m(m_cell,handles.v_parameters);
         
         % Get the total number of epithelium cells
@@ -543,40 +508,17 @@ for t = 1:handles.c_T
         c_epithelium_per = 100*c_epithelium/c_total;
         v_epithelium(t) = c_epithelium_per;
         
+        % Count the number of mesenchyme
+        v_mesenchyme(t) = 100*c_mesen_running/c_total;
+        
         % Work out the acceptance rate
         c_acceptance = 100*c_move/c_epithelium;
         v_acceptance(t) = c_acceptance;
         
-        if handles.graph_selector == 0
-            axes(handles.axes1)
-            imagesc(m_cell)
-
-            
-
-            axes(handles.axes2)
-            imagesc(m_GDNF)
-            hold on
-            c=contour(m_GDNF);
-            clabel(c)
-            hold off
-            pause(0.01)
-            
-        else
-            
-            axes(handles.axes1)
-            plot(1:t,v_epithelium,'LineWidth',4)
-            xlim([1 handles.c_T])
-            ylim([0 25])
-
-            handles.m_cell = m_cell;
-            handles.m_GDNF = m_GDNF;
-            
-            axes(handles.axes2)
-            plot(1:t,v_acceptance,'LineWidth',4)
-            xlim([1 handles.c_T])
-            ylim([0 60])
-            pause(0.01)
-        end
+        % Call a fn which plots the correct graph based on
+        % handles.graph_selector
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,t,handles.graph_selector,handles)
+        
         
         
     else
@@ -924,35 +866,6 @@ function popupmenu6_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-% --- Executes on button press in pushbutton6.
-function pushbutton6_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Update handles structure
-guidata(hObject, handles)
-f_graphselector_void(hObject,handles);
-
-function f_graphselector_void(hObject,handles)
-% A function which chooses the type of plot to show
-% get(handles.pushbutton2)
-% get(handles.pushbutton2,'Value')
-handles = guidata(hObject);
-handles.graph_selector = mod(handles.graph_selector + 1,2); % Let it alternate between 0 and 1
-
-if handles.graph_selector == 0
-    set(handles.text7,'String','Cell distribution');
-    set(handles.text9,'String','GDNF distribution');
-else
-    set(handles.text7,'String','Cell numbers');
-    set(handles.text9,'String','Acceptance rate');
-end
-
-
-guidata(hObject,handles);
 
 
 % --- Executes on selection change in popupmenu7.
@@ -1417,3 +1330,114 @@ function popupmenu11_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on selection change in popupmenu12.
+function popupmenu12_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu12 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu12
+
+c_temp = get(hObject,'Value');
+
+% Update handles structure
+guidata(hObject, handles)
+handles = guidata(hObject);
+
+switch c_temp
+    case 1
+        handles.graph_selector = 0;
+    case 2
+        handles.graph_selector = 1;
+    case 3
+        handles.graph_selector = 2;
+end
+
+if handles.graph_selector == 0
+    set(handles.text7,'String','Cell distribution');
+    set(handles.text9,'String','GDNF distribution');
+else
+    set(handles.text7,'String','Cell numbers');
+    set(handles.text9,'String','Acceptance rate');
+end
+
+
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu12_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,t,graph_selector,handles)
+ 
+        if handles.graph_selector == 0
+            axes(handles.axes1)
+            imagesc(m_cell)
+            
+
+            axes(handles.axes2)
+            imagesc(m_GDNF)
+            hold on
+            c=contour(m_GDNF);
+            clabel(c)
+            hold off
+            
+             % Graph selector
+            set(handles.text7,'String','Cell distribution');
+            set(handles.text9,'String','GDNF distribution');
+            
+            
+            pause(0.01)
+            
+        elseif handles.graph_selector == 1
+            
+            axes(handles.axes1)
+            plot(1:t,v_epithelium,'r','LineWidth',4)
+            hold on
+            plot(1:t,v_mesenchyme,'b','LineWidth',4)
+            legend('Epithelium','Mesenchyme')
+            hold off
+            xlim([1 handles.c_T])
+            ylim([0 100])
+            
+            
+            axes(handles.axes2)
+            plot(1:t,v_acceptance,'LineWidth',4)
+            xlim([1 handles.c_T])
+            ylim([0 60])
+            
+            set(handles.text7,'String','Cell numbers');
+            set(handles.text9,'String','Acceptance probability');
+            
+            
+        elseif handles.graph_selector == 2
+            
+            axes(handles.axes1)
+            plot(1:t,v_acceptance,'LineWidth',4)
+            xlim([1 handles.c_T])
+            ylim([0 60])
+            
+            axes(handles.axes2)
+            plot(1:t,v_heterogeneity,'LineWidth',4)
+            xlim([1 handles.c_T])
+            ylim([0 1])
+            
+            set(handles.text7,'String','Acceptance probability');
+            set(handles.text9,'String','Target cell selection heterogeneity');
+            
+            pause(0.01)           
+            
+        end

@@ -1,4 +1,4 @@
-function m_cell = f_pmoving_rule1_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function [c_heterogeneity, m_cell] = f_pmoving_rule1_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is equal to
 % 1/#moves; ie the same across all the available moves
@@ -8,6 +8,7 @@ cn_nummoves = cn_nummoves(1);
 
 % If there is only one move, make it
 if cn_nummoves == 1
+    c_heterogeneity = 0;
     m_cell(c_x,c_y) = 0;
     m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
     return;
@@ -24,6 +25,19 @@ for i = 1:cn_nummoves
     c_runninginterval = c_runninginterval + c_pamove;
     m_intervals(i,2) = c_runninginterval;
 end
+
+% How much heterogeneity is there is choosing cells based on GDNF
+% concentration?
+v_moves_prob = zeros(cn_nummoves,1);
+for i = 1:cn_nummoves
+    v_moves_prob(i) = c_pamove;
+end
+
+c_hetero_numer = sum(v_moves_prob.^2)/cn_nummoves - (1/(cn_nummoves^2));
+c_hetero_denom = (1/cn_nummoves) - (1/(cn_nummoves^2));
+c_heterogeneity = c_hetero_numer/c_hetero_denom;
+
+
 
 % Now generating the random number to then compare to the interval matrix
 cr_a = rand();
