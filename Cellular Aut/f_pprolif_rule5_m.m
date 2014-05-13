@@ -3,7 +3,6 @@ function m_cell = f_pprolif_rule5_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_par
 % cells in one of them. In this rule the probability of one particular move is given by
 % the multinomial logit distribution
 
-
 cn_nummoves = size(m_allowedindices);
 cn_nummoves = cn_nummoves(1);
 

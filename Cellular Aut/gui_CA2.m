@@ -22,7 +22,7 @@ function varargout = gui_CA2(varargin)
 
 % Edit the above text to modify the response to help gui_CA2
 
-% Last Modified by GUIDE v2.5 13-May-2014 11:49:14
+% Last Modified by GUIDE v2.5 13-May-2014 15:38:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -166,6 +166,7 @@ handles.output = hObject;
 % Initially choose image
 handles.graph_selector = 0;
 handles.diagnostics = 0;
+handles.mesenchyme_old = 0;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -217,6 +218,8 @@ set(handles.text37,'String',handles.v_parameters(12));
 set(handles.text38,'String',handles.v_parameters(13));
 set(handles.text39,'String',handles.v_parameters(14));
 set(handles.text40,'String',handles.v_parameters(15));
+guidata(hObject, handles);
+set(handles.text73,'String',handles.mesenchyme_old);
 
 
 %
@@ -317,8 +320,8 @@ guidata(hObject, handles);
 v_acceptance = zeros(1,1);
 v_epithelium = zeros(1,1);
 
-global kk 
-kk = 0;
+% Create a vector of the numbers of mesenchyme
+v_mesenchyme = zeros(1,1)
 
 % Go through the time steps 
 for t = 1:handles.c_T
@@ -335,6 +338,9 @@ for t = 1:handles.c_T
         if c_mesen_running ~=c_mesen_tot
             'A mesenchyme has gone missing (f_lifecyle_iterator_ms)'
         end
+        
+        % Count the number of mesenchyme
+        v_mesenchyme(t,1) = c_mesen_running;
 
         % Update the cells and get the number of accepted epithelium
         % transitions
@@ -523,6 +529,9 @@ for t = 1:handles.c_T
             'A mesenchyme has gone missing (f_lifecyle_iterator_ms)'
         end
 
+        % Count the number of mesenchyme
+        v_mesenchyme(t,1) = c_mesen_running;
+        
         [m_cell,c_move] = f_update_cells_m(m_cell,m_GDNF,handles.v_parameters);
         m_GDNF = f_field_update_m(m_cell,handles.v_parameters);
         
@@ -964,15 +973,17 @@ switch c_temp
     case 3
         handles.ck_moving_rule  = 3;
     case 4
-        handles.ck_moving_rule  = 4;
+        handles.ck_moving_rule  = 5; % This has been moved in order with the next case
     case 5
-        handles.ck_moving_rule  = 5;
+        handles.ck_moving_rule  = 4;
     case 6
         handles.ck_moving_rule  = 6;
     case 7
         handles.ck_moving_rule  = 7;
         
 end
+
+
 
 handles.v_parameters(12) = handles.ck_moving_rule;
 
@@ -1054,9 +1065,9 @@ switch c_temp
     case 3
         handles.ck_prolif_choosecell_rule  = 3;
     case 4
-        handles.ck_prolif_choosecell_rule  = 4;
+        handles.ck_prolif_choosecell_rule  = 5; % This and the next case have had their order changed
     case 5
-        handles.ck_prolif_choosecell_rule  = 5;
+        handles.ck_prolif_choosecell_rule  = 4;
     case 6
         handles.ck_prolif_choosecell_rule  = 6;
     case 7
@@ -1116,6 +1127,8 @@ end
 
 
 function f_parameters_visible(hObject,handles)
+% Update handles structure
+        guidata(hObject, handles)
     if or(handles.ck_moveprob_rule==1, handles.ck_prolifprob_rule==1)
         set(handles.slider8,'Visible','on')
         set(handles.text45,'Visible','on')
@@ -1147,7 +1160,8 @@ function f_parameters_visible(hObject,handles)
         set(handles.slider19,'Visible','off')
     end
     
-    if or(handles.ck_moving_rule~=1,handles.ck_prolif_choosecell_rule~=1)
+    % Hide last text box in LH panel if 1st or 7th rules are both chosen
+    if or(and(handles.ck_moving_rule~=1,handles.ck_moving_rule~=7),and(handles.ck_prolif_choosecell_rule~=1,handles.ck_prolif_choosecell_rule~=7))
         set(handles.text69,'Visible','on')
         set(handles.text70,'Visible','on')
         set(handles.text71,'Visible','on')
@@ -1158,7 +1172,44 @@ function f_parameters_visible(hObject,handles)
         set(handles.text71,'Visible','off')
         set(handles.slider20,'Visible','off')
     end
-
+    
+    if handles.ck_movement_rule == 6
+        set(handles.popupmenu7,'Visible','on')
+        set(handles.popupmenu9,'Visible','on')
+        set(handles.popupmenu10,'Visible','off')
+        set(handles.popupmenu11,'Visible','off')
+        set(handles.popupmenu7,'Value',handles.ck_moving_rule)
+        set(handles.popupmenu9,'Value',handles.ck_prolif_choosecell_rule)
+        
+        handles.mesenchyme_old = 1;
+        % Update handles structure
+        guidata(hObject, handles)
+        
+    elseif handles.mesenchyme_old == 1
+        set(handles.popupmenu7,'Visible','off')
+        set(handles.popupmenu9,'Visible','off')
+        set(handles.popupmenu10,'Visible','on')
+        set(handles.popupmenu11,'Visible','on')
+        
+        % Also need to reset the ck_moving_rules and
+        % ck_prolif_choosecell_rule to 'allowed' options
+        handles.ck_moving_rule = 1;
+        handles.ck_prolif_choosecell_rule = 1;
+        v_parameters(12) = handles.ck_moving_rule;
+        v_parameters(15) = handles.ck_prolif_choosecell_rule;
+        set(handles.popupmenu10,'Value',handles.ck_moving_rule);
+        set(handles.popupmenu11,'Value',handles.ck_prolif_choosecell_rule);
+        handles.mesenchyme_old = 0;
+        % Update handles structure
+        guidata(hObject, handles)
+        
+        
+    else
+        set(handles.popupmenu7,'Visible','off')
+        set(handles.popupmenu9,'Visible','off')
+        set(handles.popupmenu10,'Visible','on')
+        set(handles.popupmenu11,'Visible','on')
+    end
 
 
 
@@ -1269,3 +1320,100 @@ end
 
 % Update handles structure
 guidata(hObject, handles)
+
+
+% --- Executes on selection change in popupmenu10.
+function popupmenu10_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu10 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu10
+
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1
+        handles.ck_moving_rule  = 1;
+    case 2
+        handles.ck_moving_rule  = 2;
+    case 3
+        handles.ck_moving_rule  = 3;
+    case 4
+        handles.ck_moving_rule  = 5; %This has been moved with the next
+    case 5
+        handles.ck_moving_rule  = 4;
+    case 6
+        handles.ck_moving_rule  = 6;
+    case 7
+        handles.ck_moving_rule  = 7;
+        
+end
+
+handles.v_parameters(12) = handles.ck_moving_rule;
+
+
+% Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu10_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu10 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu11.
+function popupmenu11_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu11 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu11
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1
+        handles.ck_prolif_choosecell_rule  = 1;
+    case 2
+        handles.ck_prolif_choosecell_rule  = 2;
+    case 3
+        handles.ck_prolif_choosecell_rule  = 3;
+    case 4
+        handles.ck_prolif_choosecell_rule  = 5; %This has been moved with next
+    case 5
+        handles.ck_prolif_choosecell_rule  = 4;
+    case 6
+        handles.ck_prolif_choosecell_rule  = 6;
+    case 7
+        handles.ck_prolif_choosecell_rule  = 7;
+end
+
+handles.v_parameters(15) = handles.ck_prolif_choosecell_rule;
+
+% Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu11_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu11 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
