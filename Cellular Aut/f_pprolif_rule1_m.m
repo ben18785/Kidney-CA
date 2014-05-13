@@ -3,11 +3,16 @@ function m_cell = f_pprolif_rule1_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_par
 % of them for the daugter cell. In this rule the probability of one particular move is equal to
 % 1/#moves; ie the same across all the available moves
 
+
+
 cn_nummoves = size(m_allowedindices);
 cn_nummoves = cn_nummoves(1);
 
+
+
 % If there is only one move, make it
 if cn_nummoves == 1
+    
     m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
     return;
 end

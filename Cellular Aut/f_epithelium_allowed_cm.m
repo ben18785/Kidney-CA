@@ -1,4 +1,4 @@
-function [c_allowed,m_allowedindices] = f_epithelium_allowed_cm(c_x,c_y,m_cell,v_parameters)
+function [c_allowed,m_allowedindices] = f_epithelium_allowed_cm(c_x,c_y,m_cell,v_parameters,cp_move)
 % A function which returns the allowed cell locations neighbouring on the
 % active cell in question. Allows the use to specify the type of rules
 % which are used via v_parameters.
@@ -12,13 +12,13 @@ if ck_neighbours == 4
     % Get all potential indices
     m_allindices = f_allindices_4neigh_m(c_x,c_y,v_parameters);
     % Select the only relevant ones
-    [c_allowed,m_allowedindices] = f_epithelium_allowedspecific_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
+    [c_allowed,m_allowedindices] = f_epithelium_allowedspecific_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move);
     
 elseif ck_neighbours == 8
     % Get all potential indices
     m_allindices = f_allindices_8neigh_m(c_x,c_y,v_parameters);
     % Select the only relevant ones
-    [c_allowed,m_allowedindices] = f_epithelium_allowedspecific_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
+    [c_allowed,m_allowedindices] = f_epithelium_allowedspecific_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move);
 else
     'An error has been made. You either need to specify the number of nearest neighbours as 4 or 8'
 end

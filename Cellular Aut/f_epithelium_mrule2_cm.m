@@ -1,6 +1,8 @@
-function [c_allowed,m_allowedindices] = f_epithelium_mrule2_cm(c_x,c_y,m_allindices,m_cell,v_parameters)
+function [c_allowed,m_allowedindices] = f_epithelium_mrule2_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move)
 % A function which finds only those indices which allows moves if the
 % active (moving) cell is not going to be unconnected
+
+
 
 % The maximum number of allowed moves is the length of the index list
 cd_indicesmax = length(m_allindices);
@@ -12,10 +14,19 @@ k = 1;
 for i = 1:cd_indicesmax
     % Allow a move only if cell is nonvacant and cell which moves is not
     % disconnected after move
-    if and(m_cell(m_allindices(i,1),m_allindices(i,2)) == 0,f_activeconnected_c(c_x,c_y,m_allindices(i,1),m_allindices(i,2),m_cell,v_parameters)==1)
-        m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
-        k = k + 1;
+    switch cp_move
+        case 1 % Moving - need to check whether cell is connected
+            if and(m_cell(m_allindices(i,1),m_allindices(i,2)) == 0,f_activeconnected_c(c_x,c_y,m_allindices(i,1),m_allindices(i,2),m_cell,v_parameters)==1)
+                m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
+                k = k + 1;
+            end
+        case 0 % Proliferating - no need to check whether connected, as it always will be!
+            if m_cell(m_allindices(i,1),m_allindices(i,2)) == 0
+                m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
+                k = k + 1;
+            end
     end
+            
 end
 
 if k == 1
@@ -29,3 +40,4 @@ c_allowed = 1; % There are allowed moves
 
 % Get rid of the nonzero elements
 m_allowedindices = [m_allowedindices(m_allowedindices(:,1)>0,1) m_allowedindices(m_allowedindices(:,1)>0,2)];
+

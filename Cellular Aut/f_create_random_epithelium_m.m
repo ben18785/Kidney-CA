@@ -13,7 +13,7 @@ for i = 1:cn_epithelium_cells
     m_allindices = f_allindices_8neigh_m(c_xstart,c_ystart,v_parameters);
     
     % Select the only relevant ones
-    [~,m_allowedindices] = f_epithelium_allowedspecific_cm(c_xstart,c_ystart,m_allindices,m_cell,v_parameters);
+    [~,m_allowedindices] = f_epithelium_allowedspecific_cm(c_xstart,c_ystart,m_allindices,m_cell,v_parameters,1);
     
     cn_numindices = size(m_allowedindices);
     cn_numindices = cn_numindices(1);

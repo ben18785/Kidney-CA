@@ -33,7 +33,14 @@ switch ck_prolif_choosecell_rule
             m_cell = f_pprolif_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
-        end 
+        end
+        
+    case 7
+        if ck_movement_rule == 6
+            m_cell = f_pprolif_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        else
+           'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
+        end
         
     otherwise
         'Something has gone wrong with the parameter for specifying how to probabilistically choose between cells in f_pmoveselector_m...'

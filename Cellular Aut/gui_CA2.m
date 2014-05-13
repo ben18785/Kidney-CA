@@ -22,7 +22,7 @@ function varargout = gui_CA2(varargin)
 
 % Edit the above text to modify the response to help gui_CA2
 
-% Last Modified by GUIDE v2.5 12-May-2014 17:17:45
+% Last Modified by GUIDE v2.5 13-May-2014 11:49:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -92,11 +92,13 @@ handles.ck_moveprob_cons = 1; % The constant used in rule 1 for P(move)
 handles.ck_move_norm_cons = -150; % The constant to be used in the argument of the norm cdf function used in rule 2/3
 handles.ck_move_norm_slope = 50; % The constant to be used to multiply the local GDNF concentration by in the argument to the normal cdf in rule 2/3
 handles.ck_moving_rule = 1; % Select the type of move for probabilistically choosing between the available moves 
-handles.c_pmove_grad = 10;
+handles.c_pmove_grad = 10; %The coefficients used in targeting cells
+% handles.c_target_cons = 0; % Another constant used in targeting cells
 handles.ck_prolifprob_rule = handles.ck_moveprob_rule; % Select the type of rule to use for P(prolif). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
 % if the concentration of GDNF is higher. 3 is for when the probability of
 % a movement is dependent on the sum of all positive local GDNF gradients
 handles.ck_prolif_choosecell_rule = handles.ck_moving_rule; % Select the type of move for probabilistically choosing between the available moves 
+
 handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule];
 
 
@@ -149,13 +151,21 @@ else
 end
 set(handles.text11,'String','0');
 
+handles.c0 = handles.ck_moveprob_cons;
+handles.c1 = handles.ck_move_norm_cons;
+handles.c2 = handles.ck_move_norm_slope;
+handles.c3 = handles.c_pmove_grad;
+set(handles.text47,'String',num2str(handles.c0));
+set(handles.text61,'String',num2str(handles.c1));
+set(handles.text67,'String',num2str(handles.c2));
+set(handles.text70,'String',num2str(handles.c3));
 
 % Choose default command line output for gui_CA2
 handles.output = hObject;
 
 % Initially choose image
 handles.graph_selector = 0;
-
+handles.diagnostics = 0;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -250,6 +260,16 @@ set(handles.text6,'String',handles.c_mesenchyme_density);
 set(handles.text25,'String',num2str(handles.v_parameters(4)));
 set(handles.text23,'String',handles.v_parameters(3));
 
+
+handles.c0 = handles.ck_moveprob_cons;
+handles.c1 = handles.ck_move_norm_cons;
+handles.c2 = handles.ck_move_norm_slope;
+handles.c3 = handles.c_pmove_grad;
+set(handles.text47,'String',num2str(handles.c0));
+set(handles.text61,'String',num2str(handles.c1));
+set(handles.text67,'String',num2str(handles.c2));
+set(handles.text70,'String',num2str(handles.c3));
+
 guidata(hObject, handles);
 
 
@@ -297,6 +317,8 @@ guidata(hObject, handles);
 v_acceptance = zeros(1,1);
 v_epithelium = zeros(1,1);
 
+global kk 
+kk = 0;
 
 % Go through the time steps 
 for t = 1:handles.c_T
@@ -354,7 +376,7 @@ for t = 1:handles.c_T
         else
             
             axes(handles.axes1)
-            plot(1:t,v_epithelium)
+            plot(1:t,v_epithelium,'LineWidth',4)
             xlim([1 handles.c_T])
             ylim([0 25])
 
@@ -362,7 +384,7 @@ for t = 1:handles.c_T
             handles.m_GDNF = m_GDNF;
             
             axes(handles.axes2)
-            plot(1:t,v_acceptance)
+            plot(1:t,v_acceptance,'LineWidth',4)
             xlim([1 handles.c_T])
             ylim([0 60])
             pause(0.01)
@@ -442,6 +464,15 @@ else
     set(handles.text7,'String','Cell numbers');
     set(handles.text9,'String','Acceptance probability');
 end
+
+handles.c0 = handles.ck_moveprob_cons;
+handles.c1 = handles.ck_move_norm_cons;
+handles.c2 = handles.ck_move_norm_slope;
+handles.c3 = handles.c_pmove_grad;
+set(handles.text47,'String',num2str(handles.c0));
+set(handles.text61,'String',num2str(handles.c1));
+set(handles.text67,'String',num2str(handles.c2));
+set(handles.text70,'String',num2str(handles.c3));
 
 
 
@@ -524,7 +555,7 @@ for t = 1:handles.c_T
         else
             
             axes(handles.axes1)
-            plot(1:t,v_epithelium)
+            plot(1:t,v_epithelium,'LineWidth',4)
             xlim([1 handles.c_T])
             ylim([0 25])
 
@@ -532,7 +563,7 @@ for t = 1:handles.c_T
             handles.m_GDNF = m_GDNF;
             
             axes(handles.axes2)
-            plot(1:t,v_acceptance)
+            plot(1:t,v_acceptance,'LineWidth',4)
             xlim([1 handles.c_T])
             ylim([0 60])
             pause(0.01)
@@ -938,6 +969,9 @@ switch c_temp
         handles.ck_moving_rule  = 5;
     case 6
         handles.ck_moving_rule  = 6;
+    case 7
+        handles.ck_moving_rule  = 7;
+        
 end
 
 handles.v_parameters(12) = handles.ck_moving_rule;
@@ -982,7 +1016,7 @@ switch c_moveprob
         handles.ck_prolifprob_rule  = 3;
 end
 
-handles.v_parameters(14) = handles.ck_moveprob_rule;
+handles.v_parameters(14) = handles.ck_prolifprob_rule;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -1025,9 +1059,11 @@ switch c_temp
         handles.ck_prolif_choosecell_rule  = 5;
     case 6
         handles.ck_prolif_choosecell_rule  = 6;
+    case 7
+        handles.ck_prolif_choosecell_rule  = 7;
 end
 
-handles.v_parameters(15) = handles.ck_moving_rule;
+handles.v_parameters(15) = handles.ck_prolif_choosecell_rule;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -1195,6 +1231,14 @@ function slider20_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
+handles.c_pmove_grad = get(hObject,'Value');
+handles.v_parameters(13) = handles.c_pmove_grad;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
 
 % --- Executes during object creation, after setting all properties.
 function slider20_CreateFcn(hObject, eventdata, handles)
@@ -1206,3 +1250,22 @@ function slider20_CreateFcn(hObject, eventdata, handles)
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
+
+
+
+% --- Executes on button press in pushbutton8.
+function pushbutton8_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton8 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.diagnostics = mod(handles.diagnostics + 1,2);
+if handles.diagnostics == 0
+    set(handles.uipanel4,'Visible','on')
+    set(handles.uipanel5,'Visible','off')
+else
+    set(handles.uipanel4,'Visible','off')
+    set(handles.uipanel5,'Visible','on')
+end
+
+% Update handles structure
+guidata(hObject, handles)
