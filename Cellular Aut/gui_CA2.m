@@ -22,7 +22,7 @@ function varargout = gui_CA2(varargin)
 
 % Edit the above text to modify the response to help gui_CA2
 
-% Last Modified by GUIDE v2.5 13-May-2014 19:20:44
+% Last Modified by GUIDE v2.5 14-May-2014 16:30:35
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -159,6 +159,11 @@ set(handles.text47,'String',num2str(handles.c0));
 set(handles.text61,'String',num2str(handles.c1));
 set(handles.text67,'String',num2str(handles.c2));
 set(handles.text70,'String',num2str(handles.c3));
+set(handles.text74,'Visible','off')
+set(handles.text75,'Visible','off')
+set(handles.text76,'Visible','off')
+set(handles.text77,'Visible','off')
+
 
 % Choose default command line output for gui_CA2
 handles.output = hObject;
@@ -273,6 +278,8 @@ set(handles.text61,'String',num2str(handles.c1));
 set(handles.text67,'String',num2str(handles.c2));
 set(handles.text70,'String',num2str(handles.c3));
 
+
+
 guidata(hObject, handles);
 
 
@@ -318,6 +325,9 @@ v_mesenchyme = zeros(1,1)
 % probabilities
 v_heterogeneity = zeros(1,1);
 
+% Create a vector to hold the perimeter
+v_perimeter = zeros(1,1);
+
 % Go through the time steps 
 for t = 1:handles.c_T
     
@@ -354,18 +364,27 @@ for t = 1:handles.c_T
         
         % Now put it as a % of size of total region
         c_total = handles.c_depth_full*handles.c_width_full;
-        c_epithelium_per = 100*c_epithelium/c_total;
+        c_epithelium_per = c_epithelium;
         v_epithelium(t) = c_epithelium_per;
         % Count the number of mesenchyme
-        v_mesenchyme(t) = 100*c_mesen_running/c_total;
+        v_mesenchyme(t) = c_mesen_running
         
         % Work out the acceptance rate
         c_acceptance = 100*c_move/c_epithelium;
         v_acceptance(t) = c_acceptance;
         
+        % Work out the perimeter
+        [c_perimeter_approx,c_area_approx,c_area_true] = f_perimeterarea_branching_c(m_cell);
+        v_perimeter(t) = c_perimeter_approx;
+        
+        % Work out epithelium entropy
+        % First of all make all the components of the image which are not 1 zero
+        c_cell_entropy = entropy(m_cell.*(m_cell==1));
+        v_entropy(t) = c_cell_entropy;
+        
         % Call a fn which plots the correct graph based on
         % handles.graph_selector
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,t,handles.graph_selector,handles)
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,t,handles.graph_selector,handles)
         
 
         
@@ -505,19 +524,28 @@ for t = 1:handles.c_T
         
         % Now put it as a % of size of total region
         c_total = handles.c_depth_full*handles.c_width_full;
-        c_epithelium_per = 100*c_epithelium/c_total;
+        c_epithelium_per = c_epithelium
         v_epithelium(t) = c_epithelium_per;
         
         % Count the number of mesenchyme
-        v_mesenchyme(t) = 100*c_mesen_running/c_total;
+        v_mesenchyme(t) = c_mesen_running;
         
         % Work out the acceptance rate
         c_acceptance = 100*c_move/c_epithelium;
         v_acceptance(t) = c_acceptance;
         
+        % Work out the perimeter
+        [c_perimeter_approx,c_area_approx,c_area_true] = f_perimeterarea_branching_c(m_cell);
+        v_perimeter(t) = c_perimeter_approx;
+        
+        % Work out epithelium entropy
+        % First of all make all the components of the image which are not 1 zero
+        c_cell_entropy = entropy(m_cell.*(m_cell==1));
+        v_entropy(t) = c_cell_entropy;
+        
         % Call a fn which plots the correct graph based on
         % handles.graph_selector
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,t,handles.graph_selector,handles)
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,t,handles.graph_selector,handles)
         
         
         
@@ -1354,14 +1382,37 @@ switch c_temp
         handles.graph_selector = 1;
     case 3
         handles.graph_selector = 2;
+    case 4
+        handles.graph_selector = 3;
 end
 
 if handles.graph_selector == 0
     set(handles.text7,'String','Cell distribution');
     set(handles.text9,'String','GDNF distribution');
-else
+    set(handles.text74,'Visible','off')
+    set(handles.text75,'Visible','off')
+    set(handles.text76,'Visible','off')
+    set(handles.text77,'Visible','off')
+elseif handles.graph_selector == 1
     set(handles.text7,'String','Cell numbers');
-    set(handles.text9,'String','Acceptance rate');
+    set(handles.text9,'String','Perimeter');
+    set(handles.text74,'Visible','on')
+    set(handles.text75,'Visible','on')
+    set(handles.text76,'Visible','off')
+    set(handles.text77,'Visible','off')
+elseif handles.graph_selector == 2
+    set(handles.text7,'String','Acceptance probability');
+    set(handles.text9,'String','Target cell selection heterogeneity');
+    set(handles.text74,'Visible','off')
+    set(handles.text75,'Visible','off')
+    set(handles.text76,'Visible','off')
+    set(handles.text77,'Visible','off')
+else
+    set(handles.text74,'Visible','off')
+    set(handles.text75,'Visible','off')
+    set(handles.text76,'Visible','on')
+    set(handles.text77,'Visible','on')
+    
 end
 
 
@@ -1381,9 +1432,9 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,t,graph_selector,handles)
+function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,t,graph_selector,handles)
  
-        if handles.graph_selector == 0
+        if handles.graph_selector == 0 % Images
             axes(handles.axes1)
             imagesc(m_cell)
             
@@ -1402,25 +1453,26 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
             
             pause(0.01)
             
-        elseif handles.graph_selector == 1
+        elseif handles.graph_selector == 1 % Cell numbers and perimeter
             
             axes(handles.axes1)
             plot(1:t,v_epithelium,'r','LineWidth',4)
             hold on
             plot(1:t,v_mesenchyme,'b','LineWidth',4)
-            legend('Epithelium','Mesenchyme')
+%             legend('Epithelium','Mesenchyme')
             hold off
             xlim([1 handles.c_T])
-            ylim([0 100])
+            ylim([0 handles.c_width_full*handles.c_depth_full])
+            
             
             
             axes(handles.axes2)
-            plot(1:t,v_acceptance,'LineWidth',4)
+            plot(1:t,v_perimeter,'LineWidth',4)
             xlim([1 handles.c_T])
-            ylim([0 60])
+            ylim([0 1000])
             
             set(handles.text7,'String','Cell numbers');
-            set(handles.text9,'String','Acceptance probability');
+            set(handles.text9,'String','Perimeter');
             
             
         elseif handles.graph_selector == 2
@@ -1439,5 +1491,37 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
             set(handles.text9,'String','Target cell selection heterogeneity');
             
             pause(0.01)           
+            
+        elseif handles.graph_selector == 3
+            
+            % Work out the radius of a circle that would give that area
+            v_radius = sqrt(v_epithelium/pi);
+            
+            % Work out the perimeter to area ratio for a circle (should be
+            % smallest possible
+            v_perarea_circle = 2./v_radius;
+            
+            % Now plot both
+            
+            axes(handles.axes1)
+            plot(1:t,v_perimeter./v_epithelium,'r','LineWidth',4)
+            hold on
+            plot(1:t,v_perarea_circle,'b','LineWidth',4)
+            hold off
+            xlim([1 handles.c_T])
+            ylim([0 1])
+            
+            
+            
+            axes(handles.axes2)
+            plot(1:t,10*v_entropy./sqrt(v_epithelium),'LineWidth',4)
+            xlim([1 handles.c_T])
+            ylim([0 1])
+            
+            set(handles.text7,'String','Perimeter-to-area ratio');
+            set(handles.text9,'String','Entropy');
+            
+            pause(0.01)           
+            
             
         end

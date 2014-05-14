@@ -2,7 +2,7 @@ clear; close all; clc;
 
 %% Parameters
 % Specify the number of time cycles to iterate through
-c_T = 100;
+c_T = 5;
 
 % Specify the parameters for the area
 c_size = 200; 
@@ -58,11 +58,49 @@ m_cell = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_densit
 m_GDNF = f_field_update_m(m_cell,v_parameters);
 
 % Plot the initial GDNF field and the cell matrix
-subplot(1,2,1),imagesc(m_cell)
-title('Cell distribution')
-subplot(1,2,2),imagesc(m_GDNF)
-title('GDNF distribution')
+% subplot(1,2,1),imagesc(m_cell)
+% title('Cell distribution')
+% subplot(1,2,2),imagesc(m_GDNF)
+% title('GDNF distribution')
 
 %% Run the simulation through the T time steps
 % Iterate through updating the m_cell and m_GDNF arrays at each time step
 [m_cell,m_GDNF] = f_life_cycle_iterator_ms(m_cell,m_GDNF,c_T,v_parameters);
+
+% First of all make all the components of the image which are not 1 zero
+m_cell = m_cell.*(m_cell==1);
+imagesc(m_cell)
+
+% Find the connected components of the image
+cell_mcell_connected = bwconncomp(m_cell, 8);
+
+% Get the number of objects in the cell array
+cn_objects = cell_mcell_connected.NumObjects;
+
+% Get the area property and perimeter properties and store these
+cell_area = regionprops(cell_mcell_connected,'Area');
+cell_perimeter = regionprops(cell_mcell_connected,'Perimeter');
+
+% Take the one with the largest area
+c_area = 0;
+c_largest_index = 0;
+
+for i = 1:cn_objects
+    if cell_area(i).Area > c_area
+        c_largest_index = i;
+        c_area = cell_area(i).Area;
+    end
+end
+
+grain = false(size(m_cell));
+grain(cell_mcell_connected.PixelIdxList{c_largest_index}) = true;
+subplot(1,2,1),imagesc(m_cell)
+subplot(1,2,2),imagesc(grain)
+
+cn_area_true = sum(sum(m_cell==1));
+c_area_approx = cell_area(c_largest_index).Area;
+c_area_ratio = c_area_approx/cn_area_true;
+c_perimeter_approx = cell_perimeter(c_largest_index).Perimeter;
+
+
+

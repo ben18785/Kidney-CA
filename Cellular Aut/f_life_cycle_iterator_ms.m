@@ -16,9 +16,9 @@ for t = 1:c_T
         
     [m_cell,c_move] = f_update_cells_m(m_cell,m_GDNF,v_parameters);
     m_GDNF = f_field_update_m(m_cell,v_parameters);
-    subplot(1,2,1),imagesc(m_cell)
-    title('Cell distribution')
-    subplot(1,2,2),imagesc(m_GDNF)
-    title('GDNF distribution')
+%     subplot(1,2,1),imagesc(m_cell)
+%     title('Cell distribution')
+%     subplot(1,2,2),imagesc(m_GDNF)
+%     title('GDNF distribution')
     pause(0.01)
 end
