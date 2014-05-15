@@ -31,7 +31,7 @@ if cn_nummoves == 1
         m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
         return;
     else
-        m_cell = f_move_mesenchyme_outofway_m(m_allowedindices(1,1),m_allowedindices(1,2),cellm_mesenchyme_available{1},m_cell,v_parameters);
+        m_cell = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(1,1),m_allowedindices(1,2),m_allowedindices(1,1),m_allowedindices(1,2),cellm_mesenchyme_available{1},v_parameters);
         m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
         return;
     end
@@ -86,7 +86,7 @@ if m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) ~= 
         m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
         return;
 else
-        m_cell = f_move_mesenchyme_outofway_m(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),cellm_mesenchyme_available{c_move_index},m_cell,v_parameters);
+        m_cell = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),cellm_mesenchyme_available{c_move_index},v_parameters);
         m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
         return;
 end

@@ -98,8 +98,9 @@ handles.ck_prolifprob_rule = handles.ck_moveprob_rule; % Select the type of rule
 % if the concentration of GDNF is higher. 3 is for when the probability of
 % a movement is dependent on the sum of all positive local GDNF gradients
 handles.ck_prolif_choosecell_rule = handles.ck_moving_rule; % Select the type of move for probabilistically choosing between the available moves 
-
-handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule];
+handles.c_beta_mesmove = -10; % A coefficient measuring the strength of discrimination against those moves for mesenchyme which are not in the direction they were pushed.
+handles.c_mes_movement = 2; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
+handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement];
 
 
 % Set the slider values and print off rounded numbers
@@ -287,14 +288,16 @@ handles.c_depth_e = 1;
 handles.c_separation = 0;
 handles.c_depth_m = handles.c_size;
 handles.c_depth_mesenstart = 1;
-handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule];
-
+handles.c_mesenchyme_density = 0.1;
+handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement];
+set(handles.slider3,'Value',handles.c_mesenchyme_density);
+set(handles.text6,'String',num2str(handles.c_mesenchyme_density));
 
 
 %% Initial area of epithelium and mesenchyme created, and the initial field of GDNF calculated
 % Create the epithelium layer, and the mesenchyme
 m_cell = f_create_area_m(handles.c_width_full, handles.c_depth_full);
-m_cell = f_create_random_epithelium_m(m_cell, handles.c_depth_full/2,handles.c_width_full/2, 500,handles.v_parameters);
+m_cell = f_create_random_epithelium_new_m(m_cell, handles.c_depth_full/2,handles.c_width_full/2, 500,handles.v_parameters);
 m_cell = f_create_mesenchyme_m(m_cell, handles.c_width_m, handles.c_depth_m, handles.c_mesenchyme_density, handles.c_depth_mesenstart,handles.c_width_mesenstart);
 
 
@@ -319,7 +322,7 @@ v_acceptance = zeros(1,1);
 v_epithelium = zeros(1,1);
 
 % Create a vector of the numbers of mesenchyme
-v_mesenchyme = zeros(1,1)
+v_mesenchyme = zeros(1,1);
 
 % Create a vector for measuring heterogeneity in target cell selection
 % probabilities
@@ -367,7 +370,7 @@ for t = 1:handles.c_T
         c_epithelium_per = c_epithelium;
         v_epithelium(t) = c_epithelium_per;
         % Count the number of mesenchyme
-        v_mesenchyme(t) = c_mesen_running
+        v_mesenchyme(t) = c_mesen_running;
         
         % Work out the acceptance rate
         c_acceptance = 100*c_move/c_epithelium;
@@ -404,22 +407,6 @@ function [] = f_invivo_plotter_void(hObject,handles)
 % A function which allows user to input parameters and plots the result
 
 
-% Diagnostic box visualisation
-set(handles.text26,'String',handles.v_parameters(1));
-set(handles.text27,'String',handles.v_parameters(2));
-set(handles.text28,'String',handles.v_parameters(3));
-set(handles.text29,'String',handles.v_parameters(4));
-set(handles.text30,'String',handles.v_parameters(5));
-set(handles.text31,'String',handles.v_parameters(6));
-set(handles.text32,'String',handles.v_parameters(7));
-set(handles.text33,'String',handles.v_parameters(8));
-set(handles.text34,'String',handles.v_parameters(9));
-set(handles.text35,'String',handles.v_parameters(10));
-set(handles.text36,'String',handles.v_parameters(11));
-set(handles.text37,'String',handles.v_parameters(12));
-set(handles.text38,'String',handles.v_parameters(13));
-set(handles.text39,'String',handles.v_parameters(14));
-set(handles.text40,'String',handles.v_parameters(15));
 
 
 
@@ -468,10 +455,41 @@ set(handles.text70,'String',num2str(handles.c3));
 
 % Specify the parameters for the area
 handles.c_depth_e = 20;
-handles.c_separation = 10;
-handles.c_depth_m = 30;
+handles.c_separation = 30;
+handles.c_depth_m = 20;
+handles.c_width_mesenstart = 100;
+handles.c_width_m = 40;
+handles.c_mesenchyme_density = 0.60;
+handles.ck_move_norm_cons = -18; % The constant to be used in the argument of the norm cdf function used in rule 2/3
+handles.ck_move_norm_slope = 50;
+guidata(hObject, handles);
+set(handles.slider3,'Value',handles.c_mesenchyme_density);
+set(handles.slider16,'Value',handles.ck_move_norm_cons);
+set(handles.slider19,'Value',handles.ck_move_norm_slope);
+set(handles.text6,'String',num2str(handles.c_mesenchyme_density));
+set(handles.text61,'String',num2str(handles.ck_move_norm_cons));
+set(handles.text67,'String',num2str(handles.ck_move_norm_slope));
 handles.c_depth_mesenstart = handles.c_depth_e+handles.c_separation;
-handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule];
+handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement];
+
+
+% Diagnostic box visualisation
+set(handles.text26,'String',handles.v_parameters(1));
+set(handles.text27,'String',handles.v_parameters(2));
+set(handles.text28,'String',handles.v_parameters(3));
+set(handles.text29,'String',handles.v_parameters(4));
+set(handles.text30,'String',handles.v_parameters(5));
+set(handles.text31,'String',handles.v_parameters(6));
+set(handles.text32,'String',handles.v_parameters(7));
+set(handles.text33,'String',handles.v_parameters(8));
+set(handles.text34,'String',handles.v_parameters(9));
+set(handles.text35,'String',handles.v_parameters(10));
+set(handles.text36,'String',handles.v_parameters(11));
+set(handles.text37,'String',handles.v_parameters(12));
+set(handles.text38,'String',handles.v_parameters(13));
+set(handles.text39,'String',handles.v_parameters(14));
+set(handles.text40,'String',handles.v_parameters(15));
+
 
 
 %% Initial area of epithelium and mesenchyme created, and the initial field of GDNF calculated

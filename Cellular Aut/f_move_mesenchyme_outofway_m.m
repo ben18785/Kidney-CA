@@ -5,7 +5,9 @@ function m_cell = f_move_mesenchyme_outofway_m(c_xmes,c_ymes,m_mesenchyme_availa
 
 cn_nummoves = size(m_mesenchyme_available);
 cn_nummoves = cn_nummoves(1);
-
+if cn_nummoves == 0
+    'error...there are no moves available to the mesenchyme! (f_move_mesenchyme_outofway_m)'
+end
 
 % If there is only one move, make it
 if cn_nummoves == 1

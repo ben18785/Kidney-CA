@@ -21,22 +21,25 @@ c_num_m = round(c_width_m*c_depth_m*c_mesenchyme_density);
 % within 1:c_depth_e (of the WD), or within 1:c_width_e of the LH boundary.
 % This is a rectangular area.
 m_mesenchyme_indices = zeros(c_width_m*c_depth_m,2);
-c_width_m*c_depth_m
 
 k = 1;
 for i = c_depth_mesenstart:c_depth_mesenstart+c_depth_m-1
     for j = c_width_mesenstart:(c_width_mesenstart+c_width_m-1)
-        m_mesenchyme_indices(k,:) = [i,j];
-        k = k + 1;
+        if m_cell(i,j) ~= 1
+            m_mesenchyme_indices(k,:) = [i,j];
+            k = k + 1;
+        end
     end
 end
-k
-length(m_mesenchyme_indices)
+
+
+m_mesenchyme_indices = [m_mesenchyme_indices(m_mesenchyme_indices(:,1)>0,1) m_mesenchyme_indices(m_mesenchyme_indices(:,1)>0,2)];
+
 % Now to get a random list of the indices
 m_mesenchyme_indices = f_random_indices(m_mesenchyme_indices);
 
 
-% Now place epithelium cells in the first c_num_e random locations
+% Now place mesenchyme cells in the first c_num_m random locations
 for i = 1:c_num_m
     m_cell(m_mesenchyme_indices(i,1),m_mesenchyme_indices(i,2)) = -1;
 end
