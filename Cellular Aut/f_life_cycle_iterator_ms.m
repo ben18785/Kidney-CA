@@ -19,6 +19,8 @@ for t = 1:c_T
     subplot(1,2,1),imagesc(m_cell)
     title('Cell distribution')
     subplot(1,2,2),imagesc(m_GDNF)
+    c = contour(m_GDNF);
+    clabel(c);
     title('GDNF distribution')
     pause(0.01)
 end

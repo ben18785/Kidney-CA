@@ -1,0 +1,88 @@
+\documentclass[pdftex,10pt,a4paper]{article}
+\title{\textbf{Kidney Morphogenesis cellular automaton - time-varying reaction-diffusion equation}\newline }
+\author{Ben Lambert}
+\usepackage[authoryear]{natbib}
+\usepackage[titletoc,toc]{appendix}
+\usepackage[pdftex]{graphicx}
+\usepackage{url,times}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage[all]{xy}
+\usepackage{pxfonts}
+\usepackage{colortbl}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{gensymb}
+\usepackage{ctable}
+\usepackage[justification=centering]{caption}[2007/12/23]
+\usepackage{longtable}
+\usepackage{pst-func}
+\usepackage{pst-math}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.1in}
+\usepackage[margin=0.5in]{geometry}
+\renewcommand{\bibname}{Works Cited}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{algorithm}
+\usepackage{bbm}
+
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\begin{document}
+
+\maketitle
+\doublespacing
+\section{Introduction}
+This short document specifies the details of the non-dimensionalisation of the reaction diffusion equation to be used to study branching \emph{in vitro} of explanted kidney epithelium cells in a GDNF broth. Both explicit and implicit finite difference schemes are employed to numerically simulate the system. There are certain questions which are raised in simulating. For example, how many (non-dimensional) time steps should be taken to correspond to the length of time for a typical cell cycle (proliferation or moving time).
+
+\section{Details of the non-dimensionalisation}
+The specific reaction-diffusion equation relevant to the epithelium-broth system is of the form:
+
+\begin{equation}\label{eq:rd_time}
+\frac{\partial G}{\partial t} = D_G \nabla^2 - \Phi_G
+\end{equation}
+
+Where in (\ref{eq:rd_time}) $D_G$ refers to the diffusion coefficient for GDNF, and $\Phi_G$ is the local rate of GDNF consumption which occurs at epithelium cells.
+
+
+The equation in (\ref{eq:rd_time}) is non-dimensionalised using the following transformations:
+\begin{equation}\label{eq:difftrans1}
+\eta = \frac{x}{\Delta}
+\end{equation}
+
+\begin{equation}\label{eq:difftrans2}
+g = \frac{G}{G_x}
+\end{equation}
+
+\begin{equation}\label{eq:difftrans3}
+\tau = \frac{t}{T}
+\end{equation}
+
+Where in (\ref{eq:difftrans1}) $\Delta$ refers to the typical cell dimensions (approximated as 5 $\mu m$),and in (\ref{eq:difftrans2}), $G_x$ is the concentration of GDNF typically found \textit{in vivo} (a value is currently not assigned here, since it is not strictly necessary for the non-dimensionalised simulation). In (\ref{eq:difftrans3}), $T = K_G^{-1}$ is the time scale of a typical reaction (the consumption of GDNF by an epithelium cell). These transformations result in the following non-dimensional form of the time-dependent reaction-diffusion equation:
+
+\begin{equation}\label{eq:nondenom}
+\frac{\partial g}{\partial \tau} = d_g \nabla_\eta^2 - \phi_g
+\end{equation}
+
+Where in (\ref{eq:nondenom}), $g = G/G_x$, $d_g = \frac{D_G}{K_G \Delta^2}$, and, $\phi_g = \frac{\Phi_G}{K_G G_x}$. The two ways considered to numerically simulate the system were \emph{explicit} and \emph{implicit} finite difference schemes. They numerically approximate (\ref{eq:nondenom}), by using the following schemes:
+
+\begin{equation}\label{eq:explicit}
+\mathbf{g^{t+1}} = \Delta_\tau (d_g \nabla_\eta^2 - \mathbf{\Psi} + {I_{MN}})\mathbf{g^t} 
+\end{equation}
+
+\begin{equation}\label{eq:implicit}
+\mathbf{g^{t+1}} = [{I_{MN} - \Delta_\tau (d_g \nabla_\eta^2 - \mathbf{\Psi}})]^{-1}\mathbf{g^t} 
+\end{equation}
+
+Where (\ref{eq:explicit}) refers to the \emph{explicit} scheme, and (\ref{eq:implicit}), to the \emph{implicit} one. In (\ref{eq:explicit}) and (\ref{eq:implicit}), $\mathbf{\Psi}$ is a matrix which is itself a function of identity of individual cells within the simulation; where if a cell is a epithelium, a consumption term is present (taking the value 1), and if it is an ECM cell, the corresponding entry in the matrix is zero. It is assumed that $\mathbf{\Psi}$ is formed using the cell positions corresponding to the current (known) time period. Although this results in a somewhat 'bastardised' implicit scheme, it is perhaps a reasonable approximation, as cell positions are not likely to change in between the time steps taken, since the cell cycle is much longer that the typical GDNF consumption time. In (\ref{eq:implicit}) the RHS will be calculated using Matlab's inbuilt backslash operator to avoid the computational overhead of calculating the matrix inverse.
+
+\section{Questions}
+\begin{itemize}
+\item How many time steps should be taken for each cell cycle? Seeing as I have chosen the timescale $T=K^{-1}_G$ - the average time taken for a reaction (GDNF consumption) to occur - I need to estimate what the typical length of cell cycle, and $K_G$. At the moment, I don't have a way of figuring out the latter, but whereas the former could probably be estimated given input from Melissa et al.
+\item Are both the schemes (explicit and implicit) I have out forward reasonable? I have coded up the explicit one, and it seems to be stable assuming (non-dimensional) time steps are smaller than about 0.001. However, I want to code up the latter, as implicit schemes tend to be more stable. 
+\item (Not relevant to this document) Take HB the details of the bias in the movement of mesenchyme passive movement via use of a least squares cost function.
+\end{itemize}
+
+\end{document}

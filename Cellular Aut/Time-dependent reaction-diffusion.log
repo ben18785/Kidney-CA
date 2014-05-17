@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  16 MAY 2014 17:04
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  16 MAY 2014 16:13
 entering extended mode
-**Kidney*-*CA*-*model*details.tex
+**Time-dependent*reaction-diffusion.tex
 
-("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
-dney - CA - model details.tex"
+("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ti
+me-dependent reaction-diffusion.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -897,8 +897,8 @@ LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
 LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
 (Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
 )
-("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
-dney - CA - model details.aux")
+("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ti
+me-dependent reaction-diffusion.aux")
 LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 33.
 LaTeX Font Info:    Try loading font information for OML+pxmi on input line 33.
 
@@ -1042,13 +1042,7 @@ Package caption Info: End \AtBeginDocument code.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count185
-LaTeX Font Info:    Try loading font information for OMS+pxr on input line 40.
-("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\omspxr.fd"
-File: omspxr.fd 2000/12/14 v1.0
-)
-LaTeX Font Info:    Font shape `OMS/pxr/m/n' in size <10> not available
-(Font)              Font shape `OMS/pxsy/m/n' tried instead on input line 40.
- [1
+[1
 Non-PDF special ignored!
 Non-PDF special ignored!
 Non-PDF special ignored!
@@ -1063,42 +1057,36 @@ Non-PDF special ignored!
 Non-PDF special ignored!
 Non-PDF special ignored!
 Non-PDF special ignored!{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2] [3] [4] [5]
-! Extra }, or forgotten $.
-l.187 ...) = \Phi(c_1 + c_2 \sum\limits_{allowed}}
-                                                   (g^{neighbours} - g^{curr...
-I've deleted a group-closing symbol because it seems to be
-spurious, as in `$x}$'. But perhaps the } is legitimate and
-you forgot something else, as in `\hbox{$x}'. In such cases
-the way to recover is to insert both the forgotten and the
-deleted material, e.g., by typing `I$}'.
+LaTeX Font Info:    Try loading font information for OMS+pxr on input line 83.
 
-LaTeX Font Info:    Try loading font information for U+bbm on input line 187.
-("C:\Program Files\MiKTeX 2.9\tex\latex\bbm\ubbm.fd"
-File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [6] [7] [8]
-("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
-dney - CA - model details.aux") ) 
+("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\omspxr.fd"
+File: omspxr.fd 2000/12/14 v1.0
+)
+LaTeX Font Info:    Font shape `OMS/pxr/m/n' in size <10> not available
+(Font)              Font shape `OMS/pxsy/m/n' tried instead on input line 83.
+ [2]
+("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ti
+me-dependent reaction-diffusion.aux") ) 
 Here is how much of TeX's memory you used:
- 13481 strings out of 494045
- 190952 string characters out of 3148393
- 384536 words of memory out of 3000000
- 16454 multiletter control sequences out of 15000+200000
- 38056 words of font info for 119 fonts, out of 3000000 for 9000
+ 13442 strings out of 494045
+ 190160 string characters out of 3148393
+ 382413 words of memory out of 3000000
+ 16425 multiletter control sequences out of 15000+200000
+ 36340 words of font info for 113 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 52i,10n,92p,3256b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Ben\AppData\Local\MiKTeX\2.9\fonts\
-pk\ljfour\public\bbm\dpi600\bbm10.pk>{C:/Program Files/MiKTeX 2.9/fonts/enc/dvi
-ps/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/pxex
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/pxsy.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxmi.pfb><C:/Program Files/MiKT
-eX 2.9/fonts/type1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palat
-ino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pf
-b>
-Output written on "Kidney - CA - model details.pdf" (8 pages, 91933 bytes).
+ 52i,7n,92p,3262b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/d
+vips/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/px
+sy.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxb.pfb><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxmi.pfb><C:/Program Files/Mi
+KTeX 2.9/fonts/type1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts
+/type1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/pal
+atino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.
+pfb>
+Output written on "Time-dependent reaction-diffusion.pdf" (2 pages, 67563 bytes
+).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
+ 38 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -385,9 +385,22 @@ for t = 1:handles.c_T
         c_cell_entropy = entropy(m_cell.*(m_cell==1));
         v_entropy(t) = c_cell_entropy;
         
+        % Now work out the number of branchpoints
+        skelImg   = bwmorph(m_cell, 'thin', 'inf');
+        branchImg = bwmorph(skelImg, 'branchpoints');
+        
+
+        
+        [row, column] = find(branchImg);
+        branchPts     = [row column];
+        
+        cn_branch = length(branchPts);
+        
+        v_branch(t) = cn_branch;
+        
         % Call a fn which plots the correct graph based on
         % handles.graph_selector
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,t,handles.graph_selector,handles)
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,t,handles.graph_selector,handles)
         
 
         
@@ -561,9 +574,20 @@ for t = 1:handles.c_T
         c_cell_entropy = entropy(m_cell.*(m_cell==1));
         v_entropy(t) = c_cell_entropy;
         
+        % Now work out the number of branchpoints
+        skelImg   = bwmorph(m_cell, 'thin', 'inf');
+        branchImg = bwmorph(skelImg, 'branchpoints');
+        
+        [row, column] = find(branchImg);
+        branchPts     = [row column];
+        
+        cn_branch = length(branchPts);
+        
+        v_branch(t) = cn_branch;
+        
         % Call a fn which plots the correct graph based on
         % handles.graph_selector
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,t,handles.graph_selector,handles)
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,t,handles.graph_selector,handles)
         
         
         
@@ -1402,6 +1426,8 @@ switch c_temp
         handles.graph_selector = 2;
     case 4
         handles.graph_selector = 3;
+    case 5
+        handles.graph_selector = 4;
 end
 
 if handles.graph_selector == 0
@@ -1450,7 +1476,7 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,t,graph_selector,handles)
+function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,t,graph_selector,handles)
  
         if handles.graph_selector == 0 % Images
             axes(handles.axes1)
@@ -1532,14 +1558,38 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
             
             
             axes(handles.axes2)
-            plot(1:t,10*v_entropy./sqrt(v_epithelium),'LineWidth',4)
+            plot(1:t,100*v_branch./v_epithelium,'LineWidth',4)
             xlim([1 handles.c_T])
-            ylim([0 1])
+            ylim([0 50])
             
             set(handles.text7,'String','Perimeter-to-area ratio');
-            set(handles.text9,'String','Entropy');
+            set(handles.text9,'String','Branch points per area');
             
-            pause(0.01)           
+            pause(0.01)
             
+            
+        elseif handles.graph_selector == 4
+            
+            
+            axes(handles.axes1)
+            imagesc(m_cell)
+            
+            m_cell = double(m_cell==1);
+
+            skelImg   = bwmorph(m_cell, 'thin', 'inf');
+            branchImg = bwmorph(skelImg, 'branchpoints');
+            endImg    = bwmorph(skelImg, 'endpoints');
+
+            [row, column] = find(endImg);
+            endPts        = [row column];
+            [row, column] = find(branchImg);
+            branchPts     = [row column];
+            
+
+            axes(handles.axes2)
+
+            imagesc(skelImg); 
+
+            pause(0.01)
             
         end
