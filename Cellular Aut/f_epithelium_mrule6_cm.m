@@ -1,6 +1,7 @@
 function [c_allowed,m_allowedindices] = f_epithelium_mrule6_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move)
 % A function which finds only those indices which allows moves if the
-% active (moving) cell is not going to be unconnected
+% active (moving) cell is not going to be unconnected. (c_x,c_y) is the
+% current position of the epithelium cell.
 
 % The maximum number of allowed moves is the length of the index list
 cd_indicesmax = length(m_allindices);
@@ -21,7 +22,8 @@ for i = 1:cd_indicesmax
                 end
             elseif m_cell(m_allindices(i,1),m_allindices(i,2))== - 1 % If a mesenchyme, allow a movement iff there are vacant spots nearby for the mesenchyme to move into
                 m_allmesenchyme = f_allindices_8neigh_m(m_allindices(i,1),m_allindices(i,2),v_parameters); % Find all possible available indices
-                [c_allowed,~] = f_epithelium_mrule1_cm(m_allindices(i,1),m_allindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Check whether there are vacant cells for the mesenchyme to move into
+                [c_allowed,~] = f_mesenchyme_available_cm(m_allindices(i,1),m_allindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Check whether the moves are allowed
+                
                 if and(c_allowed==1,f_activeconnected_c(c_x,c_y,m_allindices(i,1),m_allindices(i,2),m_cell,v_parameters)==1)
                     m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
                     k = k + 1;
@@ -34,7 +36,7 @@ for i = 1:cd_indicesmax
                
             elseif m_cell(m_allindices(i,1),m_allindices(i,2))== - 1 % If a mesenchyme, allow a movement iff there are vacant spots nearby for the mesenchyme to move into
                 m_allmesenchyme = f_allindices_8neigh_m(m_allindices(i,1),m_allindices(i,2),v_parameters); % Find all possible available indices
-                [c_allowed,~] = f_epithelium_mrule1_cm(m_allindices(i,1),m_allindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Check whether there are vacant cells for the mesenchyme to move into
+                [c_allowed,~] = f_mesenchyme_available_cm(m_allindices(i,1),m_allindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Check whether the moves are allowed
                 if c_allowed == 1
                     m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
                     k = k + 1;

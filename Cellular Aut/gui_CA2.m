@@ -42,7 +42,6 @@ handles.c_depth_mesenstart = 1;
 handles.c_width_mesenstart = 1;
 
 
-
 % Specify the parameters in the v_parameters vector
 handles.ck_dg = 100;
 handles.ck_gamma = 1;
@@ -70,8 +69,9 @@ handles.ck_prolifprob_rule = handles.ck_moveprob_rule; % Select the type of rule
 handles.ck_prolif_choosecell_rule = handles.ck_moving_rule; % Select the type of move for probabilistically choosing between the available moves 
 handles.c_beta_mesmove = -10; % A coefficient measuring the strength of discrimination against those moves for mesenchyme which are not in the direction they were pushed.
 handles.c_mes_movement = 2; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
-handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement];
-
+handles.c_mes_trapped = 8; % The maximum number of 8-nearest neighbour epithelium cells which can be neighbouring on a given mesenchyme cell after moving it. Aims to stop MM becoming trapped!
+handles.c_mes_allowed = 2; % Choose the rule specifying whether a mesenchyme can occupy a spot. 1 means all vacant spots, 2 means only those spots which are connected less than c_mes_trapped
+handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement;handles.c_mes_trapped;handles.c_mes_allowed];
 % A function which initialises the gui sliders etc.
 f_initialise_gui_void(handles)
 
@@ -100,6 +100,7 @@ varargout{1} = handles.output;
 % A menu which allows the user to specify the type of simulation to run; in
 % vivo vs in vitro
 function popupmenu1_Callback(hObject, eventdata, handles)
+
 
 handles.c_simulation = get(hObject,'Value');
 switch handles.c_simulation
@@ -642,6 +643,8 @@ switch c_temp
         handles.graph_selector = 3;
     case 5
         handles.graph_selector = 4;
+    case 6
+        handles.graph_selector = 5;
 end
 
 if handles.graph_selector == 0
@@ -681,3 +684,122 @@ end
 
 
 guidata(hObject,handles);
+
+
+% A pop up menu which allows the user to specify how the mesenchyme are
+% moved by the epithelium cells
+function popupmenu15_Callback(hObject, eventdata, handles)
+
+c_temp = get(hObject,'Value');
+
+switch c_temp
+    case 1
+        handles.c_mes_movement  = 1;
+    case 2
+        handles.c_mes_movement  = 2;
+end
+guidata(hObject,handles);
+f_simulation_selector_void(hObject,handles);
+
+
+% A pop up menu which allows the user to specify how the mesenchyme are
+% moved by the epithelium cells
+function popupmenu15_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% A pop up menu which allows the user to open up the required box of options
+% for the simulator
+function popupmenu16_Callback(hObject, eventdata, handles)
+
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1
+        set(handles.uipanel10,'Visible','off')
+        set(handles.uipanel3,'Visible','on')
+    case 2
+        set(handles.uipanel10,'Visible','on')
+        set(handles.uipanel3,'Visible','off')
+end
+
+
+% A pop up menu which allows the user to open up the required box of options
+% for the simulator
+function popupmenu16_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% A slider which allows the user to specify the strength of discrimination
+% against mesenchyme targets not in the direction of movement of epithelium
+% push
+function slider21_Callback(hObject, eventdata, handles)
+handles.c_beta_mesmove = get(hObject,'Value');
+handles.v_parameters(16) = handles.c_beta_mesmove;
+set(handles.text108,'String',num2str(handles.c_beta_mesmove));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+function slider21_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A function which changes the rule on the 
+function popupmenu17_Callback(hObject, eventdata, handles)
+    
+c_temp = get(hObject,'Value');
+    
+    switch c_temp
+        case 1
+            handles.c_mes_allowed = 1;
+        case 2
+            handles.c_mes_allowed = 2;
+    end
+
+    handles.v_parameters(19) = handles.c_mes_allowed;
+
+    % Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+function popupmenu17_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% Allows the user to specify the number of nearest neighbours which specify
+% whether or not a moved mesenchyme is trapped.
+function slider22_Callback(hObject, eventdata, handles)
+
+handles.c_mes_trapped = round(get(hObject,'Value'));
+handles.v_parameters(18) = handles.c_mes_trapped;
+set(handles.text110,'String',num2str(handles.v_parameters(18)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to specify the number of nearest neighbours which specify
+% whether or not a moved mesenchyme is trapped.
+function slider22_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+

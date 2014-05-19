@@ -9,6 +9,11 @@ for t = 1:handles.c_T
     handles = guidata(hObject);
     f_diagnostic_guivis_void(handles);
     
+    % Try to break the loop if a new command is chosen
+    if handles.stop1 == 1
+        break;
+    end
+    
     if handles.test1 == 0
         c_mesen_running = sum(sum(m_cell==-1));
         if c_mesen_running ~=c_mesen_tot

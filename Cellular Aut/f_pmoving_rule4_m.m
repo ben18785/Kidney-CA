@@ -18,7 +18,7 @@ cellm_mesenchyme_available = cell(cn_nummoves,1);
 for i = 1:cn_nummoves
    if m_cell(m_allowedindices(i,1),m_allowedindices(i,2)) == -1
         m_allmesenchyme = f_allindices_8neigh_m(m_allowedindices(i,1),m_allowedindices(i,2),v_parameters); % Find all possible available indices
-        [~,cellm_mesenchyme_available{i,1}] = f_epithelium_mrule1_cm(m_allowedindices(i,1),m_allowedindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Get the indices for the allowed moves for the mesenchyme
+        [~,cellm_mesenchyme_available{i,1}] = f_mesenchyme_available_cm(m_allowedindices(i,1),m_allowedindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Get the indices for the allowed moves for the mesenchyme
    end
    
 end

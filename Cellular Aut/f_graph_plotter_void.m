@@ -2,8 +2,9 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
 % A function which plots the relevant images in response to the user selecting a plot
 % choice from a dropdown menu
 
+switch handles.graph_selector
 
-        if handles.graph_selector == 0 % Images
+    case 0 % Images
             axes(handles.axes1)
             imagesc(m_cell)
             
@@ -22,7 +23,7 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
             
             pause(0.01)
             
-        elseif handles.graph_selector == 1 % Cell numbers and perimeter
+    case 1 % Cell numbers and perimeter
             
             axes(handles.axes1)
             plot(1:t,v_epithelium,'r','LineWidth',4)
@@ -44,7 +45,7 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
             set(handles.text9,'String','Perimeter');
             
             
-        elseif handles.graph_selector == 2
+    case 2
             
             axes(handles.axes1)
             plot(1:t,v_acceptance,'LineWidth',4)
@@ -61,7 +62,7 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
             
             pause(0.01)           
             
-        elseif handles.graph_selector == 3
+    case 3
             
             % Work out the radius of a circle that would give that area
             v_radius = sqrt(v_epithelium/pi);
@@ -93,7 +94,7 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
             pause(0.01)
             
             
-        elseif handles.graph_selector == 4
+    case 4
             
             set(handles.text7,'String','Cell distribution');
             set(handles.text9,'String','Branch visualisation');
@@ -118,6 +119,19 @@ function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acc
 
             imagesc(skelImg); 
 
+            pause(0.01)
+            
+    case 5
+            set(handles.text7,'String','Init mesenchyme');
+            set(handles.text9,'String','New mesenchyme');
+            
+            
+            axes(handles.axes1)
+            imagesc(handles.m_mesenchyme_init)
+            
+            axes(handles.axes2)
+            m_mesenchyme = double(m_cell==-1);
+            imagesc(m_mesenchyme)
             pause(0.01)
             
         end

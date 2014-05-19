@@ -10,7 +10,7 @@ handles.c_width_m = 40;
 handles.c_depth_mesenstart = handles.c_depth_e+handles.c_separation;
 guidata(hObject, handles);
 
-handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement];
+handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement;handles.c_mes_trapped;handles.c_mes_allowed];
 
 % Update the diagnostic box with the relevant parameters
 f_diagnostic_guivis_void(handles);
@@ -25,6 +25,8 @@ m_cell = f_create_area_m(handles.c_width_full, handles.c_depth_full);
 m_cell = f_create_epithelium_m(m_cell, handles.c_width_e, handles.c_depth_e, handles.c_epithelium_density);
 m_cell = f_create_mesenchyme_m(m_cell, handles.c_width_m, handles.c_depth_m, handles.c_mesenchyme_density, handles.c_depth_mesenstart,handles.c_width_mesenstart);
 
+handles.m_mesenchyme_init = double(m_cell==-1);
+guidata(hObject, handles);
 
 % Create the initial field of GDNF according to the distribution of the
 % mesenchyme and epithelium
@@ -39,6 +41,8 @@ c_mesen_tot = sum(sum(m_cell==-1));
 handles = guidata(hObject);
 handles.test1 = 0;
 
+% Stop simulation initially zero (stops running before new sim starts)
+handles.stop1 = 0;
 
 guidata(hObject, handles);
 

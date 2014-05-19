@@ -20,4 +20,7 @@ set(handles.text39,'String',handles.v_parameters(14));
 set(handles.text40,'String',handles.v_parameters(15));
 set(handles.text73,'String',handles.c_mesenchyme_density);
 set(handles.text95,'String',handles.c_simulation);
-set(handles.text97,'String',handles.c_mes_movement);
+set(handles.text97,'String',handles.v_parameters(17));
+set(handles.text102,'String',handles.v_parameters(16));
+set(handles.text104,'String',handles.v_parameters(19));
+set(handles.text106,'String',handles.v_parameters(18));

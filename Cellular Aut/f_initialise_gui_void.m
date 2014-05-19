@@ -1,8 +1,12 @@
 function [] = f_initialise_gui_void(handles)
 
+
 % Hide the diagnostic panel
 set(handles.uipanel5,'Visible','off')
 
+% Hide the second panel
+set(handles.uipanel10,'Visible','off')
+set(handles.uipanel3,'Visible','on')
 
 % Set the slider values and print off rounded numbers
 set(handles.slider1,'Value',handles.ck_dg);
@@ -13,6 +17,7 @@ set(handles.slider8,'Value',handles.ck_moveprob_cons);
 set(handles.slider16,'Value',handles.ck_move_norm_cons);
 set(handles.slider19,'Value',handles.ck_move_norm_slope);
 set(handles.slider20,'Value',handles.c_pmove_grad);
+set(handles.slider21,'Value',handles.c_beta_mesmove);
 
 if handles.ck_neighbours == 4
     set(handles.popupmenu4,'Value',1);
@@ -23,6 +28,8 @@ end
 set(handles.popupmenu5,'Value',handles.ck_movement_rule);
 set(handles.popupmenu6,'Value',handles.ck_moveprob_rule);
 set(handles.popupmenu7,'Value',handles.ck_moving_rule);
+set(handles.popupmenu15,'Value',handles.c_mes_movement);
+set(handles.popupmenu17,'Value',handles.c_mes_allowed);
 
 
 c_dg_rounded = num2str(handles.ck_dg);
@@ -65,3 +72,5 @@ set(handles.text74,'Visible','off')
 set(handles.text75,'Visible','off')
 set(handles.text76,'Visible','off')
 set(handles.text77,'Visible','off')
+set(handles.text108,'String',num2str(handles.c_beta_mesmove));
+set(handles.text110,'String',num2str(handles.v_parameters(18)));

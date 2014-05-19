@@ -1,7 +1,8 @@
 function [c_heterogeneity,m_cell] = f_pprolif_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is equal to
-% 1/#moves; ie the same across all the available moves
+% 1/#moves; ie the same across all the available moves. (c_x,c_y) is the
+% current position of the epithelium cell.
 
 cn_nummoves = size(m_allowedindices);
 cn_nummoves = cn_nummoves(1);
@@ -15,7 +16,13 @@ cellm_mesenchyme_available = cell(cn_nummoves,1);
 for i = 1:cn_nummoves
    if m_cell(m_allowedindices(i,1),m_allowedindices(i,2)) == -1
         m_allmesenchyme = f_allindices_8neigh_m(m_allowedindices(i,1),m_allowedindices(i,2),v_parameters); % Find all possible available indices
-        [~,cellm_mesenchyme_available{i,1}] = f_epithelium_mrule1_cm(m_allowedindices(i,1),m_allowedindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Get the indices for the allowed moves for the mesenchyme
+        [~,cellm_mesenchyme_available{i,1}] = f_mesenchyme_available_cm(m_allowedindices(i,1),m_allowedindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Get the indices for the allowed moves for the mesenchyme
+        
+            a = size(cellm_mesenchyme_available{i,1});
+            a = a(1);
+        if a == 0
+            'No moves available in f_pprolif_rule_7_m'
+        end
    end
    
 end

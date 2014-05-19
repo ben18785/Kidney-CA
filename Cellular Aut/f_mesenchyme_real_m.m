@@ -78,6 +78,7 @@ for i = 1:cn_mes_moves
    end
 end
 
+
 % Now implementing the move
 m_cell(c_xmes,c_ymes) = 0;
 m_cell(m_allowed_mesenchyme_targets(c_move_index,1),m_allowed_mesenchyme_targets(c_move_index,2)) = -1;
