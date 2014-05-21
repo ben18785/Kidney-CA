@@ -4,7 +4,7 @@ function [] = f_simulation_selector_void(hObject,handles)
 
 % Stop the currently running process
 f_simulation_stop_void(hObject,handles);
-
+pause(0.01)
 % Update the parameters shown in boxes
 f_parameters_visible(hObject,handles);
 

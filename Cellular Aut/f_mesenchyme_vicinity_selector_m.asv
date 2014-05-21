@@ -1,0 +1,11 @@
+function m_allmesenchyme = f_mesenchyme_vicinity_selector_m(c_xold,c_yold,c_xnew,c_ynew,m_cell,v_parameters)
+% A function which chooses whether to just look for the 8 NN or all spaces
+% in the vicinity for the mesenchyme. (c_xold,c_yold) is the current 
+
+[~,m_mesenchyme] = f_allindices_allnearby_m(c_xold,c_yold,c_xnew,c_ynew,m_cell,v_parameters);
+
+switch 
+    
+
+
+m_allmesenchyme = f_allindices_8neigh_m(m_allowedindices(i,1),m_allowedindices(i,2),v_parameters); % Find all possible available indices

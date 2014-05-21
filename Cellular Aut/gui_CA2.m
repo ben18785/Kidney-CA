@@ -47,7 +47,7 @@ handles.ck_dg = 100;
 handles.ck_gamma = 1;
 handles.ckp_moveprob = 0.5; % Probability of move vs proliferate. 1 means always move. 0 always proliferate
 handles.ck_neighbours = 4; % Choose the number of nearest neighbours for movement/proliferation: 4 or 8
-handles.ck_movement_rule = 1; % Choose a particular rule for allowed moves. 1 is allow all possible moves into vacant spots only; 2 is don't allow movements into cells which
+handles.ck_movement_rule = 8; % Choose a particular rule for allowed moves. 1 is allow all possible moves into vacant spots only; 2 is don't allow movements into cells which
 % are unconnected only for the active cell in question; 3 doesn't allow
 % moves which create any cells which are unconnected (so not just for the
 % active cell); 4 allows movement into either a vacant space or a
@@ -60,7 +60,7 @@ handles.ck_moveprob_rule = 1; % Select the type of rule to use for P(move). 1 fo
 handles.ck_moveprob_cons = 1; % The constant used in rule 1 for P(move)
 handles.ck_move_norm_cons = -150; % The constant to be used in the argument of the norm cdf function used in rule 2/3
 handles.ck_move_norm_slope = 50; % The constant to be used to multiply the local GDNF concentration by in the argument to the normal cdf in rule 2/3
-handles.ck_moving_rule = 1; % Select the type of move for probabilistically choosing between the available moves 
+handles.ck_moving_rule = 7; % Select the type of move for probabilistically choosing between the available moves 
 handles.c_pmove_grad = 10; %The coefficients used in targeting cells
 % handles.c_target_cons = 0; % Another constant used in targeting cells
 handles.ck_prolifprob_rule = handles.ck_moveprob_rule; % Select the type of rule to use for P(prolif). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
@@ -68,10 +68,18 @@ handles.ck_prolifprob_rule = handles.ck_moveprob_rule; % Select the type of rule
 % a movement is dependent on the sum of all positive local GDNF gradients
 handles.ck_prolif_choosecell_rule = handles.ck_moving_rule; % Select the type of move for probabilistically choosing between the available moves 
 handles.c_beta_mesmove = -10; % A coefficient measuring the strength of discrimination against those moves for mesenchyme which are not in the direction they were pushed.
-handles.c_mes_movement = 2; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
+handles.c_mes_movement = 1; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
 handles.c_mes_trapped = 8; % The maximum number of 8-nearest neighbour epithelium cells which can be neighbouring on a given mesenchyme cell after moving it. Aims to stop MM becoming trapped!
-handles.c_mes_allowed = 2; % Choose the rule specifying whether a mesenchyme can occupy a spot. 1 means all vacant spots, 2 means only those spots which are connected less than c_mes_trapped
-handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement;handles.c_mes_trapped;handles.c_mes_allowed];
+handles.c_mes_allowed = 1; % Choose the rule specifying whether a mesenchyme can occupy a spot. 1 means all vacant spots, 2 means only those spots which are connected less than c_mes_trapped
+handles.c_principal = 5; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+handles.c_secondary = 2; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+
+% Update handles structure
+guidata(hObject, handles);
+v_parameters = f_update_vparameters_void(hObject,handles); % A function which updates v_paramaters based on the parameters
+handles.v_parameters = v_parameters;
+guidata(hObject, handles);
+
 % A function which initialises the gui sliders etc.
 f_initialise_gui_void(handles)
 
@@ -250,6 +258,11 @@ switch c_movement_rule
         handles.ck_movement_rule  = 5;
     case 6
         handles.ck_movement_rule  = 6;
+    case 7
+        handles.ck_movement_rule  = 7;
+    case 8
+        handles.ck_movement_rule  = 8;
+        
 end
 
 handles.v_parameters(5) = handles.ck_movement_rule;
@@ -801,5 +814,3 @@ function slider22_CreateFcn(hObject, eventdata, handles)
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
-
-

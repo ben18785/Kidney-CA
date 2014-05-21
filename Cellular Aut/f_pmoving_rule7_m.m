@@ -15,10 +15,23 @@ cn_nummoves = cn_nummoves(1);
 cellm_mesenchyme_available = cell(cn_nummoves,1);
 for i = 1:cn_nummoves
    if m_cell(m_allowedindices(i,1),m_allowedindices(i,2)) == -1
-        m_allmesenchyme = f_allindices_8neigh_m(m_allowedindices(i,1),m_allowedindices(i,2),v_parameters); % Find all possible available indices
+        m_allmesenchyme = f_mesenchyme_vicinity_selector_m(c_x,c_y,m_allowedindices(i,1),m_allowedindices(i,2),m_cell,v_parameters);
         [~,cellm_mesenchyme_available{i,1}] = f_mesenchyme_available_cm(m_allowedindices(i,1),m_allowedindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Get the indices for the allowed moves for the mesenchyme
    end
    
+end
+
+% Check that the move does not result in a mesenchymal cell becoming
+% trapped if the allowed move rule is 7.
+ck_movement_rule = v_parameters(5);
+c_test = 0;
+if ck_movement_rule == 7
+    for i = 1:cn_nummoves
+        c_test = c_test + f_epithelium_engulfment_c(m_allowedindices(i,1),m_allowedindices(i,2),m_cell,v_parameters);
+    end
+    if c_test < cn_nummoves
+        'Error has been made. A mesenchyme is trapped (f_pmoving_rule7_m)'
+    end
 end
 
 

@@ -10,7 +10,11 @@ handles.c_width_m = 40;
 handles.c_depth_mesenstart = handles.c_depth_e+handles.c_separation;
 guidata(hObject, handles);
 
-handles.v_parameters = [handles.ck_dg;handles.ck_gamma; handles.ckp_moveprob; handles.ck_neighbours;handles.ck_movement_rule;handles.c_depth_full;handles.c_width_full;handles.ck_moveprob_rule;handles.ck_moveprob_cons;handles.ck_move_norm_cons;handles.ck_move_norm_slope;handles.ck_moving_rule;handles.c_pmove_grad;handles.ck_prolifprob_rule;handles.ck_prolif_choosecell_rule;handles.c_beta_mesmove;handles.c_mes_movement;handles.c_mes_trapped;handles.c_mes_allowed];
+% Update handles structure
+guidata(hObject, handles);
+v_parameters = f_update_vparameters_void(hObject,handles); % A function which updates v_paramaters based on the parameters
+handles.v_parameters = v_parameters;
+guidata(hObject, handles);
 
 % Update the diagnostic box with the relevant parameters
 f_diagnostic_guivis_void(handles);

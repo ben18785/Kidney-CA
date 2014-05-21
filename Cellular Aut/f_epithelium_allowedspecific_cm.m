@@ -22,8 +22,13 @@ switch ck_movement_rule
         [c_allowed,m_allowedindices] = f_epithelium_mrule4_cm(c_x,c_y,m_allindices,m_cell,v_parameters);
     case 5 % Same as rule 2, but allows movement into Mesenchyme
         [c_allowed,m_allowedindices] = f_epithelium_mrule5_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move);
-    case 6 % Same as rule 5, but displace mesenchyme rather than kill it. Hence movement is only allowed here if there is a space for MM to move into
+    case 6 % Same as rule 5, but displace mesenchyme rather than kill it. Hence movement is only allowed here if there is a space for MM to move into and if active cell is connected
         [c_allowed,m_allowedindices] = f_epithelium_mrule6_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move);
+    case 7 % Same as above, but now disallow epithelium movements if they result in MM engulfment
+        [c_allowed,m_allowedindices] = f_epithelium_mrule7_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move);
+    case 8 % Allow movements of epithelium if there are available vacant spaces in the vicinity (these need not be neighbours!)
+        [c_allowed,m_allowedindices] = f_epithelium_mrule8_cm(c_x,c_y,m_allindices,m_cell,v_parameters,cp_move);
+        
     otherwise 
         'An error has occurred. Please choose only 1,2,3 for the allowed movement rule'
         return;

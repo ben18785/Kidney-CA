@@ -3,7 +3,7 @@ function [c_allowed,m_allowedindices] = f_epithelium_mrule1_cm(c_x,c_y,m_allindi
 % if the cells are vacant
 
 % The maximum number of allowed moves is the length of the index list
-cd_indicesmax = length(m_allindices);
+cd_indicesmax = length_new(m_allindices);
 m_allowedindices = zeros(cd_indicesmax,2);
 
 % Now loop through all indices,checking whether the cells are occupied by

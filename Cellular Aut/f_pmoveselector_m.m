@@ -21,7 +21,7 @@ switch ck_moving_rule
     case 3 % Move probability is weighted by the percentage increase in GDNF available
         [c_heterogeneity,m_cell] = f_pmoving_rule3_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
     case 4 % Same as case 3 but now the mesenchyme are moved if the epithelium wants to move into their spot
-        if ck_movement_rule == 6
+        if or(ck_movement_rule == 6, ck_movement_rule == 7)
             [c_heterogeneity,m_cell] = f_pmoving_rule4_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
@@ -30,13 +30,13 @@ switch ck_moving_rule
         [c_heterogeneity,m_cell] = f_pmoving_rule5_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         
     case 6 % Same as case 5, but now the mesenchyme are moved if the epithelium wants to move into their spot
-        if ck_movement_rule == 6
+        if or(ck_movement_rule == 6, ck_movement_rule == 7)
             [c_heterogeneity,m_cell] = f_pmoving_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
         end
     case 7 % Same as case 1, but move mesenchyme out of the way if the epithelium wants to move into their spot
-        if ck_movement_rule == 6
+        if ck_movement_rule == 6 || ck_movement_rule == 7 || ck_movement_rule == 8
             [c_heterogeneity,m_cell] = f_pmoving_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 

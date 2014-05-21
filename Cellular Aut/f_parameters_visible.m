@@ -1,6 +1,32 @@
 function f_parameters_visible(hObject,handles)
 % Update handles structure
         guidata(hObject, handles)
+        
+        % Update some of the handles
+        set(handles.slider22,'Value',handles.v_parameters(18));
+    
+        % Only allow those sliders which are relevant to MM movement be
+        % shown if mesenchyme are able to be moved
+    if or(handles.ck_movement_rule == 6, handles.ck_movement_rule == 7)
+        set(handles.text99,'Visible','on')
+        set(handles.text108,'Visible','on')
+        set(handles.text109,'Visible','on')
+        set(handles.text110,'Visible','on')
+        set(handles.popupmenu15,'Visible','on')
+        set(handles.popupmenu17,'Visible','on')
+        set(handles.slider21,'Visible','on')
+        set(handles.slider22,'Visible','on')
+    else
+        set(handles.text99,'Visible','off')
+        set(handles.text108,'Visible','off')
+        set(handles.text109,'Visible','off')
+        set(handles.text110,'Visible','off')
+        set(handles.popupmenu15,'Visible','off')
+        set(handles.popupmenu17,'Visible','off')
+        set(handles.slider21,'Visible','off')
+        set(handles.slider22,'Visible','off')
+    end
+        
     if or(handles.ck_moveprob_rule==1, handles.ck_prolifprob_rule==1)
         set(handles.slider8,'Visible','on')
         set(handles.text45,'Visible','on')
@@ -45,7 +71,7 @@ function f_parameters_visible(hObject,handles)
         set(handles.slider20,'Visible','off')
     end
     
-    if handles.ck_movement_rule == 6
+    if handles.ck_movement_rule == 6 || handles.ck_movement_rule == 7 || handles.ck_movement_rule == 8
         set(handles.popupmenu7,'Visible','on')
         set(handles.popupmenu9,'Visible','on')
         set(handles.popupmenu10,'Visible','off')

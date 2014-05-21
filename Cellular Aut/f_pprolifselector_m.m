@@ -20,7 +20,7 @@ switch ck_prolif_choosecell_rule
     case 3 % Move probability is weighted by the percentage increase in GDNF available
         [c_heterogeneity,m_cell] = f_pprolif_rule3_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
     case 4 % Same as case 1 but now the mesenchyme are moved if the epithelium wants to move into their spot
-        if ck_movement_rule == 6
+        if or(ck_movement_rule == 6, ck_movement_rule == 7)
             [c_heterogeneity,m_cell] = f_pprolif_rule4_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
@@ -29,14 +29,14 @@ switch ck_prolif_choosecell_rule
         [c_heterogeneity,m_cell] = f_pprolif_rule5_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         
     case 6 % Same as case 5, but now the mesenchyme are moved if the epithelium wants to move into their spot
-        if ck_movement_rule == 6
+        if or(ck_movement_rule == 6, ck_movement_rule == 7)
             [c_heterogeneity,m_cell] = f_pprolif_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
         end
         
     case 7 % Same as 1 but mesenchyme are moved
-        if ck_movement_rule == 6
+        if ck_movement_rule == 6 || ck_movement_rule == 7 || ck_movement_rule == 8
             [c_heterogeneity,m_cell] = f_pprolif_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
         else
            'Error: cannot use these specifications for the movement rules. If mesenchymal cells are to be moved, then we need to be sure that there are spaces available for them. Specify ck_movement_rule == 6' 
