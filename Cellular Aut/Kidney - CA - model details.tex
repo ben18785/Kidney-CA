@@ -142,7 +142,7 @@ In this section I describe the behaviours of the epithelium cells in the cellula
 \begin{enumerate}
 \item \textit{Calculate the probability that a move takes place, $P_m$} - Based on the specific rules in place calculate the probability that a move takes place (see section \ref{sec:rule_pmove} for more details).
 \item \textit{Does a move take place?} - Draw a random number $X\sim unif(0,1)$. If $P_{m}>X$ then proceed to next step. Otherwise, consider next epithelium cell.
-\item \textit{Calculate probability of moving to each of the available cells} - Based on the specific rules being used, calculate a probabilities of moving to each of the available target cells (see section \ref{sec:rule_selection} for more details about the options for rules used here). 
+\item \textit{Calculate probability of moving to each of the available cells} - Based on the specific rules being used, calculate probabilities of moving to each of the available target cells (see section \ref{sec:rule_selection} for more details about the options for rules used here). 
 \item \textit{Choose amongst the available cells in accordance to their probability and move the cell in question}.
 \end{enumerate} 
 \item \textit{Proliferate}
@@ -162,15 +162,36 @@ In this section I will detail the various different rules which govern into whic
 \item \textit{Connectivity of cells}
 \begin{enumerate}
 \item All vacant cells are allowed.
-\item Moves or proliferations are allowed into vacant cells only if the active cell (the one being moved, or the daughter cell being created) are connected to other cells. Here connectivity means that there is at least one 4-neighbour (up, down, left or right) which is occupied by an epithelium cell \label{item:sticky1}
+\item Moves or proliferations are allowed into vacant cells only if the active cell (the one being moved, or the daughter cell being created) are connected to other cells. Here connectivity means that there is at least one 4-neighbour (up, down, left or right) which is occupied by an epithelium cell. For a visual explanation of this, see figure \ref{fig:connected}. \label{item:sticky1}
+
+\begin{figure}[t] 
+\centering
+\scalebox{0.5} 
+{\includegraphics{connected.eps}}
+\caption{An explanation of 'connectivity' for epithelium cells. All cells here are epithelium, the one highlighted in red is the cell which has been moved. The first two moves would be allowed, whereas the last is not.}\label{fig:connected}
+\end{figure} 
+
+
 \item Same as above, but more stringent. Only allow moves if all cells are connected. This allows for the possiblity of a move leaving one cell unconnected.\label{item:sticky2}
 \item All vacant cells and mesenchyme are allowed as possible move/proliferation locations. If a movement into a cell occupied by a mesenchymal cell occurs, then the mesenchyme cell is removed from the simulation.\label{item:mes1}
 \item Same as \ref{item:mes1}, although only allow movement into a space if that active cell remains connected. \label{item:sticky3}
-\item Same as \ref{item:sticky3}, although instead of killing mesenchyme cell (upon movement into its space), move the mesenchyme into a vacant space neighbouring it. If there are no vacant spaces available for the mesenchyme cell to move into, then the move is not allowed. If multiple spaces are available for the cell to move into, then choose one of them at random.\label{item:sticky4}
+\item Same as \ref{item:sticky3}, although instead of killing mesenchyme cell (upon movement into its space), move the mesenchyme into a vacant space neighbouring it (as shown in figure \ref{fig:8NN}). If there are no vacant spaces available for the mesenchyme cell to move into, then the move is not allowed. If multiple spaces are available for the cell to move into, then a space is chosen either at random or weighted towards the direction in which they were pushed (see section \ref{sec:weighted}).\label{item:sticky4}
+\item Same as \ref{item:sticky4}, but prevent any epithelium movements if they lead to a mesenchyme becoming 'engulfed' by surrounding epithelium (see section \ref{sec:engulfment} for a further discussion).\label{item:sticky5}
+\item Allow movements of epithelium into both vacant and mesenchyme grid locations (assuming the active cell is connected). However, allow mesenchyme to be moved non-locally (by non-local here I mean to a location which is not neighbouring) to a vacant location within a rectangular domain defined by the direction in which it was pushed. See section \ref{sec:nonlocal} for more details.\label{item:sticky6}
 \end{enumerate}
 \end{enumerate}
 
-The above rules \ref{item:sticky1}, \ref{item:sticky2}, \ref{item:sticky3} and \ref{item:sticky4} are phenomenlogical, but are aimed at mimicking the cell-cell adhesion experienced by the epithelium. Rules \ref{item:mes1}, \ref{item:sticky3}, \ref{item:sticky4} are included as to allow an interaction between the epithelium cells and the mesenchyme, when the former move into the area occupied by the latter. It is thought that \ref{item:sticky4} is the most biologically realistic, since excess cell death is not typically observed. However, the current way in which cells are chosen for the moved mesenchyme is thought to be an over-simplification, since it is likely that cells which are displaced move more frequently in a direction in which they are pushed. Later models may give more weight towards those directions probabilistically.
+
+\begin{figure}[ht] 
+\centering
+\scalebox{0.5} 
+{\includegraphics{8-NN.eps}}
+\caption{The 7 available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The grey cells are assumed to be vacant.}\label{fig:8NN}
+\end{figure} 
+
+
+
+The above rules \ref{item:sticky1}, \ref{item:sticky2}, \ref{item:sticky3}, \ref{item:sticky4},\ref{item:sticky5} and \ref{item:sticky6} are phenomenlogical, but are aimed at mimicking the cell-cell adhesion experienced by the epithelium. Rules \ref{item:mes1}, \ref{item:sticky3}, \ref{item:sticky4}, \ref{item:sticky5}, and \ref{item:sticky6} are included as to allow an interaction between the epithelium cells and the mesenchyme, when the former move into the area occupied by the latter. It is thought that \ref{item:sticky4} is the most biologically realistic, since excess cell death is not typically observed, and cells do not 'jump' non-locally. However, there are issues with this particular framework, since it does not accommodate the ability of an incident epithelium layer to push on a dense layer of mesenchyme - an interaction which is observed in practice. This type of behaviour is not observed since there may not be any vacant spots for mesenchyme cells to move into in this single occupancy CA model. This motivated the introduction of non-local jumping of mesenchyme in schema \ref{item:sticky6} which is described in detail in section \ref{sec:nonlocal}. Rule \ref{item:sticky5} was introduced to investigate mechanisms which would prevent mesenchyme cells becoming isolated within an epithelium mass; which had occurred with the previous rules. A description of what is meant by 'engulfment' and the mechanism of operation for this rule are detailed in \ref{sec:engulfment}.
 
 \subsection{Rules governing the calculation of $P_{m}$ or $P_p$ - the probability of a move or proliferation occurring after the action has been chosen}\label{sec:rule_pmove}
 In this section I describe the available choices of model rules which govern the calculation of the probability of a move/proliferation occurring takes place. To be clear, this is the step after the choice has been made to either go down the algorithmic branches corresponding to \textit{Move} or \textit{Proliferate} respectively. It is chosen to make the decision as to whether to continue along each branch here, rather than at the stage before to allow for potentially different rules governing moving and proliferating respectively. The rules available for calculating whether or not a move/daughter cell creation takes place are given below:
@@ -231,7 +252,59 @@ GDNF, the preferred rule is \ref{rule:multinomial}, which naturally provides a w
 
 
 \section{Mesenchyme cell behaviour}
-The current version of the simulation does not allow for 'non-directed' behaviour of the mesenchyme. Their only movement behaviour is their ability to be either 'killed' or moved out of the way, by advancing epithelium cells. Later versions of the simulation will allow for autonomous mesenchymal behaviour; for example attraction towards epithelium (or Wnt11 released by the epithelium), or other mesenchyme cells.
+The current version of the simulation does not allow for 'active' behaviour of the mesenchyme. Their only movement behaviour is their ability to be either 'killed' or moved out of the way, by advancing epithelium cells. Later versions of the simulation will allow for autonomous mesenchymal behaviour; for example attraction towards epithelium (or Wnt11 released by the epithelium), or other mesenchyme cells. In this section the rules which dictate how mesenchyme move in reaction to encroaching mesenchyme are explained.
+
+\subsection{Local mesenchyme movement}\label{sec:weighted}
+Under certain rules which govern the \textit{allowed} movements of epithelium, a move or proliferation is allowed into a cell location which is currently occupied by a mesenchyme cell; assuming there are neighbouring (local) vacant cells into which the latter can move. A simple rule that can be used here is to allow mesenchyme cells to move into each of the available locations with a probability that is uniform across all moves. This type of movement is allowed by the model as a rule itself, but is likely a simplification that is not physically realistic as cells are more likely to be move in a direction in which they were pushed. To allow for a bias towards local movement in a direction in which cells are pushed a mechanism was created which was aimed at better representing the physical interaction between mesenchyme and epithelium. It is the details of this mechanism which are described in this section.
+
+For every move by an epithelium from a position $(i,j)$ to a neighbouring position $(i',j')$ occupied by a mesenchyme it is possible to define a vector representing that movement:
+
+\begin{equation}\label{eq:delta_move}
+\Delta(i,j)^{e} = (i',j') - (i,j) = (\Delta i^{e}, \Delta j^{e})
+\end{equation}
+
+This vector is restricted either to be one of the following unit vectors (they are unit in the simulation domain as the distances are non-euclidean): $(0,1),(1,0),(0,-1),(-1,0),(1,-1),(1,1),(-1,-1),(-1,1)$. Where the first four are the only set of moves available for the case of considering only four nearest neighbours, whereas the whole set are available for the 8-NN case. The set of available spaces into which the mesenchyme can move can then be found, and associated with each is a movement vector. For example a movement of a mesenchyme from $(i,j)$ to $(i,j+1)$ is $(0,1)$.
+In (\ref{eq:delta_move}) the vector $\delta(i,j)^e$ is then compared to the set of all available movement vectors by using a Least-Squares measure of difference:
+
+\begin{equation}\label{eq:LS}
+S^k = (\Delta i^e - \Delta i^k)^2 + (\Delta j^e - \Delta j^k)^2
+\end{equation}
+
+Where in (\ref{eq:LS}) the index $k$ indicates a particular available move allowed for the mesenchyme cell. Rather than disallowing moves with relatively larger values of $S^k$ the eventual move was chosen probabilistically by using a multinomial logistic function to specify the individual probabilities:
+
+\begin{equation} \label{eq:multilogitls}
+P(move_k) = \frac{exp(-\beta S^k)}{\sum\limits_{k} exp(-\beta S^k)}
+\end{equation}
+
+Where in (\ref{eq:multilogitls}), $\beta$ is a positive parameter which measures the strength of discrimination against moves which are not in the same direction as the moving epithelium. A visual description of this rule is shown in figure \ref{fig:arrows}, for the case of $\beta=0$ against $\beta>>0$.
+
+\begin{figure}[ht] 
+\centering
+\scalebox{0.5} 
+{\includegraphics{weighting.eps}}
+\caption{The available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The probability that a move occurs is given by the length of the (orange) arrows. In a) the strength of discrimination against moves which are not aligned with the epithelium move is zero. In b) there is a high degree of discrimination against vectors of movement which are at angles to the movement vector of the epithelium.}\label{fig:arrows}
+\end{figure} 
+
+
+
+\subsection{Mesenchyme engulfment}\label{sec:engulfment}
+Whereas in this cellular automaton it is possible for mesenchyme cells to become surrounded by epithelium, this is not observed in reality. In this section a mechanism is described which was implemented to try to reduce the frequency of this biologically-unrealistic occurrence in simulations.
+
+'Engulfment' of a cell is the term I used to describe a situation where a mesenchyme is surrounded by a high number of epithelium cells. The number of surrounding epithelium cells above which a mesenchyme is deemed 'engulfed' is a parameter which I allow to be varied from a maximum of 8 (no possible engulfment), to zero (no nearest neighbours can be epithelium).
+
+There were two methods which were used to reduce the frequency of 'engulfment' of mesenchymes:
+
+\begin{enumerate}
+\item Disallow movement of mesenchyme cells to positions where they would be 'engulfed'.
+\item Disallow movements of epithelium into cells which would result in situations where adjoining mesenchyme become engulfed (either directly or indirectly if a mesenchyme must be moved out of the way into a situation whereby it is surrounded by epithelium).
+\end{enumerate}
+
+The implementation of this method (dependent on the threshold number of neighbouring epithelium cells which is chosen) could lead to a reduction in the occurrence of mesenchymal engulfment, although the magnitude of this decrease in frequency it should be said is not always visually evident. However, if a low threshold was applied (only a small number of neighbouring epithelium required before declaring a mesenchyme engulfed), biologically-infeasible patterns arose, where individual mesenchyme were surrounded by a layer of vacant space.
+
+In summary I do not think this method is a particularly good choice for a biologically-realistic model of a UB which does not engulf mesenchyme cells. I also do not think that the rules which are described are reasonable as they assume a degree of sentience for the mesenchymes (where they 'look' to see if a move is allowed before making it), which is unrealistic.
+
+\subsection{Non-local movement of mesenchyme}\label{sec:nonlocal}
+It is observed that epithelium cells in the tip of a UB interact with an entire 'mass' of mesenchyme; eventually (via mutual interactions) resulting in a number of distinct mesenchyme subpopulations. With single occupancy of sites in a cellular automaton model, it is difficult to imagine how this type of behaviour could be recapitulated with local movement of mesenchymes out of the way of approaching epithelium. A possible solution to this would be to allow for multiple occupancy of sites by mesenchymal cells, although with multi-occupancy sites preferring to reduce their occupancy (by moving mesenchyme cells towards less densely-populated areas). This would require considerable work to accommodate these changes in the current model framework. It was suggested that this type of aggregate behaviour (where epithelium masses push on dense groups of mesenchyme) could be attained by allowing mesenchyme cells to be moved non-locally out of the way of encroaching epithelium. Although, this behaviour is less realistic than local movements, (as cells do not simply jump position), it can be thought of as representing the process whereby displacement of mesenchyme occurs via contact with epithelium, causing a movement of the entire mass. Since the mesenchyme cells are not heterogeneous in terms of their properties, in terms of the model, the movement of an individual cell non-locally to a position which is vacant is equivalent to a shuffling of the mesenchyme mass which results in an 'outer' mesenchyme occupying the same vacant position (assuming all other positions are the same between the two). Furthermore, since the process causing the movement of the mass of mesenchyme is likely mechanical, its time scale can be thought of as faster than the general movement of cells; lending some justification for the non-local jumping as representing movements which occur at a faster rate than cell movement or proliferation.
 
 
 \section{Cell death}
@@ -244,5 +317,6 @@ Two different schema are considered for the creation of an epithelium layer:
 \item A randomised mass of epithelium cells towards middle of the simulation domain representing \textit{in vitro} experimental conditions. The idea here is that branching arises partly as a result of local depletion of GDNF concentration in areas 'crypts' of epithelium next to outgrowths.
 \end{itemize}
 
+\section{Measurement, visualisation and model evaluation}
 
 \end{document}

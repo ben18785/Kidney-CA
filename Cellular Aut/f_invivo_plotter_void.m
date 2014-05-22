@@ -3,10 +3,10 @@ function [] = f_invivo_plotter_void(hObject,handles)
 
 % Specify the parameters for the area
 handles.c_depth_e = 20;
-handles.c_separation = 30;
+handles.c_separation = 20;
 handles.c_depth_m = 20;
-handles.c_width_mesenstart = 100;
-handles.c_width_m = 40;
+handles.c_width_mesenstart = 60;
+handles.c_width_m = 80;
 handles.c_depth_mesenstart = handles.c_depth_e+handles.c_separation;
 guidata(hObject, handles);
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  16 MAY 2014 17:04
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  22 MAY 2014 15:21
 entering extended mode
 **Kidney*-*CA*-*model*details.tex
 
@@ -1063,9 +1063,45 @@ Non-PDF special ignored!
 Non-PDF special ignored!
 Non-PDF special ignored!
 Non-PDF special ignored!{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-[2] [3] [4] [5]
+[2] [3] [4]
+Package epstopdf Info: Source file: <connected.eps>
+(epstopdf)                    date: 2014-05-22 14:24:47
+(epstopdf)                    size: 31704 bytes
+(epstopdf)             Output file: <connected-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-05-22 14:27:24
+(epstopdf)                    size: 12947 bytes
+(epstopdf)             Command: <epstopdf --outfile=connected-eps-converted-to.
+pdf connected.eps>
+(epstopdf)             \includegraphics on input line 170.
+Package epstopdf Info: Output file is already uptodate.
+ <connected-eps-converted-to.pdf, id=21, 831.105pt x 323.2075pt>
+File: connected-eps-converted-to.pdf Graphic file (type pdf)
+
+<use connected-eps-converted-to.pdf>
+Package pdftex.def Info: connected-eps-converted-to.pdf used on input line 170.
+
+(pdftex.def)             Requested size: 831.10297pt x 323.20671pt.
+Package epstopdf Info: Source file: <8-NN.eps>
+(epstopdf)                    date: 2014-05-22 14:02:36
+(epstopdf)                    size: 98949 bytes
+(epstopdf)             Output file: <8-NN-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-05-22 14:04:16
+(epstopdf)                    size: 52592 bytes
+(epstopdf)             Command: <epstopdf --outfile=8-NN-eps-converted-to.pdf 8
+-NN.eps>
+(epstopdf)             \includegraphics on input line 188.
+Package epstopdf Info: Output file is already uptodate.
+
+<8-NN-eps-converted-to.pdf, id=22, 416.55624pt x 259.97125pt>
+File: 8-NN-eps-converted-to.pdf Graphic file (type pdf)
+
+<use 8-NN-eps-converted-to.pdf>
+Package pdftex.def Info: 8-NN-eps-converted-to.pdf used on input line 188.
+(pdftex.def)             Requested size: 416.55522pt x 259.97061pt.
+ [5 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
+/connected-eps-converted-to.pdf>]
 ! Extra }, or forgotten $.
-l.187 ...) = \Phi(c_1 + c_2 \sum\limits_{allowed}}
+l.208 ...) = \Phi(c_1 + c_2 \sum\limits_{allowed}}
                                                    (g^{neighbours} - g^{curr...
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1073,20 +1109,41 @@ you forgot something else, as in `\hbox{$x}'. In such cases
 the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
-LaTeX Font Info:    Try loading font information for U+bbm on input line 187.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 208.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\bbm\ubbm.fd"
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
-) [6] [7] [8]
+) [6 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modellin
+g/8-NN-eps-converted-to.pdf>] [7] [8]
+Package epstopdf Info: Source file: <weighting.eps>
+(epstopdf)                    date: 2014-05-22 14:49:34
+(epstopdf)                    size: 192492 bytes
+(epstopdf)             Output file: <weighting-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-05-22 14:54:08
+(epstopdf)                    size: 106256 bytes
+(epstopdf)             Command: <epstopdf --outfile=weighting-eps-converted-to.
+pdf weighting.eps>
+(epstopdf)             \includegraphics on input line 284.
+Package epstopdf Info: Output file is already uptodate.
+ <weighting-eps-converted-to.pdf, id=50, 873.2625pt x 317.185pt>
+File: weighting-eps-converted-to.pdf Graphic file (type pdf)
+
+<use weighting-eps-converted-to.pdf>
+Package pdftex.def Info: weighting-eps-converted-to.pdf used on input line 284.
+
+(pdftex.def)             Requested size: 873.26036pt x 317.1842pt.
+ [9 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
+/weighting-eps-converted-to.pdf>] [10]
+[11]
 ("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
 dney - CA - model details.aux") ) 
 Here is how much of TeX's memory you used:
- 13481 strings out of 494045
- 190952 string characters out of 3148393
- 384536 words of memory out of 3000000
- 16454 multiletter control sequences out of 15000+200000
+ 13513 strings out of 494045
+ 191592 string characters out of 3148393
+ 384636 words of memory out of 3000000
+ 16482 multiletter control sequences out of 15000+200000
  38056 words of font info for 119 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 52i,10n,92p,3256b,219s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,10n,92p,3256b,502s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Ben\AppData\Local\MiKTeX\2.9\fonts\
 pk\ljfour\public\bbm\dpi600\bbm10.pk>{C:/Program Files/MiKTeX 2.9/fonts/enc/dvi
 ps/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/pxex
@@ -1096,9 +1153,9 @@ eX 2.9/fonts/type1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
 ype1/urw/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palat
 ino/uplr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pf
 b>
-Output written on "Kidney - CA - model details.pdf" (8 pages, 91933 bytes).
+Output written on "Kidney - CA - model details.pdf" (11 pages, 269354 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
+ 99 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
