@@ -304,8 +304,38 @@ The implementation of this method (dependent on the threshold number of neighbou
 In summary I do not think this method is a particularly good choice for a biologically-realistic model of a UB which does not engulf mesenchyme cells. I also do not think that the rules which are described are reasonable as they assume a degree of sentience for the mesenchymes (where they 'look' to see if a move is allowed before making it), which is unrealistic.
 
 \subsection{Non-local movement of mesenchyme}\label{sec:nonlocal}
-It is observed that epithelium cells in the tip of a UB interact with an entire 'mass' of mesenchyme; eventually (via mutual interactions) resulting in a number of distinct mesenchyme subpopulations. With single occupancy of sites in a cellular automaton model, it is difficult to imagine how this type of behaviour could be recapitulated with local movement of mesenchymes out of the way of approaching epithelium. A possible solution to this would be to allow for multiple occupancy of sites by mesenchymal cells, although with multi-occupancy sites preferring to reduce their occupancy (by moving mesenchyme cells towards less densely-populated areas). This would require considerable work to accommodate these changes in the current model framework. It was suggested that this type of aggregate behaviour (where epithelium masses push on dense groups of mesenchyme) could be attained by allowing mesenchyme cells to be moved non-locally out of the way of encroaching epithelium. Although, this behaviour is less realistic than local movements, (as cells do not simply jump position), it can be thought of as representing the process whereby displacement of mesenchyme occurs via contact with epithelium, causing a movement of the entire mass. Since the mesenchyme cells are not heterogeneous in terms of their properties, in terms of the model, the movement of an individual cell non-locally to a position which is vacant is equivalent to a shuffling of the mesenchyme mass which results in an 'outer' mesenchyme occupying the same vacant position (assuming all other positions are the same between the two). Furthermore, since the process causing the movement of the mass of mesenchyme is likely mechanical, its time scale can be thought of as faster than the general movement of cells; lending some justification for the non-local jumping as representing movements which occur at a faster rate than cell movement or proliferation.
+It is observed that epithelium cells in the tip of a UB interact with an entire 'mass' of mesenchyme; eventually (via mutual interactions) resulting in a number of distinct mesenchyme subpopulations. With single occupancy of sites in a cellular automaton model, it is difficult to imagine how this type of behaviour could be recapitulated with local movement of mesenchymes out of the way of approaching epithelium. 
 
+A possible solution to this would be to allow for multiple occupancy of sites by mesenchymal cells, although with multi-occupancy sites preferring to reduce their occupancy (by moving mesenchyme cells towards less densely-populated areas). This would require considerable work to accommodate these changes in the current model framework. It was suggested that this type of aggregate behaviour (where epithelium masses push on dense groups of mesenchyme) could be attained by allowing mesenchyme cells to be moved non-locally out of the way of encroaching epithelium. Although, this behaviour is less realistic than local movements, (as cells do not simply jump position), it can be thought of as representing the process whereby displacement of mesenchyme occurs via contact with epithelium, causing a movement of the entire mass. Since the mesenchyme cells are not heterogeneous in terms of their properties, in terms of the model, the movement of an individual cell non-locally to a position which is vacant is equivalent to a shuffling of the mesenchyme mass which results in an 'outer' mesenchyme occupying the same vacant position (assuming all other positions are the same between the two). Furthermore, since the process causing the movement of the mass of mesenchyme is likely mechanical, its time scale can be thought of as faster than the general movement of cells; lending some justification for the non-local jumping as representing movements which occur at a faster rate than cell movement or proliferation.
+
+A schema which allows for non-local movement of mesenchyme cells is presented here. In defining which space of cells were available to a mesenchyme after it being encroached on by a epithelium cell, it is necessary to introduce the following concepts:
+
+\begin{enumerate}
+\item \textit{Principal axis} - the axis which is parallel to the direction of the movement vector of the epithelium as described in (\ref{eq:delta_move}).
+\item \textit{Secondary axis} - the axis which is 'perpendicular' to the direction of the movement vector of epithelium.
+\end{enumerate}
+
+\begin{figure}[t] 
+\centering
+\scalebox{0.5} 
+{\includegraphics{axes.eps}}
+\caption{The principal axis (in orange) and secondary axis (in blue) for two example movements. In a) the movement vector is horizontal, whereas in b) it is diagonal. The axes are not visually perpendicular due to the fact that the cells are represented as rectangles rather than squares.}\label{fig:axes}
+\end{figure} 
+
+
+
+These two concepts are explained visually in figure \ref{fig:axes}. In defining these axes a rectangular space is traced out according to the maximum number of along the principal axis which are allowed, as well as the maximum number of moves sideways relative to the motion vector for the epithelium. The length of the rectangular space is chosen to start one unit behind (along the principal axis) the mesenchyme being considered, and ends after the maximum move length has been reached, $p}$; resulting in a length of $p + 2$. The width of the domain is given by specifying the maximum number of moves along the secondary axis which were allowed, $s$; resulting in a width of $2\times s + 1$. This allowed movement domain is shown in figure \ref{fig:rectangular}. 
+
+\begin{figure}[t] 
+\centering
+\scalebox{0.5} 
+{\includegraphics{rectangular.eps}}
+\caption{The space (coloured green) of available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location if non-local cell movement is allowed. Here $p$ and $s$ refer to the maximum allowed move distance forward and sideways respectively.}\label{fig:rectangular}
+\end{figure} 
+
+
+
+Currently, there is no bias towards able of the cells which lie in the rectangular domain which specifies the space for allowed moves. In reality it is more likely that moves will occur if they are at a small angle to the principal axis, and are closer to the current cell location. The former is dealt with heuristically by specifying a distance $s<<p$ to ensure that the movements of cells are, by majority at a small angle to the principal axis. The latter could potentially be dealt with by specifying a cost which depends on distance from the current cell. It would also be possible to allow a wider range of angular movements, with those movements resulting in the largest angle between the principal axis and the movement vector being discriminated against most strongly. However, both of these extra movement constraints require more parameters, and make the model more complex, with the possibility that they may not add much insight to the situation at hand. These may be revisited in the future however.
 
 \section{Cell death}
 The current version of the simulation does not allow cell death directly; only indirectly through the epithelium's ability to (dependent on the exact rules implemented) 'overtake' a position currently occupied by the mesenchyme. Later versions will allow the user to stipulate differing death rates for the epithelium and mesenchyme, and also allow these to be context-dependent (dependent on, for example, the connectivity of the cell in question).
@@ -317,6 +347,23 @@ Two different schema are considered for the creation of an epithelium layer:
 \item A randomised mass of epithelium cells towards middle of the simulation domain representing \textit{in vitro} experimental conditions. The idea here is that branching arises partly as a result of local depletion of GDNF concentration in areas 'crypts' of epithelium next to outgrowths.
 \end{itemize}
 
-\section{Measurement, visualisation and model evaluation}
+\section{Branching measurement and visualisation}
+\subsection{Perimeter-to-area ratio vs circle}
+A circle is the 2 dimensional object which has the lowest perimeter-to-area ratio (or put another way, it maximises area for a given perimeter). An object which is highly branched will, by contrast, have a relatively high ratio of perimeter-to-area. Hence, by comparing the perimeter-to-area ratio from the mass of epithelium with that of a circle with the same number of cells (the measure of area in the CA), the latter having a ratio of $r = (\frac{area}{\pi})^\frac{1}{2}$, this could be taken to be a reasonable measure of the level of branching in the epithelium mass. However, it should be noted that this isn't necessarily a measure of branching, and could just be a measure of the fractal nature of the mass, without \emph{per se} having distinct branches.
+
+It is difficult to exactly calculate the perimeter of a contiguous mass of epithelium cells in this cellular automaton model, since this would involve coding the specific define characteristics of a cell on the edge of the mass. Instead of calculating the perimeter exactly, I borrow from medical imaging segmentation, using the Matlab function \emph{bwconncomp} to calculate an approximate measure of the perimeter. This same functionality also yields an approximate area, which was compared to the exact area (simply the number of epithelium cells), and found to be in relatively good correspondence. Visually the approximate perimeter also appeared to follow that seen, but further work here is needed to ascertain that the approximate method here is reasonable (note to Ben: an idea - calculate the gradient of the image in both x and y and threshold it. All the perimeter cells should be connected. Then just use bwconncomp on the thresholded image. You can use the latter to calculate get the pixel ids.)
+
+\subsection{Number of branches per unit area}\label{sec:branches}
+Another method to investigate branching in topology is to find the medial axis skeleton of the closed curve representing the perimeter of the object. The medial axis (in two dimensions) is the locus of points within the object which have two (or more) nearest points on the edge of the image. This means that a circle drawn with its centre at a particular point on the locus, will be tangent to the perimeter contour at two or more places. An example of this is shown for an ellipse in figure \ref{fig:medial}.
+
+Luckily Matlab has already a built-in function, \emph{bwmorph}, which estimates the medial axis skeleton of an object, and also allows the user to extract the number of implied branch points from the skeleton. The visualisation of the estimated medial axis skeleton along with the number of branch points appears to be a nice way to estimate the degree of branching occurring within the epithelium mass. The latter was normalised by the area of the figure, as this appeared to be a better method of discriminating between whether an object was spherical vs branched.
+
+\begin{figure}[t] 
+\centering
+\scalebox{0.5} 
+{\includegraphics{medial.eps}}
+\caption{The medial axis skeleton (in black) for a) an  ellipse and b) an arbitrary perimeter. In a) the red cross shows the centre of the green circle (which is tangent to the perimeter at two points.) In b) the red crosses show branch points in the medial axis skeleton.}\label{fig:medial}
+\end{figure} 
+
 
 \end{document}
