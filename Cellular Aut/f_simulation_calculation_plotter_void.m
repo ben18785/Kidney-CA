@@ -71,13 +71,15 @@ for t = 1:handles.c_T
         
         v_branch(t) = cn_branch;
         
-        % Call a fn which plots the correct graph based on
+       
+        % Estimate the perimeter via edge detection
+        c_perimeter_approx_new = f_perimeter_edge_approx_c(m_cell,20);
+        v_perimeter_new(t) = c_perimeter_approx_new;
+        
+        
+         % Call a fn which plots the correct graph based on
         % handles.graph_selector
-        
-        
-        
-        
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,handles.graph_selector,handles)
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,handles.graph_selector,handles)
         
         
         

@@ -660,6 +660,8 @@ switch c_temp
         handles.graph_selector = 5;
     case 7
         handles.graph_selector = 6;
+    case 8
+        handles.graph_selector = 7;
 end
 
 if handles.graph_selector == 0
@@ -848,7 +850,6 @@ set(handles.text117,'String',num2str(handles.v_parameters(21)));
 guidata(hObject, handles)
 
 f_simulation_selector_void(hObject,handles);
-
 
 % A function which allows the user to specify the maximum jump distance along the secondary axis for
 % mesenchyme in non-local jumping

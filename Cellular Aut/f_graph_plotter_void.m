@@ -1,4 +1,4 @@
-function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,graph_selector,handles)
+function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,graph_selector,handles)
 % A function which plots the relevant images in response to the user selecting a plot
 % choice from a dropdown menu
 
@@ -152,10 +152,26 @@ switch handles.graph_selector
             hold off
             xlim([1 handles.c_T])
             ylim([0 100])
+            pause(0.01)
             
     case 7
+            v_parameters = handles.v_parameters;
+            set(handles.text7,'String','Cell distribution');
+            set(handles.text9,'String','Comparison of perimeter estimation methods');
+            axes(handles.axes1)
+            imagesc(m_cell)
+            hold on
+            m_perimeter_approx = f_perimeter_edge_approx_m(m_cell,v_parameters,20);
+            scatter(m_perimeter_approx(:,2),m_perimeter_approx(:,1),'m.')
+            hold off
         
-            
+            axes(handles.axes2)
+            plot(v_perimeter,'b','LineWidth',4)
+            hold on
+            plot(v_perimeter_new,'r','LineWidth',4)
+            hold off
+            xlim([1 handles.c_T])
+            ylim([0 1000])
             
             pause(0.01)
             
