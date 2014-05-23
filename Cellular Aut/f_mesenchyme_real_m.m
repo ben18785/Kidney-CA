@@ -58,7 +58,6 @@ if sum(v_moves_prob) < 0.99
     'error'
 end
 
-
 % Now creating the relevant intervals in the unit interval
 m_intervals = zeros(cn_mes_moves,2);
 c_runninginterval = 0;

@@ -16,7 +16,7 @@ cn_nummoves = cn_nummoves(1);
 cellm_mesenchyme_available = cell(cn_nummoves,1);
 for i = 1:cn_nummoves
    if m_cell(m_allowedindices(i,1),m_allowedindices(i,2)) == -1
-        m_allmesenchyme = f_allindices_8neigh_m(m_allowedindices(i,1),m_allowedindices(i,2),v_parameters); % Find all possible available indices
+        m_allmesenchyme = f_mesenchyme_vicinity_selector_m(c_x,c_y,m_allowedindices(i,1),m_allowedindices(i,2),m_cell,v_parameters);
         [~,cellm_mesenchyme_available{i,1}] = f_mesenchyme_available_cm(m_allowedindices(i,1),m_allowedindices(i,2),m_allmesenchyme,m_cell,v_parameters); % Get the indices for the allowed moves for the mesenchyme
    end
    
@@ -49,7 +49,6 @@ c_denominator = 0;
 for i = 1:cn_nummoves
     c_denominator = c_denominator + exp(c_pmove_grad*(m_GDNF(m_allowedindices(i,1),m_allowedindices(i,2)) - m_GDNF(c_x,c_y)));
 end
-
 
 v_moves_prob = zeros(cn_nummoves,1);
 

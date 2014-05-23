@@ -52,6 +52,7 @@ The aim of this model is to recapitulate the development of the Uretic Bud \text
 \end{itemize}
 
 \section{GDNF field}
+\subsection{Steady state reaction-diffusion equation}
 Cells in the MM produce GDNF, and it diffuses freely across the ECM layer, and through the epithelium (being consumed by the latter). The reaction-diffusion type equation here will be assumed to be in equilibrium, since the diffusive timescale of GDNF is much less than that of the timescale of cell division. As such, the following is the form of the equation being solved:
 
 \begin{equation}\label{eq:diffnorm}
@@ -68,7 +69,7 @@ K_G G, & \text{for epithelium}.\\
 \end{cases}
 \end{equation}
 
-It is assumed that the rate of GDNF consumption is linearly-dependent on the concentration of substrate. This assumption is likely violated when the GDNF concentration is high, and the cell Ret-receptors are saturated. In  later versions of this model, it may be better to assume a Hill-type reaction rate. (Although it is unclear as to what range of concentrations of GDNF are likely to saturate the Ret receptors, and whether these are likely to be encountered either \textit{in vivo} or in experiments conducted thus far \textit{in vitro}.) It is assumed to begin with that the mesenchyme GDNF production rate is constant, partly for simplicity, although this will be relaxed in latter models which, for example, allow mesenchymal GDNF production rates to be a positive function of their proximity to epithelium cells (perhaps as a proxy for Wnt11 levels).
+It is assumed that the rate of GDNF consumption is linearly-dependent on the concentration of substrate. This assumption is likely violated when the GDNF concentration is high, and the cell Ret-receptors are saturated. In later versions of this model, it may be better to assume a Hill-type reaction rate. (Although it is unclear as to what range of concentrations of GDNF are likely to saturate the Ret receptors, and whether these are likely to be encountered either \textit{in vivo} or in experiments conducted thus far \textit{in vitro}.) However, this sort of non-linear consumption function is best handled by solving the parabolic time-dependent reaction-diffusion equation (see section \ref{subsec:timedependent}). It is assumed to begin with that the mesenchyme GDNF production rate is constant, partly for simplicity, although this will be relaxed in latter models which, for example, allow mesenchymal GDNF production rates to be a positive function of their proximity to epithelium cells (perhaps as a proxy for Wnt11 levels).
 
 The equation in (\ref{eq:diffnorm}) is non-dimensionalised using the following transformations:
 \begin{equation}\label{eq:difftrans1}
@@ -87,7 +88,7 @@ Where in (\ref{eq:difftrans1}) $\Delta$ refers to the typical cell dimensions (a
 
 Where in (\ref{eq:diff-dimensionless}), $d_g = \frac{D_G}{K_G \Delta^2}$, $\phi_g = \frac{\Phi_G}{K_G G_x}$, and $\nabla_\eta^2$ is the laplacian in the non-dimensional $\eta$ spatial coordinates.
 
-The boundary conditions which are assumed are: no-flux at the base of the Wolffian Duct, and periodic boundary conditions at either width. A finite difference approximation is used, with the no-flux boundary conditions at the top and bottom of the domain represented by the following relations for the non-dimensional GDNF field:
+The boundary conditions which are assumed are: no-flux at the base of the Wolffian Duct and top of the simulation domain, and periodic boundary conditions at either width. A finite difference approximation is used, with the no-flux boundary conditions at the top and bottom of the domain represented by the following relations for the non-dimensional GDNF field:
 
 \begin{align*}
 g_{0,j}& = g_{1,j}\\
@@ -127,13 +128,65 @@ Also, in (\ref{eq:finitediff}):
 \end{cases}
 \end{equation}
 
-Where in (\ref{eq:psi}), $\gamma = \frac{\rho_G}{K_G G_x}$ captures the relative rate of GDNF production by the mesenchyme compared to the rate of GDNF consumption by epithelium under normal cellular conditions. It is assumed that $\gamma = 1$ in the simulations, in the absence of information regarding the relative weight of these two mechanisms. The diffusion rate constant, $D_G$, is assumed to be 10 $\mu m^2 s^{-1}$ (following Menshykau and Iber), and $K_G = 4 \times 10^{-2} s^{-1}$ (for this I currently have not thought of a way to estimate this parameter value - the \textit{in vitro} experiments I have read have, thus far, not provided enough relevant information); making $d_g = 100$. 
+Where in (\ref{eq:psi}), $\gamma = \frac{\rho_G}{K_G G_x}$ captures the relative rate of GDNF production by the mesenchyme compared to the rate of GDNF consumption by epithelium under normal cellular conditions. It is assumed that $\gamma = 1$ in the simulations, in the absence of information regarding the relative weight of these two mechanisms. The diffusion rate constant, $D_G$, is assumed to be 10 $\mu m^2 s^{-1}$ (following Menshykau and Iber). If we assume that the diffusive time scale is similar to that of the consumption rate of GDNF we find that:
+
+\begin{equation}\label{eq:diffusiontime}
+k_G \sim \frac{D_G}{\Delta_{domain}^2} 
+\end{equation}
+
+Where in (\ref{eq:diffusiontime}), $\Delta_{domain}$ refers to the simulation domain spacial dimensions. Typically, the simulation takes place in a domain with a width of 100 cells and a similar depth. This leads to an effective reaction rate constant of $k_G = 1 \times 10^{-5} s^{-1}$. This results in a dimensionless diffusion rate of $d_g = 4000$. Previously, without this approximation, the simulation was conducted using a value of $d_G = 200$; resulting in heterogeneous GDNF concentrations across the domain, with relatively low values in epithelial crypts. With this higher value of the effective diffusion rate however, the concentration is much more uniform, with low concentration gradients resulting. As a result, this higher value of the diffusion rate made it considerably harder to generate branching patterns.
 
 In the simulation, it is assumed that the GDNF field does not vary significantly within a particular time step. As such (in order to improve computational speed), the GDNF field is only updated at the end of each time step, not after each cell movement or proliferation. Ultimately however, it will be important to test whether the model conclusions are sensitive to this assumption.
 
+\subsection{Time-dependent reaction-diffusion numerical approximation}\label{subsec:timedependent}
+This section specifies the details of the non-dimensionalisation of the reaction-diffusion equation to be used to study branching \emph{in vitro} of explanted kidney epithelium cells in a GDNF broth. Another reason for using a parabolic quasi-steady state reaction-diffusion equation is that it allows for easier inclusion of non-linear GDNF consumption/production functions than that for the elliptic case. Both explicit and implicit finite difference schemes are employed to numerically simulate the system.
+
+\subsubsection{Details of the non-dimensionalisation}
+The specific reaction-diffusion equation relevant to the epithelium-broth system is of the form:
+
+\begin{equation}\label{eq:rd_time}
+\frac{\partial G}{\partial t} = D_G \nabla^2 - \Phi_G
+\end{equation}
+
+Where in (\ref{eq:rd_time}) $D_G$ refers to the diffusion coefficient for GDNF, and $\Phi_G$ is the local rate of GDNF consumption which occurs at epithelium cells.
+
+
+The equation in (\ref{eq:rd_time}) is non-dimensionalised using the following transformations:
+\begin{equation}\label{eq:difftrans4}
+\eta = \frac{x}{\Delta}
+\end{equation}
+
+\begin{equation}\label{eq:difftrans5}
+g = \frac{G}{G_x}
+\end{equation}
+
+\begin{equation}\label{eq:difftrans6}
+\tau = \frac{t}{T}
+\end{equation}
+
+Where in (\ref{eq:difftrans4}) $\Delta$ refers to the typical cell dimensions (approximated as 5 $\mu m$),and in (\ref{eq:difftrans5}), $G_x$ is the concentration of GDNF typically found \textit{in vivo} (a value is currently not assigned here, since it is not strictly necessary for the non-dimensionalised simulation). In (\ref{eq:difftrans6}), $T$ is the time scale of a typical cell division; assumed to be $T \sim 1 hr$. These transformations result in the following non-dimensional form of the time-dependent reaction-diffusion equation:
+
+\begin{equation}\label{eq:nondenom}
+\frac{\partial g}{\partial \tau} = d_g \nabla_\eta^2 g - \phi_g
+\end{equation}
+
+Where in (\ref{eq:nondenom}), $g = G/G_x$, $d_g = \frac{T D_G}{\Delta^2}$, and, $\phi_g = \frac{\Phi_G}{K_G G_x}$. Note here that, the dimensionless diffusive rate here represents the ratio of two time scales: the cell division time as compared to the diffusion time scale. The latter can be shown to be (for a diffusion rate of $D_G = 10 \mu m^2 s^{-1}$, and a cell dimension of $\Delta \sim 5 \mu m$) approximately of order $\frac{\Delta^2}{D_G} \sim 2.5 s$; resulting in an dimensionless diffusion rate of order $d_g \sim 1500 $.
+
+The two ways considered to numerically simulate the system were \emph{explicit} and \emph{implicit} finite difference schemes. They numerically approximate (\ref{eq:nondenom}), by using the following schemes:
+
+\begin{equation}\label{eq:explicit}
+\mathbf{g^{t+1}} = \Delta_\tau [(d_g \nabla_\eta^2 + \frac{I_{MN}}{\Delta_\tau})\mathbf{g^t} - \mathbf{\Psi}(\mathbf{g^t})]
+\end{equation}
+
+\begin{equation}\label{eq:implicit}
+\mathbf{g^{t+1}} = [I_{MN} - \Delta_\tau d_g \nabla^2]^{-1}(\mathbf{g^t} - \Delta_\tau \mathbf{\Psi}(\mathbf{g^t}))
+\end{equation}
+
+Where (\ref{eq:explicit}) refers to the \emph{explicit} scheme, and (\ref{eq:implicit}), to the \emph{implicit} one, and $\Delta_\tau$ is the time step taken. In (\ref{eq:explicit}) and (\ref{eq:implicit}), $\mathbf{\Psi}$ is a vector which contains all GDNF consumption and production terms, and can, in general, be a non-linear function of GDNF. It is assumed that $\mathbf{\Psi}$ is formed using the cell positions corresponding to the current (known) time period. Although this results in a somewhat 'bastardised' implicit scheme, it is perhaps a reasonable approximation, as cell positions are not likely to change significantly between the time steps taken, since the cell cycle is much longer that the typical GDNF consumption time. In (\ref{eq:implicit}) the RHS will be calculated using Matlab's inbuilt backslash operator to avoid the computational overhead of calculating the matrix inverse.
+
 \section{Epithelium cell behaviour}
 \subsection{Algorithm governing cellular behaviour}
-In this section I describe the behaviours of the epithelium cells in the cellular automaton model. In the simulation, each epithelium cell is visited in a random order, (actually epithelium and mesenchyme are updated together, so the randomised order corresponds to both epithelium and mesenchymal cells), and updated at each discrete time step according to the following pseudo-algorithm:
+In this section I describe the behaviours of the epithelium cells in the cellular automaton model. In the simulation, each epithelium cell is visited in a random order, (actually epithelium and mesenchyme are updated together, so the randomised order corresponds to both cell types), and updated at each discrete time step according to the following pseudo-algorithm:
 
 \begin{itemize}
 \item \textit{Available cells} - Are neighbouring cells available for movement or proliferation? If yes, proceed to step 2. If no, move on to next cell. Whether a cell is available depends on the specific rules in place (see section \ref{sec:rule_available} for more details).
@@ -175,7 +228,7 @@ In this section I will detail the various different rules which govern into whic
 \item Same as above, but more stringent. Only allow moves if all cells are connected. This allows for the possiblity of a move leaving one cell unconnected.\label{item:sticky2}
 \item All vacant cells and mesenchyme are allowed as possible move/proliferation locations. If a movement into a cell occupied by a mesenchymal cell occurs, then the mesenchyme cell is removed from the simulation.\label{item:mes1}
 \item Same as \ref{item:mes1}, although only allow movement into a space if that active cell remains connected. \label{item:sticky3}
-\item Same as \ref{item:sticky3}, although instead of killing mesenchyme cell (upon movement into its space), move the mesenchyme into a vacant space neighbouring it (as shown in figure \ref{fig:8NN}). If there are no vacant spaces available for the mesenchyme cell to move into, then the move is not allowed. If multiple spaces are available for the cell to move into, then a space is chosen either at random or weighted towards the direction in which they were pushed (see section \ref{sec:weighted}).\label{item:sticky4}
+\item Same as \ref{item:sticky3}, although instead of killing mesenchyme cell (upon movement into its space), move the mesenchyme into a vacant space neighbouring it (as shown in figure \ref{fig:8NN}). If there are no vacant spaces available for the mesenchyme cell to move into, then the move is not allowed. If multiple spaces are available for the mesenchyme to move into, then a space is chosen either at random or weighted towards the direction in which they were pushed (see section \ref{sec:weighted}).\label{item:sticky4}
 \item Same as \ref{item:sticky4}, but prevent any epithelium movements if they lead to a mesenchyme becoming 'engulfed' by surrounding epithelium (see section \ref{sec:engulfment} for a further discussion).\label{item:sticky5}
 \item Allow movements of epithelium into both vacant and mesenchyme grid locations (assuming the active cell is connected). However, allow mesenchyme to be moved non-locally (by non-local here I mean to a location which is not neighbouring) to a vacant location within a rectangular domain defined by the direction in which it was pushed. See section \ref{sec:nonlocal} for more details.\label{item:sticky6}
 \end{enumerate}
@@ -186,12 +239,12 @@ In this section I will detail the various different rules which govern into whic
 \centering
 \scalebox{0.5} 
 {\includegraphics{8-NN.eps}}
-\caption{The 7 available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The grey cells are assumed to be vacant.}\label{fig:8NN}
+\caption{The 7 available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The grey cells are assumed to be vacant. Note that this epithelium move would not be allowed under certain rules as the active cell would become unconnected.}\label{fig:8NN}
 \end{figure} 
 
 
 
-The above rules \ref{item:sticky1}, \ref{item:sticky2}, \ref{item:sticky3}, \ref{item:sticky4},\ref{item:sticky5} and \ref{item:sticky6} are phenomenlogical, but are aimed at mimicking the cell-cell adhesion experienced by the epithelium. Rules \ref{item:mes1}, \ref{item:sticky3}, \ref{item:sticky4}, \ref{item:sticky5}, and \ref{item:sticky6} are included as to allow an interaction between the epithelium cells and the mesenchyme, when the former move into the area occupied by the latter. It is thought that \ref{item:sticky4} is the most biologically realistic, since excess cell death is not typically observed, and cells do not 'jump' non-locally. However, there are issues with this particular framework, since it does not accommodate the ability of an incident epithelium layer to push on a dense layer of mesenchyme - an interaction which is observed in practice. This type of behaviour is not observed since there may not be any vacant spots for mesenchyme cells to move into in this single occupancy CA model. This motivated the introduction of non-local jumping of mesenchyme in schema \ref{item:sticky6} which is described in detail in section \ref{sec:nonlocal}. Rule \ref{item:sticky5} was introduced to investigate mechanisms which would prevent mesenchyme cells becoming isolated within an epithelium mass; which had occurred with the previous rules. A description of what is meant by 'engulfment' and the mechanism of operation for this rule are detailed in \ref{sec:engulfment}.
+The above rules \ref{item:sticky1}, \ref{item:sticky2}, \ref{item:sticky3}, \ref{item:sticky4}, \ref{item:sticky5} and \ref{item:sticky6} are phenomenlogical, but are aimed at mimicking the cell-cell adhesion experienced by the epithelium. Rules \ref{item:mes1}, \ref{item:sticky3}, \ref{item:sticky4}, \ref{item:sticky5}, and \ref{item:sticky6} are included as to allow an interaction between the epithelium cells and the mesenchyme, when the former move into the area occupied by the latter. It is thought that \ref{item:sticky4} is the most biologically realistic, since excess cell death is not typically observed, and cells do not 'jump' non-locally. However, there are issues with this particular framework, since it does not accommodate the ability of an incident epithelium layer to push on a dense layer of mesenchyme - an interaction which is observed in practice. This type of behaviour is not observed since there may not be any vacant spots for mesenchyme cells to move into in this single occupancy CA model. This motivated the introduction of non-local jumping of mesenchyme in schema \ref{item:sticky6} which is described in detail in section \ref{sec:nonlocal}. Rule \ref{item:sticky5} was introduced to investigate mechanisms which would prevent mesenchyme cells becoming isolated within an epithelium mass; which had occurred with the previous rules. A description of what is meant by 'engulfment' and the mechanism of operation for this rule are detailed in \ref{sec:engulfment}.
 
 \subsection{Rules governing the calculation of $P_{m}$ or $P_p$ - the probability of a move or proliferation occurring after the action has been chosen}\label{sec:rule_pmove}
 In this section I describe the available choices of model rules which govern the calculation of the probability of a move/proliferation occurring takes place. To be clear, this is the step after the choice has been made to either go down the algorithmic branches corresponding to \textit{Move} or \textit{Proliferate} respectively. It is chosen to make the decision as to whether to continue along each branch here, rather than at the stage before to allow for potentially different rules governing moving and proliferating respectively. The rules available for calculating whether or not a move/daughter cell creation takes place are given below:
@@ -255,7 +308,7 @@ GDNF, the preferred rule is \ref{rule:multinomial}, which naturally provides a w
 The current version of the simulation does not allow for 'active' behaviour of the mesenchyme. Their only movement behaviour is their ability to be either 'killed' or moved out of the way, by advancing epithelium cells. Later versions of the simulation will allow for autonomous mesenchymal behaviour; for example attraction towards epithelium (or Wnt11 released by the epithelium), or other mesenchyme cells. In this section the rules which dictate how mesenchyme move in reaction to encroaching mesenchyme are explained.
 
 \subsection{Local mesenchyme movement}\label{sec:weighted}
-Under certain rules which govern the \textit{allowed} movements of epithelium, a move or proliferation is allowed into a cell location which is currently occupied by a mesenchyme cell; assuming there are neighbouring (local) vacant cells into which the latter can move. A simple rule that can be used here is to allow mesenchyme cells to move into each of the available locations with a probability that is uniform across all moves. This type of movement is allowed by the model as a rule itself, but is likely a simplification that is not physically realistic as cells are more likely to be move in a direction in which they were pushed. To allow for a bias towards local movement in a direction in which cells are pushed a mechanism was created which was aimed at better representing the physical interaction between mesenchyme and epithelium. It is the details of this mechanism which are described in this section.
+Under certain rules which govern the \textit{allowed} movements of epithelium, a move or proliferation is allowed into a cell location which is currently occupied by a mesenchyme cell; assuming there are neighbouring (local) vacant cells into which the latter can move. A simple rule that can be used here is to allow mesenchyme cells to move into each of the available locations with a probability that is uniform across all moves. This type of movement is likely a simplification that is not physically realistic as cells are more likely to be move in a direction in which they are pushed. To allow for a bias towards local movement in a direction in which cells are pushed, a mechanism was created which was aimed at better representing the physical interaction between mesenchyme and epithelium. It is the details of this mechanism which are described in this section.
 
 For every move by an epithelium from a position $(i,j)$ to a neighbouring position $(i',j')$ occupied by a mesenchyme it is possible to define a vector representing that movement:
 
@@ -264,7 +317,7 @@ For every move by an epithelium from a position $(i,j)$ to a neighbouring positi
 \end{equation}
 
 This vector is restricted either to be one of the following unit vectors (they are unit in the simulation domain as the distances are non-euclidean): $(0,1),(1,0),(0,-1),(-1,0),(1,-1),(1,1),(-1,-1),(-1,1)$. Where the first four are the only set of moves available for the case of considering only four nearest neighbours, whereas the whole set are available for the 8-NN case. The set of available spaces into which the mesenchyme can move can then be found, and associated with each is a movement vector. For example a movement of a mesenchyme from $(i,j)$ to $(i,j+1)$ is $(0,1)$.
-In (\ref{eq:delta_move}) the vector $\delta(i,j)^e$ is then compared to the set of all available movement vectors by using a Least-Squares measure of difference:
+In (\ref{eq:delta_move}) the vector $\Delta(i,j)^e$ is then compared to the set of all available movement vectors by using a Least-Squares measure of difference:
 
 \begin{equation}\label{eq:LS}
 S^k = (\Delta i^e - \Delta i^k)^2 + (\Delta j^e - \Delta j^k)^2
@@ -290,13 +343,13 @@ Where in (\ref{eq:multilogitls}), $\beta$ is a positive parameter which measures
 \subsection{Mesenchyme engulfment}\label{sec:engulfment}
 Whereas in this cellular automaton it is possible for mesenchyme cells to become surrounded by epithelium, this is not observed in reality. In this section a mechanism is described which was implemented to try to reduce the frequency of this biologically-unrealistic occurrence in simulations.
 
-'Engulfment' of a cell is the term I used to describe a situation where a mesenchyme is surrounded by a high number of epithelium cells. The number of surrounding epithelium cells above which a mesenchyme is deemed 'engulfed' is a parameter which I allow to be varied from a maximum of 8 (no possible engulfment), to zero (no nearest neighbours can be epithelium).
+'Engulfment' of a cell is the term I use to describe a situation where a mesenchyme is surrounded by a high number of epithelium cells. The number of surrounding epithelium cells above which a mesenchyme is deemed 'engulfed' is a parameter which I allow to be varied from a maximum of 8 (no possible engulfment), to zero (no nearest neighbours can be epithelium.)
 
 There were two methods which were used to reduce the frequency of 'engulfment' of mesenchymes:
 
 \begin{enumerate}
 \item Disallow movement of mesenchyme cells to positions where they would be 'engulfed'.
-\item Disallow movements of epithelium into cells which would result in situations where adjoining mesenchyme become engulfed (either directly or indirectly if a mesenchyme must be moved out of the way into a situation whereby it is surrounded by epithelium).
+\item Disallow movements of epithelium into cells which would result in situations where adjoining mesenchyme become engulfed (either directly or indirectly if a mesenchyme must be moved out of the way into a situation whereby it is surrounded by epithelium.)
 \end{enumerate}
 
 The implementation of this method (dependent on the threshold number of neighbouring epithelium cells which is chosen) could lead to a reduction in the occurrence of mesenchymal engulfment, although the magnitude of this decrease in frequency it should be said is not always visually evident. However, if a low threshold was applied (only a small number of neighbouring epithelium required before declaring a mesenchyme engulfed), biologically-infeasible patterns arose, where individual mesenchyme were surrounded by a layer of vacant space.
@@ -306,7 +359,7 @@ In summary I do not think this method is a particularly good choice for a biolog
 \subsection{Non-local movement of mesenchyme}\label{sec:nonlocal}
 It is observed that epithelium cells in the tip of a UB interact with an entire 'mass' of mesenchyme; eventually (via mutual interactions) resulting in a number of distinct mesenchyme subpopulations. With single occupancy of sites in a cellular automaton model, it is difficult to imagine how this type of behaviour could be recapitulated with local movement of mesenchymes out of the way of approaching epithelium. 
 
-A possible solution to this would be to allow for multiple occupancy of sites by mesenchymal cells, although with multi-occupancy sites preferring to reduce their occupancy (by moving mesenchyme cells towards less densely-populated areas). This would require considerable work to accommodate these changes in the current model framework. It was suggested that this type of aggregate behaviour (where epithelium masses push on dense groups of mesenchyme) could be attained by allowing mesenchyme cells to be moved non-locally out of the way of encroaching epithelium. Although, this behaviour is less realistic than local movements, (as cells do not simply jump position), it can be thought of as representing the process whereby displacement of mesenchyme occurs via contact with epithelium, causing a movement of the entire mass. Since the mesenchyme cells are not heterogeneous in terms of their properties, in terms of the model, the movement of an individual cell non-locally to a position which is vacant is equivalent to a shuffling of the mesenchyme mass which results in an 'outer' mesenchyme occupying the same vacant position (assuming all other positions are the same between the two). Furthermore, since the process causing the movement of the mass of mesenchyme is likely mechanical, its time scale can be thought of as faster than the general movement of cells; lending some justification for the non-local jumping as representing movements which occur at a faster rate than cell movement or proliferation.
+A possible solution to this would be to allow for multiple occupancy of sites by mesenchymal cells, although with multi-occupancy sites preferring to reduce their occupancy (by moving mesenchyme cells towards less densely-populated areas). This would require considerable work to accommodate these changes in the current model framework. It was suggested that this type of aggregate behaviour (where epithelium masses push on dense groups of mesenchyme) could be attained by allowing mesenchyme cells to be moved non-locally out of the way of encroaching epithelium. Although, this behaviour is less realistic than local movements, (as cells do not simply jump position), it can be thought of as representing the process whereby displacement of mesenchyme occurs via contact with epithelium, causing a movement of the entire mass. Since the mesenchyme cells are not heterogeneous in terms of their properties, in terms of the model, the movement of an individual cell non-locally to a position which is vacant is equivalent to a shuffling of the mesenchyme mass which results in an 'outer' mesenchyme occupying the same vacant position (assuming all other positions are the same between the two.) Furthermore, since the process causing the movement of the mass of mesenchyme is likely mechanical, its time scale can be thought of as faster than the general movement of cells; lending some justification for non-local jumping as representing movements which occur at a faster rate than cell movement or proliferation.
 
 A schema which allows for non-local movement of mesenchyme cells is presented here. In defining which space of cells were available to a mesenchyme after it being encroached on by a epithelium cell, it is necessary to introduce the following concepts:
 
@@ -319,12 +372,10 @@ A schema which allows for non-local movement of mesenchyme cells is presented he
 \centering
 \scalebox{0.5} 
 {\includegraphics{axes.eps}}
-\caption{The principal axis (in orange) and secondary axis (in blue) for two example movements. In a) the movement vector is horizontal, whereas in b) it is diagonal. The axes are not visually perpendicular due to the fact that the cells are represented as rectangles rather than squares.}\label{fig:axes}
+\caption{The principal axis (in orange) and secondary axis (in blue) for two example movements. In a) the movement vector is horizontal, whereas in b) it is diagonal. The axes are not visually perpendicular in b) due to the fact that the cells are represented as rectangles rather than squares.}\label{fig:axes}
 \end{figure} 
 
-
-
-These two concepts are explained visually in figure \ref{fig:axes}. In defining these axes a rectangular space is traced out according to the maximum number of along the principal axis which are allowed, as well as the maximum number of moves sideways relative to the motion vector for the epithelium. The length of the rectangular space is chosen to start one unit behind (along the principal axis) the mesenchyme being considered, and ends after the maximum move length has been reached, $p}$; resulting in a length of $p + 2$. The width of the domain is given by specifying the maximum number of moves along the secondary axis which were allowed, $s$; resulting in a width of $2\times s + 1$. This allowed movement domain is shown in figure \ref{fig:rectangular}. 
+These two concepts are explained visually in figure \ref{fig:axes}. In defining these axes a rectangular space is traced out according to the maximum number of moves along the principal axis which are allowed, as well as the maximum number of moves sideways relative to the motion vector for the epithelium. The length of the rectangular space is chosen to start one unit behind (along the principal axis) the mesenchyme being considered, and ends after the maximum move length has been reached, $p}$; resulting in a length of $p + 2$. The width of the domain is given by specifying the maximum number of moves along the secondary axis which were allowed, $s$; resulting in a width of $2\times s + 1$. This allowed movement domain is shown in figure \ref{fig:rectangular}. 
 
 \begin{figure}[t] 
 \centering
@@ -333,9 +384,7 @@ These two concepts are explained visually in figure \ref{fig:axes}. In defining 
 \caption{The space (coloured green) of available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location if non-local cell movement is allowed. Here $p$ and $s$ refer to the maximum allowed move distance forward and sideways respectively.}\label{fig:rectangular}
 \end{figure} 
 
-
-
-Currently, there is no bias towards able of the cells which lie in the rectangular domain which specifies the space for allowed moves. In reality it is more likely that moves will occur if they are at a small angle to the principal axis, and are closer to the current cell location. The former is dealt with heuristically by specifying a distance $s<<p$ to ensure that the movements of cells are, by majority at a small angle to the principal axis. The latter could potentially be dealt with by specifying a cost which depends on distance from the current cell. It would also be possible to allow a wider range of angular movements, with those movements resulting in the largest angle between the principal axis and the movement vector being discriminated against most strongly. However, both of these extra movement constraints require more parameters, and make the model more complex, with the possibility that they may not add much insight to the situation at hand. These may be revisited in the future however.
+Currently, there is no bias towards any of the cells which lie in the rectangular domain of allowed moves. In reality it is more likely that moves will occur if they are at a small angle to the principal axis, and are closer to the current cell location. The former is dealt with heuristically by specifying a distance $s<<p$ to ensure that the movements of cells are, by majority at a small angle to the principal axis. The latter could potentially be dealt with by specifying a cost which depends on distance from the current cell. It would also be possible to allow a wider range of angular movements, with those movements resulting in the largest angle between the principal axis and the movement vector being discriminated against most strongly. However, both of these extra movement constraints require more parameters, and make the model more complex, with the possibility that they may not add much insight to the situation at hand. These may be revisited in the future however.
 
 \section{Cell death}
 The current version of the simulation does not allow cell death directly; only indirectly through the epithelium's ability to (dependent on the exact rules implemented) 'overtake' a position currently occupied by the mesenchyme. Later versions will allow the user to stipulate differing death rates for the epithelium and mesenchyme, and also allow these to be context-dependent (dependent on, for example, the connectivity of the cell in question).
@@ -344,17 +393,17 @@ The current version of the simulation does not allow cell death directly; only i
 Two different schema are considered for the creation of an epithelium layer:
 \begin{itemize}
 \item A flat layer of epithelium at the base of the simulation domain to emulate \textit{in vivo} formation of the initial Uretic Bud. Although this layer is \textit{in rerum natura} mono-layered, I choose to use a multi-layered epithelium. This is to allow for the fact that the simulation domain is two dimensional whereas in practice it is three dimensional. Making the layer multi-layered allows cells which are outside of the simulation plane to pass into the layer bordering on the ECM/mesenchyme.
-\item A randomised mass of epithelium cells towards middle of the simulation domain representing \textit{in vitro} experimental conditions. The idea here is that branching arises partly as a result of local depletion of GDNF concentration in areas 'crypts' of epithelium next to outgrowths.
+\item A randomised mass of epithelium cells towards middle of the simulation domain representing \textit{in vitro} experimental conditions. The idea here is that branching arises partly as a result of local depletion of GDNF concentration in 'crypts' of epithelium next to outgrowths.
 \end{itemize}
 
 \section{Branching measurement and visualisation}
 \subsection{Perimeter-to-area ratio vs circle}
-A circle is the 2 dimensional object which has the lowest perimeter-to-area ratio (or put another way, it maximises area for a given perimeter). An object which is highly branched will, by contrast, have a relatively high ratio of perimeter-to-area. Hence, by comparing the perimeter-to-area ratio from the mass of epithelium with that of a circle with the same number of cells (the measure of area in the CA), the latter having a ratio of $r = (\frac{area}{\pi})^\frac{1}{2}$, this could be taken to be a reasonable measure of the level of branching in the epithelium mass. However, it should be noted that this isn't necessarily a measure of branching, and could just be a measure of the fractal nature of the mass, without \emph{per se} having distinct branches.
+A circle is the 2 dimensional object which has the lowest perimeter-to-area ratio (or put another way, it maximises area for a given perimeter). An object which is highly branched will, by contrast, have a relatively high ratio of perimeter-to-area. Hence, by comparing the perimeter-to-area ratio from the mass of epithelium with that of a circle with the same number of cells (the measure of area in the CA), the latter having a ratio of $ratio = \frac{2}{r}}$, this could be taken to be a reasonable measure of the level of branching in the epithelium mass. However, it should be noted that this isn't necessarily a measure of branching, and could just be a measure of the fractal nature of the mass, without \emph{per se} having distinct branches.
 
-It is difficult to exactly calculate the perimeter of a contiguous mass of epithelium cells in this cellular automaton model, since this would involve coding the specific define characteristics of a cell on the edge of the mass. Instead of calculating the perimeter exactly, I borrow from medical imaging segmentation, using the Matlab function \emph{bwconncomp} to calculate an approximate measure of the perimeter. This same functionality also yields an approximate area, which was compared to the exact area (simply the number of epithelium cells), and found to be in relatively good correspondence. Visually the approximate perimeter also appeared to follow that seen, but further work here is needed to ascertain that the approximate method here is reasonable (note to Ben: an idea - calculate the gradient of the image in both x and y and threshold it. All the perimeter cells should be connected. Then just use bwconncomp on the thresholded image. You can use the latter to calculate get the pixel ids.)
+It is difficult to exactly calculate the perimeter of a contiguous mass of epithelium cells in this cellular automaton model, since this would involve coding the specific define characteristics of a cell on the edge of the mass. Instead of calculating the perimeter exactly, I borrow from medical imaging segmentation, using the Matlab function \emph{bwconncomp} to calculate an approximate measure of the perimeter. This same functionality also yields an approximate area, which was compared to the exact area (simply the number of epithelium cells), and found to be in good correspondence. Visually the approximate perimeter also appeared to follow that seen, but further work here is needed to confirm that the approximate method here is reasonable (note to Ben: an idea - calculate the gradient of the image in both x and y and threshold it. All the perimeter cells should be connected. Then just use bwconncomp on the thresholded image. You can use the latter to calculate get the pixel ids.)
 
-\subsection{Number of branches per unit area}\label{sec:branches}
-Another method to investigate branching in topology is to find the medial axis skeleton of the closed curve representing the perimeter of the object. The medial axis (in two dimensions) is the locus of points within the object which have two (or more) nearest points on the edge of the image. This means that a circle drawn with its centre at a particular point on the locus, will be tangent to the perimeter contour at two or more places. An example of this is shown for an ellipse in figure \ref{fig:medial}.
+\subsection{Medial axis skeleton branching}\label{sec:branches}
+Another method to investigate branching in topology is to find the medial axis skeleton of the closed curve representing the perimeter of the object. The medial axis (in two dimensions) is the locus of points within the object which have two (or more) nearest points on the edge of the image. This means that a circle drawn with its centre at a particular point on the locus, will be tangent to the perimeter contour at two or more places. Example of medial axis skeletons are shown in figure \ref{fig:medial} for an ellipse and an arbitrary perimeter.
 
 Luckily Matlab has already a built-in function, \emph{bwmorph}, which estimates the medial axis skeleton of an object, and also allows the user to extract the number of implied branch points from the skeleton. The visualisation of the estimated medial axis skeleton along with the number of branch points appears to be a nice way to estimate the degree of branching occurring within the epithelium mass. The latter was normalised by the area of the figure, as this appeared to be a better method of discriminating between whether an object was spherical vs branched.
 
@@ -364,6 +413,7 @@ Luckily Matlab has already a built-in function, \emph{bwmorph}, which estimates 
 {\includegraphics{medial.eps}}
 \caption{The medial axis skeleton (in black) for a) an  ellipse and b) an arbitrary perimeter. In a) the red cross shows the centre of the green circle (which is tangent to the perimeter at two points.) In b) the red crosses show branch points in the medial axis skeleton.}\label{fig:medial}
 \end{figure} 
+
 
 
 \end{document}

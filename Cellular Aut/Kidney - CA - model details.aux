@@ -1,6 +1,7 @@
 \relax 
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}GDNF field}{1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Steady state reaction-diffusion equation}{1}}
 \newlabel{eq:diffnorm}{{1}{1}}
 \newlabel{eq:production}{{2}{2}}
 \newlabel{eq:difftrans1}{{3}{2}}
@@ -8,56 +9,67 @@
 \newlabel{eq:diff-dimensionless}{{5}{2}}
 \newlabel{eq:finitediff}{{6}{3}}
 \newlabel{eq:psi}{{8}{3}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Epithelium cell behaviour}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Algorithm governing cellular behaviour}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Rules governing whether neighbouring cells are available}{4}}
-\newlabel{sec:rule_available}{{3.2}{4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces An explanation of 'connectivity' for epithelium cells. All cells here are epithelium, the one highlighted in red is the cell which has been moved. The first two moves would be allowed, whereas the last is not.\relax }}{5}}
+\newlabel{eq:diffusiontime}{{9}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Time-dependent reaction-diffusion numerical approximation}{4}}
+\newlabel{subsec:timedependent}{{2.2}{4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {2.2.1}Details of the non-dimensionalisation}{4}}
+\newlabel{eq:rd_time}{{10}{4}}
+\newlabel{eq:difftrans4}{{11}{4}}
+\newlabel{eq:difftrans5}{{12}{4}}
+\newlabel{eq:difftrans6}{{13}{4}}
+\newlabel{eq:nondenom}{{14}{5}}
+\newlabel{eq:explicit}{{15}{5}}
+\newlabel{eq:implicit}{{16}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Epithelium cell behaviour}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Algorithm governing cellular behaviour}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Rules governing whether neighbouring cells are available}{6}}
+\newlabel{sec:rule_available}{{3.2}{6}}
+\newlabel{item:sticky1}{{2b}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces An explanation of 'connectivity' for epithelium cells. All cells here are epithelium, the one highlighted in red is the cell which has been moved. The first two moves would be allowed, whereas the last is not.\relax }}{7}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:connected}{{1}{5}}
-\newlabel{item:sticky1}{{2b}{5}}
-\newlabel{item:sticky2}{{2c}{5}}
-\newlabel{item:mes1}{{2d}{5}}
-\newlabel{item:sticky3}{{2e}{5}}
-\newlabel{item:sticky4}{{2f}{5}}
-\newlabel{item:sticky5}{{2g}{5}}
-\newlabel{item:sticky6}{{2h}{5}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The 7 available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The grey cells are assumed to be vacant.\relax }}{6}}
-\newlabel{fig:8NN}{{2}{6}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Rules governing the calculation of $P_{m}$ or $P_p$ - the probability of a move or proliferation occurring after the action has been chosen}{6}}
-\newlabel{sec:rule_pmove}{{3.3}{6}}
-\newlabel{eq:probit}{{9}{6}}
-\newlabel{item:pmove_GDNF}{{2}{6}}
-\newlabel{eq:probit2}{{10}{7}}
-\newlabel{item:pmove_gradient}{{3}{7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Rules governing selection of move target or daughter cell location}{7}}
-\newlabel{sec:rule_selection}{{3.4}{7}}
-\newlabel{eq:tot_target}{{11}{7}}
-\newlabel{eq:Dirichlet1}{{2}{7}}
-\newlabel{eq:Dirichlet2}{{3}{7}}
-\newlabel{rule:multinomial}{{4}{7}}
-\newlabel{eq:multilogit}{{14}{8}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Mesenchyme cell behaviour}{8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Local mesenchyme movement}{8}}
-\newlabel{sec:weighted}{{4.1}{8}}
-\newlabel{eq:delta_move}{{15}{8}}
-\newlabel{eq:LS}{{16}{9}}
-\newlabel{eq:multilogitls}{{17}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The probability that a move occurs is given by the length of the (orange) arrows. In a) the strength of discrimination against moves which are not aligned with the epithelium move is zero. In b) there is a high degree of discrimination against vectors of movement which are at angles to the movement vector of the epithelium.\relax }}{9}}
-\newlabel{fig:arrows}{{3}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Mesenchyme engulfment}{9}}
-\newlabel{sec:engulfment}{{4.2}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Non-local movement of mesenchyme}{10}}
-\newlabel{sec:nonlocal}{{4.3}{10}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The principal axis (in orange) and secondary axis (in blue) for two example movements. In a) the movement vector is horizontal, whereas in b) it is diagonal. The axes are not visually perpendicular due to the fact that the cells are represented as rectangles rather than squares.\relax }}{11}}
-\newlabel{fig:axes}{{4}{11}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The space (coloured green) of available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location if non-local cell movement is allowed. Here $p$ and $s$ refer to the maximum allowed move distance forward and sideways respectively.\relax }}{12}}
-\newlabel{fig:rectangular}{{5}{12}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Cell death}{12}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Creation of the epithelium layer}{12}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Branching measurement and visualisation}{13}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Perimeter-to-area ratio vs circle}{13}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Number of branches per unit area}{13}}
-\newlabel{sec:branches}{{7.2}{13}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The medial axis skeleton (in black) for a) an ellipse and b) an arbitrary perimeter. In a) the red cross shows the centre of the green circle (which is tangent to the perimeter at two points.) In b) the red crosses show branch points in the medial axis skeleton.\relax }}{14}}
-\newlabel{fig:medial}{{6}{14}}
+\newlabel{fig:connected}{{1}{7}}
+\newlabel{item:sticky2}{{2c}{7}}
+\newlabel{item:mes1}{{2d}{7}}
+\newlabel{item:sticky3}{{2e}{7}}
+\newlabel{item:sticky4}{{2f}{7}}
+\newlabel{item:sticky5}{{2g}{7}}
+\newlabel{item:sticky6}{{2h}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The 7 available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The grey cells are assumed to be vacant. Note that this epithelium move would not be allowed under certain rules as the active cell would become unconnected.\relax }}{7}}
+\newlabel{fig:8NN}{{2}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Rules governing the calculation of $P_{m}$ or $P_p$ - the probability of a move or proliferation occurring after the action has been chosen}{8}}
+\newlabel{sec:rule_pmove}{{3.3}{8}}
+\newlabel{eq:probit}{{17}{8}}
+\newlabel{item:pmove_GDNF}{{2}{8}}
+\newlabel{eq:probit2}{{18}{8}}
+\newlabel{item:pmove_gradient}{{3}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Rules governing selection of move target or daughter cell location}{9}}
+\newlabel{sec:rule_selection}{{3.4}{9}}
+\newlabel{eq:tot_target}{{19}{9}}
+\newlabel{eq:Dirichlet1}{{2}{9}}
+\newlabel{eq:Dirichlet2}{{3}{9}}
+\newlabel{rule:multinomial}{{4}{9}}
+\newlabel{eq:multilogit}{{22}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Mesenchyme cell behaviour}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Local mesenchyme movement}{10}}
+\newlabel{sec:weighted}{{4.1}{10}}
+\newlabel{eq:delta_move}{{23}{10}}
+\newlabel{eq:LS}{{24}{10}}
+\newlabel{eq:multilogitls}{{25}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location. The probability that a move occurs is given by the length of the (orange) arrows. In a) the strength of discrimination against moves which are not aligned with the epithelium move is zero. In b) there is a high degree of discrimination against vectors of movement which are at angles to the movement vector of the epithelium.\relax }}{11}}
+\newlabel{fig:arrows}{{3}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Mesenchyme engulfment}{11}}
+\newlabel{sec:engulfment}{{4.2}{11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Non-local movement of mesenchyme}{12}}
+\newlabel{sec:nonlocal}{{4.3}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The principal axis (in orange) and secondary axis (in blue) for two example movements. In a) the movement vector is horizontal, whereas in b) it is diagonal. The axes are not visually perpendicular in b) due to the fact that the cells are represented as rectangles rather than squares.\relax }}{13}}
+\newlabel{fig:axes}{{4}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Cell death}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The space (coloured green) of available moves for a mesenchyme at $(i,j)$ after a epithelium at $(i-1,j)$ moves into its cell location if non-local cell movement is allowed. Here $p$ and $s$ refer to the maximum allowed move distance forward and sideways respectively.\relax }}{14}}
+\newlabel{fig:rectangular}{{5}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Creation of the epithelium layer}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Branching measurement and visualisation}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Perimeter-to-area ratio vs circle}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Medial axis skeleton branching}{15}}
+\newlabel{sec:branches}{{7.2}{15}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The medial axis skeleton (in black) for a) an ellipse and b) an arbitrary perimeter. In a) the red cross shows the centre of the green circle (which is tangent to the perimeter at two points.) In b) the red crosses show branch points in the medial axis skeleton.\relax }}{16}}
+\newlabel{fig:medial}{{6}{16}}
