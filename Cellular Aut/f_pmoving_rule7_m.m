@@ -1,4 +1,4 @@
-function [c_heterogeneity,m_cell] = f_pmoving_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function cell_measurables = f_pmoving_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is equal to
 % 1/#moves; ie the same across all the available moves. (c_x,c_y) is the
@@ -6,6 +6,8 @@ function [c_heterogeneity,m_cell] = f_pmoving_rule7_m(c_x,c_y,m_allowedindices,m
 
 cn_nummoves = size(m_allowedindices);
 cn_nummoves = cn_nummoves(1);
+
+c_mesenchyme_options = 0;
 
 % Checks if there are any mesenchymal cells in the selected bunch. If this
 % is the case, then store the available cells for each of the mesenchyme to
@@ -38,16 +40,8 @@ end
 % If there is only one move, make it
 if cn_nummoves == 1
     c_heterogeneity = 0;
-    if m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) ~= -1
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
-        return;
-    else
-        m_cell = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(1,1),m_allowedindices(1,2),m_allowedindices(1,1),m_allowedindices(1,2),cellm_mesenchyme_available{1},v_parameters);
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
-        return;
-    end
+    cell_measurables = f_implement_move_cell(1,m_cell,m_allowedindices,c_x,c_y,cellm_mesenchyme_available,v_parameters,c_heterogeneity,1);
+    return;
 end
 
 % The probability increment for each of the moves is thus
@@ -85,13 +79,4 @@ for i = 1:cn_nummoves
 end
 
 % Now implementing the move
-if m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) ~= -1
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
-        return;
-else % If mesenchyme
-        m_cell = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),cellm_mesenchyme_available{c_move_index},v_parameters);
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
-        return;
-end
+cell_measurables = f_implement_move_cell(c_move_index,m_cell,m_allowedindices,c_x,c_y,cellm_mesenchyme_available,v_parameters,c_heterogeneity,1);

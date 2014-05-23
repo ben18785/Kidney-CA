@@ -18,6 +18,8 @@ set(handles.slider16,'Value',handles.ck_move_norm_cons);
 set(handles.slider19,'Value',handles.ck_move_norm_slope);
 set(handles.slider20,'Value',handles.c_pmove_grad);
 set(handles.slider21,'Value',handles.c_beta_mesmove);
+set(handles.slider24,'Value',handles.v_parameters(20));
+set(handles.slider25,'Value',handles.v_parameters(21));
 
 if handles.ck_neighbours == 4
     set(handles.popupmenu4,'Value',1);
@@ -74,3 +76,5 @@ set(handles.text76,'Visible','off')
 set(handles.text77,'Visible','off')
 set(handles.text108,'String',num2str(handles.c_beta_mesmove));
 set(handles.text110,'String',num2str(handles.v_parameters(18)));
+set(handles.text116,'String',num2str(handles.v_parameters(20)));
+set(handles.text117,'String',num2str(handles.v_parameters(21)));

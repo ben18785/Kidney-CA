@@ -1,4 +1,4 @@
-function [c_heterogeneity,m_cell] = f_pmoving_rule4_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function cell_measurables = f_pmoving_rule4_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is related
 % to the percentage change of GDNF for that particular move. Here
@@ -27,16 +27,8 @@ end
 % If there is only one move, make it
 if cn_nummoves == 1
     c_heterogeneity = 0;
-    if m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) ~= -1
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
-        return;
-    else
-        m_cell = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(1,1),m_allowedindices(1,2),m_allowedindices(1,1),m_allowedindices(1,2),cellm_mesenchyme_available{1},v_parameters);
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(1,1),m_allowedindices(1,2)) = 1;
-        return;
-    end
+    cell_measurables = f_implement_move_cell(1,m_cell,m_allowedindices,c_x,c_y,cellm_mesenchyme_available,v_parameters,c_heterogeneity,1);
+    return;
 end
 
 
@@ -84,14 +76,5 @@ for i = 1:cn_nummoves
 end
 
 % Now implementing the move
-if m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) ~= -1
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
-        return;
-else
-        m_cell = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),cellm_mesenchyme_available{c_move_index},v_parameters);
-        m_cell(c_x,c_y) = 0;
-        m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
-        return;
-end
+cell_measurables = f_implement_move_cell(c_move_index,m_cell,m_allowedindices,c_x,c_y,cellm_mesenchyme_available,v_parameters,c_heterogeneity,1);
 

@@ -1,4 +1,4 @@
-function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,t,graph_selector,handles)
+function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,graph_selector,handles)
 % A function which plots the relevant images in response to the user selecting a plot
 % choice from a dropdown menu
 
@@ -132,6 +132,31 @@ switch handles.graph_selector
             axes(handles.axes2)
             m_mesenchyme = double(m_cell==-1);
             imagesc(m_mesenchyme)
+            pause(0.01)
+            
+    case 6
+            set(handles.text7,'String','Average mesenchyme choice');
+            set(handles.text9,'String','Ratio of vacant to mesenchyme selection ');
+            
+            axes(handles.axes1)
+            plot(v_mesenchyme_options,'b','LineWidth',4)
+            xlim([1 handles.c_T])
+            ylim([0 60])
+            
+            axes(handles.axes2)
+            plot(v_mesenchyme_ratio,'b','LineWidth',4)
+            hold on
+            plot(v_vacant_ratio,'r','LineWidth',4)
+            hold on
+            plot(v_vacant_ratio+v_mesenchyme_ratio,'g','LineWidth',4)
+            hold off
+            xlim([1 handles.c_T])
+            ylim([0 100])
+            
+    case 7
+        
+            
+            
             pause(0.01)
             
         end

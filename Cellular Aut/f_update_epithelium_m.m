@@ -1,4 +1,4 @@
-function [m_cell,c_move,c_heterogeneity] = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters)
+function cell_measurables = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters)
 % A function which updates the cell matrix, by applying the rules of
 % movement and proliferation for a cell located at (c_x,c_y)
 
@@ -20,9 +20,22 @@ cp_move = f_moveprolif_c(ck_moveprob);
 
 % If no positions are available, then just return the original matrix
 if c_allowed == 0
+    c_mesenchyme_options = 0;
     c_heterogeneity = 0;
     m_cell = m_cell; % Not sure if I need to do this. Must be redundant.
     c_move = 0;
+    c_vacant_select = 0;
+    c_mesenchyme_select = 0;
+    
+    cell_measurables = cell(4,1);
+    cell_measurables{1,1} = m_cell;
+    cell_measurables{2,1} = c_heterogeneity;
+    cell_measurables{3,1} = c_mesenchyme_options;
+    cell_measurables{4,1} = c_move;
+    cell_measurables{5,1} = c_vacant_select;
+    cell_measurables{6,1} = c_mesenchyme_select;
+    cell_measurables{7,1} = 0;
+    
     return;
 end
 
@@ -30,8 +43,10 @@ end
 % vector of parameters to allow user to select different rules.
 switch cp_move
     case 1
-        [m_cell,c_move,c_heterogeneity] = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
-
+        cell_measurables = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
     case 0 
-        [m_cell,c_move,c_heterogeneity] = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        cell_measurables = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+     
 end
+
+

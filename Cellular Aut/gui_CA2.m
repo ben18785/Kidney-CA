@@ -658,6 +658,8 @@ switch c_temp
         handles.graph_selector = 4;
     case 6
         handles.graph_selector = 5;
+    case 7
+        handles.graph_selector = 6;
 end
 
 if handles.graph_selector == 0
@@ -810,6 +812,47 @@ f_simulation_selector_void(hObject,handles);
 % Allows the user to specify the number of nearest neighbours which specify
 % whether or not a moved mesenchyme is trapped.
 function slider22_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A function which allows the user to specify the maximum jump distance along the principal axis for
+% mesenchyme in non-local jumping
+function slider24_Callback(hObject, eventdata, handles)
+handles.c_principal = round(get(hObject,'Value'));
+handles.v_parameters(20) = handles.c_principal;
+set(handles.text116,'String',num2str(handles.v_parameters(20)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+% A function which allows the user to specify the maximum jump distance along the principal axis for
+% mesenchyme in non-local jumping
+function slider24_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+% A function which allows the user to specify the maximum jump distance along the secondary axis for
+% mesenchyme in non-local jumping
+function slider25_Callback(hObject, eventdata, handles)
+handles.c_secondary = round(get(hObject,'Value'));
+handles.v_parameters(21) = handles.c_secondary;
+set(handles.text117,'String',num2str(handles.v_parameters(21)));
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A function which allows the user to specify the maximum jump distance along the secondary axis for
+% mesenchyme in non-local jumping
+function slider25_CreateFcn(hObject, eventdata, handles)
 
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);

@@ -74,10 +74,20 @@ for t = 1:handles.c_T
         % Call a fn which plots the correct graph based on
         % handles.graph_selector
         
+        % Create a cell array that will hold all the things to be graphed
+        cell_graphing = cell(20,1);
+        cell_graphing{1,1} = m_cell;
+        cell_graphing{2,1} = m_GDNF;
+        cell_graphing{3,1} = v_epithelium;
+        cell_graphing{4,1} = v_mesenchyme;
+        cell_graphing{5,1} = v_acceptance;
+        cell_graphing{6,1} = v_heterogeneity;
+        cell_graphing{7,1} = v_perimeter;
+        cell_graphing{8,1} = v_entropy;
+        cell_graphing{8,1} = v_entropy;
         
         
-        
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,handles.graph_selector,handles)
+        f_graph_plotter_void(,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,handles.graph_selector,handles)
         
         
         

@@ -24,3 +24,5 @@ set(handles.text97,'String',handles.v_parameters(17));
 set(handles.text102,'String',handles.v_parameters(16));
 set(handles.text104,'String',handles.v_parameters(19));
 set(handles.text106,'String',handles.v_parameters(18));
+set(handles.text118,'String',handles.v_parameters(20));
+set(handles.text120,'String',handles.v_parameters(21));

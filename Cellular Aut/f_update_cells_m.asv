@@ -1,4 +1,4 @@
-function [m_cell,c_move,c_heterogeneity,c_mesenchyme_options,c_vacant_select,c_mesenchyme_select,c_cell_options] = f_update_cells_m(m_cell,m_GDNF,v_parameters)
+function [m_cell,c_move,c_heterogeneity,c_mesenchyme_options,c_vacant_select,c_mesenchyme_select] = f_update_cells_m(m_cell,m_GDNF,v_parameters)
 % A function which goes through and updates each of the cells in the
 % simulation area in random order in accordance to rules governing their
 % specific behaviour
@@ -34,7 +34,7 @@ for i = 1:cn_cells
     c_move = c_move + cell_measurables{4,1};
     c_vacant_select = cell_measurables{5,1} + c_vacant_select; % The number of vacant cells selected to move/proliferate into
     c_mesenchyme_select = cell_measurables{6,1} + c_mesenchyme_select; % The number of mesenchyme cells selected to move into
-    c_cell_options = c_cell_options + cell_measurables{7,1}; % The number of times that there are multiple positions available for the epithelium to move into
+    c_cell_options = c_cell_options + cell_measurables{7,1}; % The number of times that there are mu
     
 end
 

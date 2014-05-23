@@ -7,7 +7,7 @@ function f_parameters_visible(hObject,handles)
     
         % Only allow those sliders which are relevant to MM movement be
         % shown if mesenchyme are able to be moved
-    if or(handles.ck_movement_rule == 6, handles.ck_movement_rule == 7)
+    if handles.ck_movement_rule == 6 | handles.ck_movement_rule == 7 | handles.ck_movement_rule == 8
         set(handles.text99,'Visible','on')
         set(handles.text108,'Visible','on')
         set(handles.text109,'Visible','on')
