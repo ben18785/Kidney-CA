@@ -76,10 +76,15 @@ for t = 1:handles.c_T
         c_perimeter_approx_new = f_perimeter_edge_approx_c(m_cell,20);
         v_perimeter_new(t) = c_perimeter_approx_new;
         
+        % Get a measure of the variance in GDNF along the perimeter
+        m_perimeter_GDNF = f_perimeter_GDNF_m(m_cell,m_GDNF,handles.v_parameters);
+        v_perimeter_GDNF(t) = std(m_perimeter_GDNF(:,3));
+        v_perimeter_GDNF_average(t) = mean(m_perimeter_GDNF(:,3));
+        
         
          % Call a fn which plots the correct graph based on
         % handles.graph_selector
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,t,handles.graph_selector,handles)
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,v_perimeter_GDNF,v_perimeter_GDNF_average,t,handles.graph_selector,handles)
         
         
         

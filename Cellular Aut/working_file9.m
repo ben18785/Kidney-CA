@@ -20,7 +20,7 @@ c_width_mesenstart = 1;
 
 
 % Specify the parameters for solving the diffusion equation
-ck_dg = 200;
+ck_dg = 4000;
 ck_gamma = 1;
 ckp_moveprob = 0.5; % Probability of move vs proliferate. 1 means always move. 0 always proliferate
 ck_neighbours = 4; % Choose the number of nearest neighbours for movement/proliferation: 4 or 8
@@ -50,17 +50,26 @@ v_parameters = [ck_dg;ck_gamma; ckp_moveprob; ck_neighbours;ck_movement_rule;c_d
 % Create the epithelium layer, and the mesenchyme
 m_cell = f_create_area_m(c_width_full, c_depth_full);
 m_cell = f_create_random_epithelium_new_m(m_cell, c_depth_full/2,c_width_full/2, 500,v_parameters);
-% m_cell = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_density, c_depth_mesenstart,c_width_mesenstart);
+m_cell = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_density, c_depth_mesenstart,c_width_mesenstart);
 
 
 % Create the initial field of GDNF according to the distribution of the
 % mesenchyme and epithelium
-m_GDNF = ones(c_depth_full,c_width_full);
+m_GDNF = zeros(c_depth_full,c_width_full);
 
-c_delta_timestep = 0.001;
+c_delta_timestep = 10;
+m_GDNF1 = f_field_update_m(m_cell,v_parameters);
 
-for i = 1:1000
+for i = 1:100
     i
-    m_GDNF = f_field_update_time_m(m_cell,m_GDNF,v_parameters,c_delta_timestep);
-    imagesc(m_GDNF)
+    max(max(m_GDNF))
+    min(min(m_GDNF))
+    m_GDNF = f_field_update_time_implicit_m(m_cell,m_GDNF,v_parameters,c_delta_timestep);
+    subplot(1,2,1),imagesc(m_GDNF)
+    subplot(1,2,2),imagesc(m_GDNF1)
+    pause(0.01)
 end
+
+
+
+imagesc(m_GDNF)

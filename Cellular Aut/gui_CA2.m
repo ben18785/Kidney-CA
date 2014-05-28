@@ -74,6 +74,17 @@ handles.c_mes_allowed = 1; % Choose the rule specifying whether a mesenchyme can
 handles.c_principal = 10; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
 handles.c_secondary = 2; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
 
+% Active mesenchyme parameters
+handles.ck_mes_move = 0.1; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
+handles.ck_mes_prolif = 0.9; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
+handles.ck_mes_diff = 0; % The probability of a mesenchyme choosing to go down branch corresponding to 'differentiating'
+handles.ck_mes_death = 1 - handles.ck_mes_move - handles.ck_mes_prolif - handles.ck_mes_diff; % The probability of a mesenchyme choosing to go down branch corresponding to 'die'
+handles.ck_mes_target_allowed = 1; % The rule to be used to determine those allowed cells which the mesenchyme can move into. 1 is local 8-NN if there are free cells.
+handles.ck_mes_moveprob_rule = 1; % The rule used for P(mes move) in f_mes_move_prob_c
+handles.ck_mes_moveprob_rule1_cons = 1; % The constant used for P(mes move) if rule 1 is selected in f_mes_move_prob_c
+handles.ck_mes_move_target_rule = 1; % The rule used to select between targets for the moving mesenchyme in f_mes_move_cell
+handles.ck_mes_prolif_target_rule = 1; % The rule used to select between target cells for the proliferating mesenchyme in f_mes_move_cell
+
 % Update handles structure
 guidata(hObject, handles);
 v_parameters = f_update_vparameters_void(hObject,handles); % A function which updates v_paramaters based on the parameters
@@ -662,6 +673,8 @@ switch c_temp
         handles.graph_selector = 6;
     case 8
         handles.graph_selector = 7;
+    case 9
+        handles.graph_selector = 8;
 end
 
 if handles.graph_selector == 0

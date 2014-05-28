@@ -25,3 +25,14 @@ v_parameters(18) = handles.c_mes_trapped; % The maximum number of 8-nearest neig
 v_parameters(19) = handles.c_mes_allowed; % Choose the rule specifying whether a mesenchyme can occupy a spot; based on c_mes_trapped as above
 v_parameters(20) = handles.c_principal; % The number of moves forward allowed for mesenchyme if implementing non-local move
 v_parameters(21) = handles.c_secondary; % The number of moves sideways allowed for mesenchyme if implementing non-local move
+
+% Those parameters due to an active mesenchyme moving
+v_parameters(22) = handles.ck_mes_move; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'.
+v_parameters(23) = handles.ck_mes_prolif; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating' 
+v_parameters(24) = handles.ck_mes_diff; % The probability of a mesenchyme choosing to go down branch corresponding to 'differentiating'
+v_parameters(25) = handles.ck_mes_death; % The probability of a mesenchyme choosing to go down branch corresponding to 'death'
+v_parameters(26) = handles.ck_mes_target_allowed; % The rule to be used to determine those allowed cells which the mesenchyme can move into. 1 is local 8-NN if there are free cells.
+v_parameters(27) = handles.ck_mes_moveprob_rule; % The rule used for P(mes move) in f_mes_move_prob_c
+v_parameters(28) = handles.ck_mes_moveprob_rule1_cons; % The constant used for P(mes move) if rule 1 is selected in f_mes_move_prob_c
+v_parameters(29) = handles.ck_mes_move_target_rule; % The rule used to select between targets for the moving mesenchyme in f_mes_move_cell
+v_parameters(30) = handles.ck_mes_prolif_target_rule; % The rule used to select between target cells for the proliferating mesenchyme in f_mes_move_cell

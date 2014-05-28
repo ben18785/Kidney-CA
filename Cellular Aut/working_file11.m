@@ -53,25 +53,24 @@ m_cell = f_create_random_epithelium_new_m(m_cell, c_depth_full/2,c_width_full/2,
 m_cell = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_density, c_depth_mesenstart,c_width_mesenstart);
 
 
-m_cell = m_cell.*(m_cell==1);
-imagesc(m_cell)
-m_cell_edge = double(edge(m_cell));
-imagesc(m_cell_edge)
-cell_mcell_connected = bwconncomp(m_cell_edge, 8);
-cn_objects = cell_mcell_connected.NumObjects;
-cell_area = regionprops(cell_mcell_connected,'Area');
+m_GDNF = f_field_update_m(m_cell,v_parameters);
+m_perimeter_GDNF = f_perimeter_GDNF_m(m_cell,m_GDNF,v_parameters);
+cn_numper = length_new(m_perimeter_GDNF);
+scatter3(m_perimeter_GDNF(:,1),m_perimeter_GDNF(:,2),m_perimeter_GDNF(:,3),100*ones(cn_numper,1),m_perimeter_GDNF(:,3),'Filled')
+zlim([0 5])
 
-% Take the one with the largest area
-c_area = 0;
-c_largest_index = 0;
-
-for i = 1:cn_objects
-    if cell_area(i).Area > c_area
-        c_largest_index = i;
-        c_area = cell_area(i).Area;
-    end
-end
-
-m_perimeter_approx = f_perimeter_edge_approx_m(m_cell,v_parameters)
-scatter(m_perimeter_approx(:,1),m_perimeter_approx(:,2))
-
+% m_GDNF_field = zeros(c_depth_full,c_width_full);
+% for k = 1:cn_numper
+%    for i = 1:c_depth_full
+%        for j = 1:c_width_full
+%            if and(i == m_perimeter_GDNF(k,1), j == m_perimeter_GDNF(k,2))
+%                m_GDNF_field(i,j) = m_perimeter_GDNF(k,3);               
+%            end
+%        end
+%    end
+% end
+% x = 1:c_depth_full;
+% y = 1:c_width_full;
+% 
+% surf(x,y,m_GDNF_field)
+            
