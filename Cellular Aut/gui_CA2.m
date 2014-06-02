@@ -83,8 +83,8 @@ handles.ck_mes_target_allowed = 1; % The rule to be used to determine those allo
 handles.ck_mes_moveprob_rule = 2; % The rule used for P(mes move) in f_mes_move_prob_c
 handles.ck_mes_moveprob_rule1_cons = 0; % The constant used for P(mes move) if rule 1 is selected in f_mes_move_prob_c
 handles.ck_mes_move_target_rule = 2; % The rule used to select between targets for the moving mesenchyme in f_mes_move_cell
-handles.ck_mes_prolif_target_rule = 1; % The rule used to select between target cells for the proliferating mesenchyme in f_mes_move_cell
-handles.ck_mes_prolifprob_rule = 1;% The rule used for P(mes prolif) in f_mes_move_prob_c
+handles.ck_mes_prolif_target_rule = 2; % The rule used to select between target cells for the proliferating mesenchyme in f_mes_move_cell
+handles.ck_mes_prolifprob_rule = 2;% The rule used for P(mes prolif) in f_mes_move_prob_c
 handles.ck_mes_prolifprob_rule1_cons = 0; % The constant used for P(mes prolif) if rule 1 is selected in f_mes_move_prob_c
 handles.c_turn_on_active_mesenchyme = 1; % A switch to allow the user to turn on or off the updating of the mesenchyme
 handles.ck_mes_moveprob_rule2_discons_move_c1 = -10; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
@@ -1137,85 +1137,101 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% A funct
+% A function which allows the user to specify the rules used to select
+% between target cells for an actively moving mesenchyme
 function popupmenu26_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1 
+        handles.ck_mes_move_target_rule = 1;
+    case 2 
+        handles.ck_mes_move_target_rule = 2;
+       
+end
+handles.v_parameters(29) = handles.ck_mes_move_target_rule;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
 
 
-% --- Executes during object creation, after setting all properties.
+
+% A function which allows the user to specify the rules used to select
+% between target cells for an actively moving mesenchyme
 function popupmenu26_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu26 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
 
-% --- Executes on selection change in popupmenu27.
+% A function which allows the user to specify the rules used to select
+% between target cells for an actively proliferating the mesenchyme
 function popupmenu27_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu27 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1 
+        handles.ck_mes_prolif_target_rule = 1;
+    case 2
+        handles.ck_mes_prolif_target_rule = 2;
+       
+end
+handles.v_parameters(30) = handles.ck_mes_move_target_rule;
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu27 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu27
+% Update handles structure
+guidata(hObject, handles)
 
+f_simulation_selector_void(hObject,handles);
 
-% --- Executes during object creation, after setting all properties.
+% A function which allows the user to specify the rules used to select
+% between target cells for an actively proliferating the mesenchyme
 function popupmenu27_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu27 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
 
-% --- Executes on slider movement.
+% Allows the user to select the strength of discrimination against target
+% cells which are further away when moving the mesenchyme actively
 function slider33_Callback(hObject, eventdata, handles)
-% hObject    handle to slider33 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.ck_mes_move_target_disdiscrim = get(hObject,'Value');
+handles.v_parameters(38) = handles.ck_mes_move_target_disdiscrim;
 
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+set(handles.text155,'String',num2str(handles.v_parameters(38)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
 
 
-% --- Executes during object creation, after setting all properties.
+
+% Allows the user to select the strength of discrimination against target
+% cells which are further away when moving the mesenchyme actively
 function slider33_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider33 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: slider controls usually have a light gray background.
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
 
-% --- Executes on slider movement.
+% Allows the user to select the strength of discrimination against target
+% cells which are further away when proliferating the mesenchyme
 function slider34_Callback(hObject, eventdata, handles)
-% hObject    handle to slider34 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+handles.ck_mes_prolif_target_disdiscrim = get(hObject,'Value');
+handles.v_parameters(39) = handles.ck_mes_prolif_target_disdiscrim;
 
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+set(handles.text156,'String',num2str(handles.v_parameters(39)));
+% Update handles structure
+guidata(hObject, handles)
 
+f_simulation_selector_void(hObject,handles);
 
-% --- Executes during object creation, after setting all properties.
+% Allows the user to select the strength of discrimination against target
+% cells which are further away when proliferating the mesenchyme
 function slider34_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider34 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
 
-% Hint: slider controls usually have a light gray background.
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end

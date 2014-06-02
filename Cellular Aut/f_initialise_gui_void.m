@@ -8,8 +8,9 @@ set(handles.uipanel5,'Visible','off')
 set(handles.uipanel10,'Visible','off')
 set(handles.uipanel3,'Visible','on')
 
-% Hide the mesenchyme rules panel 1
+% Hide the mesenchyme rules panel 1 and 2
 set(handles.uipanel11,'Visible','off')
+set(handles.uipanel12,'Visible','off')
 
 % Set the slider values and print off rounded numbers
 set(handles.slider1,'Value',handles.ck_dg);
@@ -29,7 +30,8 @@ set(handles.slider28,'Value',handles.v_parameters(32));
 set(handles.slider29,'Value',handles.v_parameters(34));
 set(handles.slider30,'Value',handles.v_parameters(36));
 set(handles.slider31,'Value',handles.v_parameters(35));
-set(handles.slider31,'Value',handles.v_parameters(37));
+set(handles.slider33,'Value',handles.v_parameters(38));
+set(handles.slider34,'Value',handles.v_parameters(39));
 
 
 set(handles.text133,'String',num2str(handles.v_parameters(28)));
@@ -38,8 +40,12 @@ set(handles.text137,'String',num2str(handles.v_parameters(34)));
 set(handles.text138,'String',num2str(handles.v_parameters(36)));
 set(handles.text140,'String',num2str(handles.v_parameters(35)));
 set(handles.text141,'String',num2str(handles.v_parameters(37)));
+set(handles.text155,'String',num2str(handles.v_parameters(38)));
+set(handles.text156,'String',num2str(handles.v_parameters(39)));
 set(handles.popupmenu19,'Value',handles.v_parameters(27));
-set(handles.popupmenu20,'Value',handles.v_parameters(31));
+set(handles.popupmenu26,'Value',handles.v_parameters(29));
+set(handles.popupmenu27,'Value',handles.v_parameters(30));
+
 
  % Set the active mesenchyme popupmenu to the correct position
  set(handles.popupmenu24,'Value',handles.v_parameters(33)+1);
