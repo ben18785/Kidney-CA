@@ -1,7 +1,7 @@
 function cell_measurables = f_mes_move_selector_rule1_c(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters,cp_move_or_prolif)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is equal to
-% 1/#moves; ie the same across all the available moves
+% 1/#moves; ie the same across all the available moves. The mesenchyme is currently at (c_x,c_y).
 
 cn_nummoves = size(m_allowedindices);
 cn_nummoves = cn_nummoves(1);

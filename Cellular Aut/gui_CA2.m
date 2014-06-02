@@ -80,10 +80,23 @@ handles.ck_mes_prolif = 0.9; % The probability of a mesenchyme choosing to go do
 handles.ck_mes_diff = 0; % The probability of a mesenchyme choosing to go down branch corresponding to 'differentiating'
 handles.ck_mes_death = 1 - handles.ck_mes_move - handles.ck_mes_prolif - handles.ck_mes_diff; % The probability of a mesenchyme choosing to go down branch corresponding to 'die'
 handles.ck_mes_target_allowed = 1; % The rule to be used to determine those allowed cells which the mesenchyme can move into. 1 is local 8-NN if there are free cells.
-handles.ck_mes_moveprob_rule = 1; % The rule used for P(mes move) in f_mes_move_prob_c
-handles.ck_mes_moveprob_rule1_cons = 1; % The constant used for P(mes move) if rule 1 is selected in f_mes_move_prob_c
-handles.ck_mes_move_target_rule = 1; % The rule used to select between targets for the moving mesenchyme in f_mes_move_cell
+handles.ck_mes_moveprob_rule = 2; % The rule used for P(mes move) in f_mes_move_prob_c
+handles.ck_mes_moveprob_rule1_cons = 0; % The constant used for P(mes move) if rule 1 is selected in f_mes_move_prob_c
+handles.ck_mes_move_target_rule = 2; % The rule used to select between targets for the moving mesenchyme in f_mes_move_cell
 handles.ck_mes_prolif_target_rule = 1; % The rule used to select between target cells for the proliferating mesenchyme in f_mes_move_cell
+handles.ck_mes_prolifprob_rule = 1;% The rule used for P(mes prolif) in f_mes_move_prob_c
+handles.ck_mes_prolifprob_rule1_cons = 0; % The constant used for P(mes prolif) if rule 1 is selected in f_mes_move_prob_c
+handles.c_turn_on_active_mesenchyme = 1; % A switch to allow the user to turn on or off the updating of the mesenchyme
+handles.ck_mes_moveprob_rule2_discons_move_c1 = -10; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
+handles.ck_mes_moveprob_rule2_discons_move_c2 = 0; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving. Should be negative
+handles.ck_mes_moveprob_rule2_discons_prolif_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating
+handles.ck_mes_moveprob_rule2_discons_prolif_c2 = -0.1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating. Should be negative
+handles.ck_mes_move_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in moving a mesenchyme actively) which are further away from the mesenchyme are discriminated
+handles.ck_mes_prolif_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in proliferating a mesenchyme actively) which are further away from the mesenchyme are discriminated
+
+
+global error_count;
+error_count = 0;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -868,6 +881,341 @@ f_simulation_selector_void(hObject,handles);
 % mesenchyme in non-local jumping
 function slider25_CreateFcn(hObject, eventdata, handles)
 
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+% Specify what probability to go down the moving branch vs the
+% proliferation one
+function slider26_Callback(hObject, eventdata, handles)
+handles.ck_mes_move = get(hObject,'Value');
+handles.v_parameters(22) = handles.ck_mes_move;
+handles.ck_mes_prolif = 1 - handles.ck_mes_move;
+handles.v_parameters(23) = handles.ck_mes_prolif;
+set(handles.text129,'String',num2str(handles.v_parameters(22)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Specify what probability to go down the moving branch vs the
+% proliferation one
+function slider26_CreateFcn(hObject, eventdata, handles)
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A menu allowing the user to select the rule to use to calculate P(move)
+function popupmenu19_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+    
+    switch c_temp
+        case 1
+            handles.ck_mes_moveprob_rule = 1;
+        case 2
+            handles.ck_mes_moveprob_rule = 2;
+    end
+
+    handles.v_parameters(27) = handles.ck_mes_moveprob_rule;
+
+    % Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A menu allowing the user to select the rule to use to calculate P(move)
+function popupmenu19_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% A menu allowing the user to select the rule to use to calculate P(prolif)
+function popupmenu20_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+    
+    switch c_temp
+        case 1
+            handles.ck_mes_prolifprob_rule = 1;
+        case 2
+            handles.ck_mes_prolifprob_rule = 2;
+    end
+
+    handles.v_parameters(31) = handles.ck_mes_moveprob_rule;
+
+    % Update handles structure
+guidata(hObject, handles);
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A menu allowing the user to select the rule to use to calculate P(prolif)
+function popupmenu20_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% A slider allowing the user to choose the parameter for rule 1 for P(move)
+function slider27_Callback(hObject, eventdata, handles)
+handles.ck_mes_moveprob_rule1_cons = get(hObject,'Value');
+handles.v_parameters(28) = handles.ck_mes_moveprob_rule1_cons;
+
+set(handles.text133,'String',num2str(handles.v_parameters(28)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A slider allowing the user to choose the parameter for rule 1 for P(move)
+function slider27_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A slider allowing the user to choose the parameter for rule 1 for P(prolif)
+function slider28_Callback(hObject, eventdata, handles)
+handles.ck_mes_prolifprob_rule1_cons = get(hObject,'Value');
+handles.v_parameters(32) = handles.ck_mes_prolifprob_rule1_cons;
+
+set(handles.text134,'String',num2str(handles.v_parameters(32)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+% A slider allowing the user to choose the parameter for rule 1 for P(prolif)
+function slider28_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A slider allowing the user to choose the parameter C1 for rule 2 for P(move)
+function slider29_Callback(hObject, eventdata, handles)
+handles.ck_mes_moveprob_rule2_discons_move_c1 = get(hObject,'Value');
+handles.v_parameters(34) = handles.ck_mes_moveprob_rule2_discons_move_c1;
+
+set(handles.text137,'String',num2str(handles.v_parameters(34)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A slider allowing the user to choose the parameter C1 for rule 2 for P(move)
+function slider29_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A slider allowing the user to choose the parameter C1 for rule 2 for P(Prolif)
+function slider30_Callback(hObject, eventdata, handles)
+handles.ck_mes_moveprob_rule2_discons_prolif_c1 = get(hObject,'Value');
+handles.v_parameters(36) = handles.ck_mes_moveprob_rule2_discons_prolif_c1;
+
+set(handles.text138,'String',num2str(handles.v_parameters(36)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+
+% A slider allowing the user to choose the parameter C1 for rule 2 for P(Prolif)
+function slider30_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A slider allowing the user to choose the parameter C2 for rule 2 for P(Move)
+function slider31_Callback(hObject, eventdata, handles)
+handles.ck_mes_moveprob_rule2_discons_move_c2 = get(hObject,'Value');
+handles.v_parameters(35) = handles.ck_mes_moveprob_rule2_discons_move_c2;
+
+set(handles.text140,'String',num2str(handles.v_parameters(35)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A slider allowing the user to choose the parameter C2 for rule 2 for P(Move)
+function slider31_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A slider allowing the user to choose the parameter C2 for rule 2 for P(Prolif)
+function slider32_Callback(hObject, eventdata, handles)
+handles.ck_mes_moveprob_rule2_discons_prolif_c2 = get(hObject,'Value');
+handles.v_parameters(37) = handles.ck_mes_moveprob_rule2_discons_prolif_c2;
+
+set(handles.text141,'String',num2str(handles.v_parameters(37)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A slider allowing the user to choose the parameter C2 for rule 2 for P(Prolif)
+function slider32_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% A slider which allows the user to specify the panel that they want to see
+% for the mesenchyme 
+function popupmenu23_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1
+        set(handles.uipanel12,'Visible','off')
+        set(handles.uipanel11,'Visible','off')
+        set(handles.uipanel5,'Visible','off')
+        set(handles.uipanel4,'Visible','on')
+    case 2
+        set(handles.uipanel12,'Visible','off')
+        set(handles.uipanel11,'Visible','on')
+        set(handles.uipanel5,'Visible','off')
+        set(handles.uipanel4,'Visible','off')
+    case 3
+        set(handles.uipanel12,'Visible','on')
+        set(handles.uipanel11,'Visible','off')
+        set(handles.uipanel5,'Visible','off')
+        set(handles.uipanel4,'Visible','off')
+end
+
+% A slider which allows the user to specify the panel that they want to see
+% for the mesenchyme 
+function popupmenu23_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% Allows the user to specify whether or not to use active mesenchyme rules
+function popupmenu24_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1 % off
+        handles.c_turn_on_active_mesenchyme = 0;
+    case 2 % On
+        handles.c_turn_on_active_mesenchyme = 1;
+       
+end
+handles.v_parameters(33) = handles.c_turn_on_active_mesenchyme;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to specify whether or not to use active mesenchyme rules
+function popupmenu24_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% A funct
+function popupmenu26_Callback(hObject, eventdata, handles)
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu26_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu26 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu27.
+function popupmenu27_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu27 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu27 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu27
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu27_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu27 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on slider movement.
+function slider33_Callback(hObject, eventdata, handles)
+% hObject    handle to slider33 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider33_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider33 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider34_Callback(hObject, eventdata, handles)
+% hObject    handle to slider34 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider34_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider34 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end

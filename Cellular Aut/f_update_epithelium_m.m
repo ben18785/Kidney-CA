@@ -35,6 +35,7 @@ if c_allowed == 0
     cell_measurables{5,1} = c_vacant_select;
     cell_measurables{6,1} = c_mesenchyme_select;
     cell_measurables{7,1} = 0;
+    cell_measurables{8,1} = [];
     
     return;
 end

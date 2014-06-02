@@ -1,4 +1,4 @@
-function m_cell = f_mesenchyme_real_m(m_cell,c_x,c_y,c_xnew,c_ynew,c_xmes,c_ymes,m_allowed_mesenchyme_targets,v_parameters)
+function cell_temp = f_mesenchyme_real_m(m_cell,c_x,c_y,c_xnew,c_ynew,c_xmes,c_ymes,m_allowed_mesenchyme_targets,v_parameters)
 % A function which works out delta move associated with the epithelium, and
 % then compares this delta with the change associated with all of the
 % moves available to the mesenchyme. It uses a least squares measure to
@@ -21,6 +21,9 @@ end
 if cn_mes_moves == 1
     m_cell(c_xmes,c_ymes) = 0;
     m_cell(m_allowed_mesenchyme_targets(1,1),m_allowed_mesenchyme_targets(1,2)) = -1;
+    cell_temp = cell(2,1);
+    cell_temp{1,1} = m_cell;
+    cell_temp{2,1} = [c_xmes c_ymes 0; m_allowed_mesenchyme_targets(1,1) m_allowed_mesenchyme_targets(1,2) -1];
     return;
 end
 
@@ -81,3 +84,9 @@ end
 % Now implementing the move
 m_cell(c_xmes,c_ymes) = 0;
 m_cell(m_allowed_mesenchyme_targets(c_move_index,1),m_allowed_mesenchyme_targets(c_move_index,2)) = -1;
+
+% Store the updated cell matrix together with the indices of the moved
+% mesenchyme in a cell array
+cell_temp = cell(2,1);
+cell_temp{1,1} = m_cell;
+cell_temp{2,1} = [c_xmes c_ymes 0; m_allowed_mesenchyme_targets(c_move_index,1) m_allowed_mesenchyme_targets(c_move_index,2) -1];

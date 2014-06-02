@@ -16,6 +16,7 @@ if c_move == 0
     cell_measurables{5,1} = 0;
     cell_measurables{6,1} = 0;
     cell_measurables{7,1} = 0;
+    cell_measurables{8,1} = [];
     return;
 end
 

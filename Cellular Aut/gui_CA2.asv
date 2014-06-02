@@ -73,10 +73,27 @@ handles.c_mes_trapped = 8; % The maximum number of 8-nearest neighbour epitheliu
 handles.c_mes_allowed = 1; % Choose the rule specifying whether a mesenchyme can occupy a spot. 1 means all vacant spots, 2 means only those spots which are connected less than c_mes_trapped
 handles.c_principal = 10; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
 handles.c_secondary = 2; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
-ck_mes_move = 0.25; % The probability of a mesenchyme moving
-ck_mes_prolif = 0.25; % The probability of a mesenchyme proliferating
-ck_mes_diff = 0.25; % The probability of a mesenchyme differentiat
-ck_mes_death = 0.25;
+
+% Active mesenchyme parameters
+handles.ck_mes_move = 0.1; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
+handles.ck_mes_prolif = 0.9; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
+handles.ck_mes_diff = 0; % The probability of a mesenchyme choosing to go down branch corresponding to 'differentiating'
+handles.ck_mes_death = 1 - handles.ck_mes_move - handles.ck_mes_prolif - handles.ck_mes_diff; % The probability of a mesenchyme choosing to go down branch corresponding to 'die'
+handles.ck_mes_target_allowed = 1; % The rule to be used to determine those allowed cells which the mesenchyme can move into. 1 is local 8-NN if there are free cells.
+handles.ck_mes_moveprob_rule = 2; % The rule used for P(mes move) in f_mes_move_prob_c
+handles.ck_mes_moveprob_rule1_cons = 0; % The constant used for P(mes move) if rule 1 is selected in f_mes_move_prob_c
+handles.ck_mes_move_target_rule = 1; % The rule used to select between targets for the moving mesenchyme in f_mes_move_cell
+handles.ck_mes_prolif_target_rule = 1; % The rule used to select between target cells for the proliferating mesenchyme in f_mes_move_cell
+handles.ck_mes_prolifprob_rule = 2;% The rule used for P(mes prolif) in f_mes_move_prob_c
+handles.ck_mes_prolifprob_rule1_cons = 0; % The constant used for P(mes prolif) if rule 1 is selected in f_mes_move_prob_c
+handles.c_turn_on_active_mesenchyme = 1; % A switch to allow the user to turn on or off the updating of the mesenchyme
+handles.ck_mes_moveprob_rule2_discons_move_c1 = -10; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
+handles.ck_mes_moveprob_rule2_discons_move_c2 = 0; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving. Should be negative
+handles.ck_mes_moveprob_rule2_discons_prolif_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating
+handles.ck_mes_moveprob_rule2_discons_prolif_c2 = -0.1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating. Should be negative
+
+global error_count;
+error_count = 0;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -861,6 +878,200 @@ f_simulation_selector_void(hObject,handles);
 % mesenchyme in non-local jumping
 function slider25_CreateFcn(hObject, eventdata, handles)
 
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+% Specify what parobabi
+function slider26_Callback(hObject, eventdata, handles)
+
+
+
+% --- Executes during object creation, after setting all properties.
+function slider26_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider26 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on selection change in popupmenu19.
+function popupmenu19_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu19 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu19
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu19_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu19 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in popupmenu20.
+function popupmenu20_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu20 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu20 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu20
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu20_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu20 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on slider movement.
+function slider27_Callback(hObject, eventdata, handles)
+% hObject    handle to slider27 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider27_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider27 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider28_Callback(hObject, eventdata, handles)
+% hObject    handle to slider28 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider28_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider28 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider29_Callback(hObject, eventdata, handles)
+% hObject    handle to slider29 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider29_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider29 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider30_Callback(hObject, eventdata, handles)
+% hObject    handle to slider30 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider30_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider30 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider31_Callback(hObject, eventdata, handles)
+% hObject    handle to slider31 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider31_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider31 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function slider32_Callback(hObject, eventdata, handles)
+% hObject    handle to slider32 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function slider32_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider32 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end

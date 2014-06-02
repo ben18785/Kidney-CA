@@ -1,10 +1,68 @@
 function f_parameters_visible(hObject,handles)
 % Update handles structure
-        guidata(hObject, handles)
-        
-        % Update some of the handles
-        set(handles.slider22,'Value',handles.v_parameters(18));
+guidata(hObject, handles)
+
+% Update some of the handles
+set(handles.slider22,'Value',handles.v_parameters(18));
+
+handles.v_parameters(33)
+
+% Only allow the popup menu to allow the user to select active mesenchyme rules to be 
+% selected if we are actually using active mesenchyme
+if handles.v_parameters(33) == 1
+    set(handles.text145,'Visible','on')
+    set(handles.popupmenu23,'Visible','on')
+else
+    set(handles.text145,'Visible','off')
+    set(handles.popupmenu23,'Visible','off')
+end
     
+        
+% Only show the relevant buttons in the mesenchyme rules box if the correct
+% rule is selected
+% P(move) mesenchyme
+if handles.v_parameters(27) == 1 
+    set(handles.slider27,'Visible','on')
+    set(handles.text133,'Visible','on')
+    set(handles.text142,'Visible','off') %C1
+    set(handles.slider29,'Visible','off')
+    set(handles.text137,'Visible','off')
+    set(handles.text143,'Visible','off') %C2
+    set(handles.slider31,'Visible','off')
+    set(handles.text140,'Visible','off')
+elseif handles.v_parameters(27) == 2 
+    set(handles.slider27,'Visible','off')
+    set(handles.text133,'Visible','off')
+    set(handles.text142,'Visible','on') %C1
+    set(handles.slider29,'Visible','on')
+    set(handles.text137,'Visible','on')
+    set(handles.text143,'Visible','on') %C2
+    set(handles.slider31,'Visible','on')
+    set(handles.text140,'Visible','on')
+end
+
+% P(Prolif) mesenchyme
+if handles.v_parameters(31) == 1 
+    set(handles.slider28,'Visible','on')
+    set(handles.text134,'Visible','on')
+    set(handles.slider30,'Visible','off')
+    set(handles.text138,'Visible','off')
+    set(handles.slider32,'Visible','off')
+    set(handles.text141,'Visible','off')
+    set(handles.text142,'Visible','off') %C1
+    set(handles.text143,'Visible','off') %C2
+elseif handles.v_parameters(31) == 2
+    set(handles.slider28,'Visible','off')
+    set(handles.text134,'Visible','off')
+    set(handles.slider30,'Visible','on')
+    set(handles.text138,'Visible','on')
+    set(handles.slider32,'Visible','on')
+    set(handles.text141,'Visible','on')
+    set(handles.text142,'Visible','on') %C1
+    set(handles.text143,'Visible','on') %C2
+end
+        
+        
         % Only allow those sliders which are relevant to MM movement be
         % shown if mesenchyme are able to be moved
     if handles.ck_movement_rule == 6 | handles.ck_movement_rule == 7 | handles.ck_movement_rule == 8

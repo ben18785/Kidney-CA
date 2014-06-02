@@ -3,12 +3,12 @@ function [m_cell,c_move,c_heterogeneity,c_mesenchyme_options,c_vacant_select,c_m
 % simulation area in random order in accordance to rules governing their
 % specific behaviour
 
+global gc_error_count;
 
 % A function which returns the indices of all non-vacant cells in the
 % simulation area (so includes cells which are both mesenchyme and
 % epithelium)
 m_cellindices = f_cellindices_all_m(m_cell);
-
 
 % Sort the cells into a random order
 m_cellindices = f_random_indices(m_cellindices);
@@ -26,8 +26,31 @@ c_vacant_select = 0;
 c_mesenchyme_select = 0;
 c_cell_options = 0;
 
+% If we have active mesenchyme and are using a rule related to distance
+% then update the cell distance matrix
+m_distance = [];
+if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
+    'Distance matrix calculated'
+    m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
+end
+
 for i = 1:cn_cells
-    cell_measurables = f_update_cell_m(m_cellindices(i,:),m_cell,m_GDNF,v_parameters);
+    if mod(i,1000) == 0
+        m_cellindices = f_cellindices_all_m(m_cell);
+
+        % Sort the cells into a random order
+        m_cellindices = f_random_indices(m_cellindices);
+    end
+    
+    if m_cell(m_cellindices(i,1),m_cellindices(i,2)) ~= m_cellindices(i,3)
+        'f_update_cells: An error has been made whereby a cell has been passed to f_update_cells which has type different to what is should'
+        m_cell(m_cellindices(i,1),m_cellindices(i,2))
+        m_cellindices(i,3)
+        m_cellindices(i,1)
+        m_cellindices(i,2)
+        gc_error_count = gc_error_count + 1;
+    end
+    [cell_measurables,m_cellindices] = f_update_cell_m(m_cellindices(i,:),m_cell,m_GDNF,m_distance,m_cellindices,i,v_parameters);
     m_cell = cell_measurables{1,1};
     c_hetero = c_hetero + cell_measurables{2,1};
     c_mesenchyme_options = c_mesenchyme_options + cell_measurables{3,1};
@@ -37,5 +60,7 @@ for i = 1:cn_cells
     c_cell_options = c_cell_options + cell_measurables{7,1}; % The number of times that there are multiple positions available for the epithelium to move into
     
 end
-
+if gc_error_count > 0
+    'An error has occurred'
+end
 c_heterogeneity = c_hetero/c_cell_options;

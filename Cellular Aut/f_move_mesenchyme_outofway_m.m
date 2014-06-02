@@ -1,4 +1,4 @@
-function m_cell = f_move_mesenchyme_outofway_m(c_xmes,c_ymes,m_mesenchyme_available,m_cell,v_parameters)
+function cell_temp = f_move_mesenchyme_outofway_m(c_xmes,c_ymes,m_mesenchyme_available,m_cell,v_parameters)
 % A function which moves a mesenchyme located at (c_xmes,c_ymes) to one of
 % the available spots given in m_mesenchyme_available; choosing one at
 % random
@@ -13,6 +13,9 @@ end
 if cn_nummoves == 1
     m_cell(c_xmes,c_ymes) = 0;
     m_cell(m_mesenchyme_available(1,1),m_mesenchyme_available(1,2)) = -1;
+    cell_temp = cell(2,1);
+    cell_temp{1,1} = m_cell;
+    cell_temp{2,1} = [c_xmes c_ymes 0; m_mesenchyme_available(1,1) m_mesenchyme_available(1,2) -1];
     return;
 end
 
@@ -42,4 +45,10 @@ end
 % Now implementing the move
 m_cell(c_xmes,c_ymes) = 0;
 m_cell(m_mesenchyme_available(c_move_index,1),m_mesenchyme_available(c_move_index,2)) = -1;
+
+% Store the updated cell matrix together with the indices of the moved
+% mesenchyme in a cell array
+cell_temp = cell(2,1);
+cell_temp{1,1} = m_cell;
+cell_temp{2,1} = [c_xmes c_ymes 0; m_mesenchyme_available(c_move_index,1) m_mesenchyme_available(c_move_index,2) -1];
 
