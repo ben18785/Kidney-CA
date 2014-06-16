@@ -28,7 +28,6 @@
 \usepackage{algorithm}
 \usepackage{bbm}
 
-
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \begin{document}
 
@@ -386,6 +385,81 @@ These two concepts are explained visually in figure \ref{fig:axes}. In defining 
 
 Currently, there is no bias towards any of the cells which lie in the rectangular domain of allowed moves. In reality it is more likely that moves will occur if they are at a small angle to the principal axis, and are closer to the current cell location. The former is dealt with heuristically by specifying a distance $s<<p$ to ensure that the movements of cells are, by majority at a small angle to the principal axis. The latter could potentially be dealt with by specifying a cost which depends on distance from the current cell. It would also be possible to allow a wider range of angular movements, with those movements resulting in the largest angle between the principal axis and the movement vector being discriminated against most strongly. However, both of these extra movement constraints require more parameters, and make the model more complex, with the possibility that they may not add much insight to the situation at hand. These may be revisited in the future however.
 
+\section{Active movement of mesenchyme}
+Up until this point the mesenchyme have been assumed to move only as a result of being 'pushed' out of the way by encroaching epithelium. Although this type of passive role for the mesenchyme could potentially be important for generating the branching pattern seen \textit{in vivo}, it would be insufficient to explain two stylized facts:
+
+\begin{itemize}
+\item The mesenchyme form a 'condensate' around the emerging UB tip. See figure \ref{fig:condensation}.
+\item There are distinct lobes of mesenchyme cells expressing Six2 which surround the tips in each of the branches, with lower density regions in the 'stalk' region of epithelium. See figure \ref{fig:UB_branch} for a visual depiction of branching.
+\end{itemize}
+
+\begin{figure}[t] 
+\centering
+\scalebox{0.35} 
+{\includegraphics{condensation.eps}}
+\caption{a) Shows the chemotactic (red arrows) and proliferative (orange arrows) potential mechanisms for the growth of a more dense mesenchyme cloud around the emergent UB tip. b) The finalised metanephric mesenchyme condensate around the grown UB tip.}\label{fig:condensation}
+\end{figure} 
+
+The condensation of mesenchyme likely occurs due in part to the growth of the UB bud into the MM; pushing any mesenchyme cells into a ring of mesenchyme which surrounds the tip. However, this mechanism is unlikely to explain why the number of mesenchyme cells increases throughout kidney development, and also that the mesenchyme (Six2 expressive) cells localise around the tips and not the stalks; although the latter point could be partially explained in continuum fluid models of the mesenchyme and epithelium, where the convective fluid flow fields result in eddies occurring behind the growing bud. Although there is little certainty as to what exactly causes the condensate to appear, it might be reasonably expected to be due to migration of mesenchyme towards the UB tip, as well as local proliferation of mesenchyme adjacent to the tip. The former could be due to a chemoattractive factor, whereas the latter could either be contact-mediated or paracrine in nature.
+
+In the cellular automaton model presented here I allow both of the aforementioned methods to occur within the mesenchyme. I allow for chemoattraction of mesenchyme towards the UB, in a relationship which is weakened by distance, and a proliferative effect which is similarly affected by distance.
+
+However, these two effects together are still insufficient to explain the formation of the discrete lobes of mesenchyme which ultimately form around distinct UB tips. In order to tackle this issue further assumptions and complexity are (unfortunately) needed, and I will postpone discussion of this until section \ref{sec:ret}.
+
+\subsection{Chemoattraction of mesenchyme towards epithelium tips}\label{sec:activemesmove}
+In order to allow for condensation of mesenchyme to occur due to its movement, I allow a mechanism which causes a movement of mesenchyme cells in a direction which is probabilistically weighted towards those cells which are closest to the epithelium. The pseudo-algorithm which is implemented here is of the form:
+
+\begin{enumerate}
+\item Calculate the probability that a move occurs. This can either be assumed to be location-independent, or negatively related to the distance of each of the target cells to the nearest epithelium.\label{point:mesactive}
+\item Draw a pseudo-random $X\sim unif(0,1)$. If $X<P(move)$ then proceed to the next step. If not, then proceed to the next epithelium/mesenchyme in the simulation time step.
+\item Find all the possible targets for the mesenchyme cell from the 8-nearest-neighbours which are currently vacant. 
+\item Based on the rule chosen here implement one of the following:
+\begin{itemize}
+\item Assume a uniform probability of moving to each of available target cells.
+\item Calculate probabilities which are weighted by the distance of each of the cells from the nearest epithelium. The method used here is to use a multinomial logistic distribution with a parameter specifying the extent of the strength of discrimination against moves which lead to more distant (from the epithelium) mesenchyme.\label{point:mesactive1}
+\end{itemize}
+\item Select one of the target moves by first creating intervals on [0,1] which correspond to each of the available targets, and comparing a pseudo-random $X\sim unif(0,1)$ with each of the intervals. If it coincides, then implement that corresponding move.
+\end{enumerate}
+
+Two mechanisms allow for the epithelium to influence the active moving behaviour of the mesenchyme. The first is that above in step \ref{point:mesactive}, which allows for the probability that a move occurs to be related to the inverse of the distance of each potential target cell from the epithelium. Whereas the first mechanism allows the probability of movement to dependent on distance, the second mechanism in \ref{point:mesactive1} directs the movement of the mesenchyme towards the nearest epithelium. This latter mechanism represents chemotaxis of mesenchyme towards the epithelium.
+
+If chemotaxis occurs \textit{in natura} then it is likely driven by a chemoattractive factor which acts paracrinally. The epithelium would potentially produce the chemoattractant, which then diffuses in all directions (some of which are towards the mesenchyme). Presuming that the factor has more of an effect if it is in a higher concentration, this would then imply that the mesenchyme more distant from the epithelium are influenced less, and hence are less likely to move. However, if a move does occur the chemotaxis of the mesenchyme towards the epithelium would likely lead to a movement directed towards the epithelium. These aspects are represented phenomenologically by implementing both rules \ref{point:mesactive} and \ref{point:mesactive1}.
+
+It is important to note that I have not assumed a particular form for the chemoattractant. Instead of creating a field for said factor, I proxy for it by, at each time step, calculating a distance matrix which represents the distance of each point in the array from the nearest epithelium. This calculation is done via dynamic programming for computational speed. The distance matrix is only updated once per time step however, as it is assumed that epithelium movements are not sufficiently significant as to change qualitatively the movement of the mesenchyme within a cell cycle time.
+
+\begin{figure}[t] 
+\centering
+\scalebox{0.35} 
+{\includegraphics{UB_branch.eps}}
+\caption{a) Shows the emergence of the UB bud. b) Shows the branching which occurs in the emerging bud. c) Shows the distinct lobes of mesenchyme which surround the tips of epithelium. In all diagrams the mesenchyme are coloured blue and the epithelium green.}\label{fig:UB_branch}
+\end{figure} 
+
+
+\subsection{Proliferation induced by proximity to epithelium}\label{sec:mesprolif}
+The mechanism for proliferation is the same as that of the active mesenchyme movement, as detailed in section \ref{sec:activemesmove}, although now a new cell is either created or not opposed to just moved. Again, I allow for the possibility of two distinct schema for proliferation to occur. The first is that proliferation probability is positively influenced by the proximity of mesenchyme to epithelium. The other mechanism is to allow the probability of a target cell to be placed in a certain location to be positively influenced by the proximity of that cell to the epithelium.
+
+\section{Heterogeneity in the epithelium: Ret-high and Ret-low cells}\label{sec:ret}
+A qualitative feature which an adequate model of branching \textit{in vivo} should replicate is the discrete lobes of mesenchyme which aggregate around each individual epithelium tip. The biological/physical mechanism for this is currently not well understood. There are however, a number of inferences that could be made from the literature (and from a straightforward examination of the phenomenon itself). 
+
+In order for discrete lobes of (Six2 expressive) mesenchyme to form solely around the tips, it is presumably the case that there is some heterogeneity between the niche at the tip as compared with the stalk regions. This is likely chemical, and could potentially be due to a difference in expression levels for a particular chemotactic/proliferative factor.
+
+One potential feature that could be responsible for the differences between the tip and stalk niches is expression of Ret by the epithelium cells. It has been shown that epithelium cells compete with one another based on their expression levels of Ret to form part of the emergent UB (Chi et al. 2009). Furthermore the same authors go on to show that epithelium cells with high expression levels of Ret (as well as other proteins implicated in proliferation feed forward cycles), are present in the tips of the branches of the epithelium. This is not the case for the 'stalk' region of the epithelium trees which form. In the latter region there is a markedly lower level of Ret-expression. 
+
+The authors initially propose that there could be four differences in properties between the Ret-high and Ret-low epithelium cells, which result in their differing geographical organisation. 
+
+\begin{itemize}
+\item Cell proliferation
+\item Survival probability
+\item Migration
+\item Cell-to-cell adhesion
+\end{itemize}
+
+The authors find little evidence of differences in proliferation between the Ret-high and Ret-low epithelium; casting doubt on the first mechanism. Similarly, they find no heterogeneity in cell apoptosis between the two types of cells. Although the authors only search for the presence of a particular (yet important) marker of cell-cell adhesion, beta-cadherin, they nonetheless find no evidence for differences in its expression between the epithelium cells at the tip and in the stalk. They do however find evidence that cell-cell competition is an important mechanism for the emergence of the initial bud, as well as the elevated prevalence of Ret-high cells in the tips. Although the biological basis of this competition is not understood, its relative winners (those cells nearest the tips) are found to be those cells which are Ret-high. As such as a first approximation I allow there to be two distinct epithelium cell types: Ret-high, and Ret-low. Both these cells are attracted to sources of GDNF, although the former are more strongly so. Note, it needn't be the magnitude of the attraction to GDNF which results in the differential movement of Ret-high and Ret-low cells towards the tips. However, this as a first approximation will allow for the recapitulation of the features seen in practice. 
+
+However, just having two types of cell which are differentially attracted to sources of GDNF is insufficient to create the distinct lobes of mesenchyme around tips. In order for this to be the case there needs to be some difference in the way in which mesenchyme are influenced by the two cell types. This could be because the Ret-high cells are relatively more attractive to the mesenchyme, or cause greater proliferation rates for the adjacent mesenchyme, or a combination of these two features (since mesenchyme apoptosis is not thought to be an important mechanism for kidney morphogenesis).
+
+In each time step I calculate distance fields for the mesenchyme from each type of epithelium, and implement similar move and proliferative behaviour to that which was described in sections \ref{sec:activemesmove} and \ref{sec:mesprolif}, although selection of the resultant move is now more complicated as there are two 'forces' acting.
+
 \section{Cell death}
 The current version of the simulation does not allow cell death directly; only indirectly through the epithelium's ability to (dependent on the exact rules implemented) 'overtake' a position currently occupied by the mesenchyme. Later versions will allow the user to stipulate differing death rates for the epithelium and mesenchyme, and also allow these to be context-dependent (dependent on, for example, the connectivity of the cell in question).
 
@@ -413,7 +487,6 @@ Luckily Matlab has already a built-in function, \emph{bwmorph}, which estimates 
 {\includegraphics{medial.eps}}
 \caption{The medial axis skeleton (in black) for a) an  ellipse and b) an arbitrary perimeter. In a) the red cross shows the centre of the green circle (which is tangent to the perimeter at two points.) In b) the red crosses show branch points in the medial axis skeleton.}\label{fig:medial}
 \end{figure} 
-
 
 
 \end{document}

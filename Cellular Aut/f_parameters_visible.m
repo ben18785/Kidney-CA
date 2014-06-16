@@ -5,7 +5,6 @@ guidata(hObject, handles)
 % Update some of the handles
 set(handles.slider22,'Value',handles.v_parameters(18));
 
-handles.v_parameters(33)
 
 % Only allow the popup menu to allow the user to select active mesenchyme rules to be 
 % selected if we are actually using active mesenchyme

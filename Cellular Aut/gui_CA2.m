@@ -95,6 +95,14 @@ handles.ck_mes_move_target_disdiscrim = -10; % A negative parameter which govern
 handles.ck_mes_prolif_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in proliferating a mesenchyme actively) which are further away from the mesenchyme are discriminated
 
 
+% Those parameters which are to do with Ret-high and Ret-low epithelium
+handles.ck_ret_on = 1; % A parameter which either turns on (if it is 1) or turns off the Ret-high/low feature
+handles.ck_rh_num = 0.5; % A parameter which specifies the proportion of initially created epithelium cells which are Ret-high
+handles.ck_moveprob_cons_rh = handles.ck_moveprob_cons; % A parameter which determines the probability of a move occuring in f_probmove_rule1 if a cell is Ret-high
+handles.ck_move_norm_cons_rh = handles.ck_move_norm_cons; % Constant C1 in rule f_probmove_rule2
+handles.ck_move_norm_slope_rh = handles.ck_move_norm_slope; % Constant C2 in rule f_probmove_rule2
+handles.c_pmove_grad_rh = handles.c_pmove_grad; % Ret-high parameter for f_pmoving_rule2; governing chemotaxtic movement
+
 global error_count;
 error_count = 0;
 

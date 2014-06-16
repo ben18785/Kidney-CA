@@ -1,8 +1,8 @@
-function cell_measurables = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters)
+function cell_measurables = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters,c_ret)
 % A function which updates the cell matrix, by applying the rules of
 % movement and proliferation for a cell located at (c_x,c_y)
 
-% Choose whether to move or proliferate via p_move = 1 (for a move) pr 0
+% Choose whether to move or proliferate via p_move = 1 (for a move/competition for Ret) pr 0
 % for a proliferation
 ck_moveprob = v_parameters(3);
 cp_move = f_moveprolif_c(ck_moveprob);
@@ -44,9 +44,9 @@ end
 % vector of parameters to allow user to select different rules.
 switch cp_move
     case 1
-        cell_measurables = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        cell_measurables = f_move_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters,c_ret);
     case 0 
-        cell_measurables = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters);
+        cell_measurables = f_prolif_epithelium_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters,c_ret);
      
 end
 

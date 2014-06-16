@@ -17,7 +17,9 @@ m_cell_old = m_cell;
 % epithelium
 switch c_celltype
     case 1
-        cell_measurables = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters);
+        cell_measurables = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters,1);
+    case 2
+        cell_measurables = f_update_epithelium_m(c_x,c_y,m_cell,m_GDNF,v_parameters,2);
     case -1
         if v_parameters(33) == 0 % If the mesenchyme is not being active, don't update it (computational time saver)
             c_move = 0;

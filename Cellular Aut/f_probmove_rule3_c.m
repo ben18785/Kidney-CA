@@ -1,10 +1,19 @@
-function c_move = f_probmove_rule3_c(c_x,c_y,m_allowedindices,m_GDNF,v_parameters)
+function c_move = f_probmove_rule3_c(c_x,c_y,m_allowedindices,m_GDNF,v_parameters,c_ret)
 % A function which returns a 1 if a move is to occur; 0 if not. The rule
 % used here is that the probability of a move is proportional to the sum of
 % the local positive gradients in GDNF
 
-c_move_norm_cons = v_parameters(10);
-ck_move_norm_slope = v_parameters(11);
+% Allow selection of the parameter values based on whether the cell is Ret
+% low or high
+switch c_ret
+    case 1 % Ret low
+        c_move_norm_cons = v_parameters(10);
+        ck_move_norm_slope = v_parameters(11);
+    case 2 % Ret high
+        c_move_norm_cons = v_parameters(43);
+        ck_move_norm_slope = v_parameters(44);
+end
+
 
 % Get the number of moves being considered
 c_nummoves = size(m_allowedindices);

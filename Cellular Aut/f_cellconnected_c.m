@@ -2,6 +2,11 @@ function c_connected = f_cellconnected_c(c_x,c_y,m_cell,v_parameters)
 % A function which determines if a cell is connected in the simulation
 % area; returning a 1 if it is, and 0 if not
 
+% Make a copy so that we can just look at Ret-high and Ret-low together;
+% forgetting about having to amend the rules to take their identity into
+% account
+m_cell = double(m_cell>0);
+
 % Get the dimensions of the matrix being used
 c_depth_full = v_parameters(6);
 c_width_full = v_parameters(7);

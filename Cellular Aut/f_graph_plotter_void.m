@@ -33,13 +33,16 @@ switch handles.graph_selector
 
     case 0 % Images
             axes(handles.axes1)
-            imagesc(m_cell)
-            
+%             cmap = [0 0 1; 1 1 1; 0 1 0; 1 0 0 0];
+%             colormap(cmap);
+            imagesc(flip(m_cell))
+%             freezeColors
 
+%             colormap('default')
             axes(handles.axes2)
-            imagesc(m_GDNF)
+            imagesc(flip(m_GDNF))
             hold on
-            c=contour(m_GDNF);
+            c=contour(flip(m_GDNF));
             clabel(c)
             hold off
             
@@ -140,8 +143,12 @@ switch handles.graph_selector
             
             
             axes(handles.axes1)
-            imagesc(m_cell)
+            cmap = [0 0 1; 1 1 1; 0 1 0];
+            colormap(cmap);
+            imagesc(flip(m_cell))
+            freezeColors
             
+            colormap('default')
             m_cell = double(m_cell==1);
 
             skelImg   = bwmorph(m_cell, 'thin', 'inf');
@@ -156,7 +163,7 @@ switch handles.graph_selector
 
             axes(handles.axes2)
 
-            imagesc(skelImg); 
+            imagesc(flip(skelImg)); 
 
             pause(0.01)
             
@@ -166,11 +173,11 @@ switch handles.graph_selector
             
             
             axes(handles.axes1)
-            imagesc(handles.m_mesenchyme_init)
+            imagesc(flip(handles.m_mesenchyme_init))
             
             axes(handles.axes2)
             m_mesenchyme = double(m_cell==-1);
-            imagesc(m_mesenchyme)
+            imagesc(flip(m_mesenchyme))
             pause(0.01)
             
     case 6
@@ -201,13 +208,19 @@ switch handles.graph_selector
             v_parameters = handles.v_parameters;
             set(handles.text7,'String','Cell distribution with perimeter');
             set(handles.text9,'String','Comparison of perimeter estimation methods');
+            cmap = [0 0 1; 1 1 1; 0 1 0];
+            colormap(cmap);
             axes(handles.axes1)
-            imagesc(m_cell)
+            imagesc(flip(m_cell))
             hold on
+            
+            c_depth_full = v_parameters(7);
             m_perimeter_approx = f_perimeter_edge_approx_m(m_cell,v_parameters,20);
-            scatter(m_perimeter_approx(:,2),m_perimeter_approx(:,1),'m.')
+            v_perimeter_height = c_depth_full - m_perimeter_approx(:,1)
+            scatter(m_perimeter_approx(:,2), v_perimeter_height,'m.')
             hold off
-        
+            
+            
             axes(handles.axes2)
             plot(v_perimeter,'b','LineWidth',4)
             hold on

@@ -1,4 +1,4 @@
-function [m_cell] = f_create_epithelium_m(m_cell, c_width_e, c_depth_e, c_epithelium_density)
+function [m_cell] = f_create_epithelium_ret_m(m_cell, c_width_e, c_depth_e, c_epithelium_density)
 % A function which creates the epithelium (cells taking on the value 1)
 % within the simulation domain according to the cell density (placing the
 % cells randomly within the domain of the epithelial layer

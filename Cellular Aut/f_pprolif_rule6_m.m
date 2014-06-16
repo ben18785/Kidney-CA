@@ -1,4 +1,4 @@
-function cell_measurables = f_pprolif_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function cell_measurables = f_pprolif_rule6_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters,c_ret)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is given by the multinomial logit. Here
 % we allow movement into a mesenchyme spot; moving the mesenchyme to one of
@@ -33,7 +33,12 @@ end
 
 % Getting the parameters controlling the magnitude of the strength of the
 % effect of gradients of GDNF on the probability of a particular move
-c_pmove_grad = v_parameters(13);
+switch c_ret
+    case 1 % Ret-low
+        c_pmove_grad = v_parameters(13);
+    case 2 % Ret-high
+        c_pmove_grad = v_parameters(45);
+end
 
 % Calculate the denominator of the multinomial logit distribution
 c_denominator = 0;

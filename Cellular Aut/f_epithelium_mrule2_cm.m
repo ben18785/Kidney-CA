@@ -12,7 +12,7 @@ m_allowedindices = zeros(cd_indicesmax,2);
 % either mesenchyme or epithelium, and if moves are allowed
 k = 1;
 for i = 1:cd_indicesmax
-    % Allow a move only if cell is nonvacant and cell which moves is not
+    % Allow a move only if cell is vacant and cell which moves is not
     % disconnected after move
     switch cp_move
         case 1 % Moving - need to check whether cell is connected

@@ -14,7 +14,7 @@ for i = 1:cd_indicesmax
     % disconnected after move
     switch cp_move
         case 1 % Moving
-            if and(m_cell(m_allindices(i,1),m_allindices(i,2))~=1,f_activeconnected_c(c_x,c_y,m_allindices(i,1),m_allindices(i,2),m_cell,v_parameters)==1)
+            if and(and(m_cell(m_allindices(i,1),m_allindices(i,2))~=1,m_cell(m_allindices(i,1),m_allindices(i,2))~=2),f_activeconnected_c(c_x,c_y,m_allindices(i,1),m_allindices(i,2),m_cell,v_parameters)==1)
                 m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
                 k = k + 1;
             end

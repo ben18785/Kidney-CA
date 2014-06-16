@@ -3,7 +3,7 @@ function m_cellindices = f_cellindices_all_m(m_cell)
 % area, recording their type in the third column
 
 % Get the total number of nonzero entries
-cn_nonzero = sum(sum(abs(m_cell)));
+cn_nonzero = sum(sum(abs(m_cell)>0));
 
 % Get the full dimensions
 v_dimensions_full = size(m_cell);
@@ -23,9 +23,10 @@ for i = 1:c_depth_full
             case 1
                 m_cellindices(k,:) = [i,j,1];
                 k = k + 1;
+            case 2
+                m_cellindices(k,:) = [i,j,2];
+                k = k + 1;
         end
     end
 end
-
-
         
