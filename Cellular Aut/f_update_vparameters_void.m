@@ -53,3 +53,31 @@ v_parameters(42) = handles.ck_moveprob_cons_rh; % A parameter which determines t
 v_parameters(43) = handles.ck_move_norm_cons_rh; % Constant C1 in rule f_probmove_rule2 for Ret-high param
 v_parameters(44) = handles.ck_move_norm_slope_rh; % Constant C2 in rule f_probmove_rule2 for Ret-high param
 v_parameters(45) = handles.c_pmove_grad_rh; % Ret-high parameter for f_pmoving_rule2; governing chemotaxtic movement
+% Rule selection for Ret transformation of epithelium cells. '0' means no transformation, meaning cells which are born one type remain there. '1' means that Ret-L -> Ret-H is allowed and is controlled
+% by an arbitrary probability parameter, therefore the change is irreversible. '2' allows both Ret-L -> Ret-H and
+% vice versa, with each having its own arbitrary probability. '3' Allows
+% for Ret-L -> Ret-H, with the probability determined by the concentration
+% of GDNF, therefore the change is irreversible.. '4' Is same as '3' except now we allow for Ret-H -> Ret-L to be
+% determined by concentration. 
+v_parameters(46) = handles.c_ret_transformation; 
+v_parameters(47) = handles.c_retlh_prob; % retL->retH arbitrary probability
+v_parameters(48) = handles.c_rethl_prob; % retH->retL arbitrary probability
+v_parameters(49) = handles.c_retlh_prob_GDNF_C0; % retL->retH GDNF probability constant
+v_parameters(50) = handles.c_retlh_prob_GDNF_C1; % retL->retH GDNF probability gradient
+v_parameters(51) = handles.c_rethl_prob_GDNF_C0; % retH->retL GDNF probability constant
+v_parameters(52) = handles.c_reth1_prob_GDNF_C1; % retH->retL GDNF probability gradient
+% Determines the rule to be used to allow for cells to compete on the basis of Ret. '0' means that there is no Ret 
+% competition. '1' means that two epithelium cells swap probabilistically
+% if one is a retL and the other a retH if the low cell is in a position of
+% higher GDNF.
+v_parameters(53) = handles.c_ret_competition; 
+% The ret probability rule used for choosing ret comp vs moving/proliferating. '1' means that the probability is simply a constant.
+v_parameters(54) = handles.c_ret_prob_rule; 
+v_parameters(55) = handles.c_ret_prob_rule1_cons; % Probability of Ret competition occuring if above rule is '1'
+% The rule to determine if a competition takes place once we have started
+% down that branch. '1' is that the probability of a competition occuring
+% is a constant. '2' is that it is determined by the highest GDNF gradient.
+v_parameters(56) = handles.c_ret_comp_prob; 
+v_parameters(57) = handles.c_ret_comp_prob_rule1_cons; % The probability of competiting is a constant in rule 1.
+v_parameters(58) = handles.c_ret_comp_prob_rule2_C0; % Constant used in rule 2
+v_parameters(59) = handles.c_ret_comp_prob_rule2_C1; % GDNF-multiplier constant used in rule 2

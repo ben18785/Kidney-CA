@@ -32,19 +32,27 @@ c_cell_options = 0;
 % calculating the distance matrix from these cells only
 m_distance = [];
 ck_ret_on = v_parameters(40);
-switch ck_ret_on
-    case 0 % No Ret dependence
-        if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
-            'Distance matrix calculated'
-            m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
-        end
-    case 1 % Ret dependence, therefore only work out distance from the Ret-high cells
-        if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
-            'Distance matrix calculated'
-%             m_cell_rh = double(m_cell==2);
-            m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
-        end
+if sum(sum(m_cell>1)) > 0
+    switch ck_ret_on
+        case 0 % No Ret dependence
+            if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
+                'Distance matrix calculated'
+                m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
+            end
+        case 1 % Ret dependence, therefore only work out distance from the Ret-high cells
+            if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
+                'Distance matrix from Ret-high calculated'
+                m_cell_rh = double(m_cell==2);
+                m_distance = f_distance_matrix_calculator_m(m_cell_rh,v_parameters);
+            end
+    end
+else
+    if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
+                'Distance matrix calculated'
+                m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
+    end
 end
+    
         
 
 for i = 1:cn_cells

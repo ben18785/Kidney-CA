@@ -23,6 +23,7 @@ end
 function gui_CA2_OpeningFcn(hObject, eventdata, handles, varargin)
 
 
+
 % Specify basic simulation parameters governing time and initial location
 % of epithelium and mesenchyme
 handles.c_T = 200;
@@ -97,11 +98,26 @@ handles.ck_mes_prolif_target_disdiscrim = -10; % A negative parameter which gove
 
 % Those parameters which are to do with Ret-high and Ret-low epithelium
 handles.ck_ret_on = 1; % A parameter which either turns on (if it is 1) or turns off the Ret-high/low feature
-handles.ck_rh_num = 0.5; % A parameter which specifies the proportion of initially created epithelium cells which are Ret-high
+handles.ck_rh_num = 0.9; % A parameter which specifies the proportion of initially created epithelium cells which are Ret-high
 handles.ck_moveprob_cons_rh = handles.ck_moveprob_cons; % A parameter which determines the probability of a move occuring in f_probmove_rule1 if a cell is Ret-high
 handles.ck_move_norm_cons_rh = handles.ck_move_norm_cons; % Constant C1 in rule f_probmove_rule2
 handles.ck_move_norm_slope_rh = handles.ck_move_norm_slope; % Constant C2 in rule f_probmove_rule2
 handles.c_pmove_grad_rh = handles.c_pmove_grad; % Ret-high parameter for f_pmoving_rule2; governing chemotaxtic movement
+handles.c_ret_transformation = 4; % Rule selection for Ret-induced transformation of epithelium. See f_update_vparameters_void for a full description
+handles.c_retlh_prob = 0.1; % retL->retH arbitrary probability
+handles.c_rethl_prob = 0; % retH->retL arbitrary probability
+handles.c_retlh_prob_GDNF_C0 = -10; % retL->retH GDNF probability constant
+handles.c_retlh_prob_GDNF_C1 = 3; % retL->retH GDNF probability gradient
+handles.c_rethl_prob_GDNF_C0 = 10; % retH->retL GDNF probability constant
+handles.c_reth1_prob_GDNF_C1 = -10; % retH->retL GDNF probability gradient
+handles.c_ret_competition = 1; % Ret competition rule selector. See f_update_vparameters_void for a full description
+handles.c_ret_prob_rule = 1; % Ret competition probability rule. See f_update_vparameters_void for a full description
+handles.c_ret_prob_rule1_cons = 1; % Probability of Ret competition occuring if above rule is '1'
+handles.c_ret_comp_prob = 2; % P(comp) rule once this path has been started down
+handles.c_ret_comp_prob_rule1_cons = 1; % The probability of competiting is a constant in rule 1 above
+handles.c_ret_comp_prob_rule2_C0 = -3; % Constant used in rule 2
+handles.c_ret_comp_prob_rule2_C1 = 5; % GDNF-multiplier constant used in rule 2
+
 
 global error_count;
 error_count = 0;
@@ -705,13 +721,30 @@ if handles.graph_selector == 0
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','off')
     set(handles.text77,'Visible','off')
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
 elseif handles.graph_selector == 1
     set(handles.text7,'String','Cell numbers');
     set(handles.text9,'String','Perimeter');
-    set(handles.text74,'Visible','on')
-    set(handles.text75,'Visible','on')
-    set(handles.text76,'Visible','off')
-    set(handles.text77,'Visible','off')
+    if handles.ck_ret_on == 0
+        set(handles.text74,'Visible','on')
+        set(handles.text75,'Visible','on')
+        set(handles.text157,'Visible','off')
+        set(handles.text158,'Visible','off')
+        set(handles.text159,'Visible','off')
+        set(handles.text76,'Visible','off')
+        set(handles.text77,'Visible','off')
+    else
+        set(handles.text74,'Visible','off')
+        set(handles.text75,'Visible','off')
+        set(handles.text157,'Visible','on')
+        set(handles.text158,'Visible','on')
+        set(handles.text159,'Visible','on')
+        set(handles.text76,'Visible','off')
+        set(handles.text77,'Visible','off')
+    end
+        
 elseif handles.graph_selector == 2
     set(handles.text7,'String','Acceptance probability');
     set(handles.text9,'String','Target cell selection heterogeneity');
@@ -719,17 +752,25 @@ elseif handles.graph_selector == 2
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','off')
     set(handles.text77,'Visible','off')
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
 elseif handles.graph_selector == 3
     set(handles.text74,'Visible','off')
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','on')
     set(handles.text77,'Visible','on')
-    
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
 else
     set(handles.text74,'Visible','off')
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','off')
     set(handles.text77,'Visible','off')
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
     
 end
 

@@ -49,3 +49,14 @@ if length_new(cell_measurables) > 7
         m_cellindices = f_update_cellindices_m(m_cellindices,m_cell_changes,m_cell);
     end
 end
+
+% If the cell is epithelium and if there is transformation allowed do the
+% following: Dependent on the parameter determining the rule to be obeyed for
+% Ret-induced transformation, convert epithelium cells from Ret-L->Ret-H,
+% and potentially vice versa. 
+if and(m_cell(c_x,c_y) > 0, v_parameters(46) > 0)
+    m_cell = f_epithelium_ret_transform_m(c_x,c_y,m_cell,m_GDNF,v_parameters);
+    cell_measurables{1,1} = m_cell;
+end
+
+

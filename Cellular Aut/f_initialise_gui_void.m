@@ -43,6 +43,7 @@ set(handles.text141,'String',num2str(handles.v_parameters(37)));
 set(handles.text155,'String',num2str(handles.v_parameters(38)));
 set(handles.text156,'String',num2str(handles.v_parameters(39)));
 set(handles.popupmenu19,'Value',handles.v_parameters(27));
+set(handles.popupmenu20,'Value',handles.v_parameters(31));
 set(handles.popupmenu26,'Value',handles.v_parameters(29));
 set(handles.popupmenu27,'Value',handles.v_parameters(30));
 
@@ -105,6 +106,9 @@ set(handles.text74,'Visible','off')
 set(handles.text75,'Visible','off')
 set(handles.text76,'Visible','off')
 set(handles.text77,'Visible','off')
+set(handles.text157,'Visible','off')
+set(handles.text158,'Visible','off')
+set(handles.text159,'Visible','off')
 set(handles.text108,'String',num2str(handles.c_beta_mesmove));
 set(handles.text110,'String',num2str(handles.v_parameters(18)));
 set(handles.text116,'String',num2str(handles.v_parameters(20)));

@@ -3,7 +3,7 @@ function m_perimeter_approx = f_perimeter_edge_approx_m(m_cell,v_parameters,c_se
 % matrix of indices
 
 % Get the edges
-m_cell = m_cell.*(m_cell==1);
+m_cell = (m_cell>=1);
 m_cell_edge = double(edge(m_cell));
 
 % Remove all connected components that have a length less than 100
