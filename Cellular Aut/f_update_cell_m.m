@@ -54,7 +54,7 @@ end
 % following: Dependent on the parameter determining the rule to be obeyed for
 % Ret-induced transformation, convert epithelium cells from Ret-L->Ret-H,
 % and potentially vice versa. 
-if and(m_cell(c_x,c_y) > 0, v_parameters(46) > 0)
+if and(and(m_cell(c_x,c_y) > 0, v_parameters(46) > 0),v_parameters(40)>0)
     m_cell = f_epithelium_ret_transform_m(c_x,c_y,m_cell,m_GDNF,v_parameters);
     cell_measurables{1,1} = m_cell;
 end

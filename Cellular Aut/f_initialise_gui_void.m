@@ -1,6 +1,66 @@
 function [] = f_initialise_gui_void(handles)
 
 
+% Dependent on whether Ret activity is being considered hide the irrelevant
+% panels, update sliders with the correct value, and text boxes to do with
+% Ret
+if handles.ck_ret_on == 0
+    set(handles.uipanel4,'Visible','on')
+    set(handles.uipanel14,'Visible','off')
+else
+    set(handles.uipanel4,'Visible','off')
+    set(handles.uipanel14,'Visible','on')
+end
+set(handles.slider35,'Value',handles.ck_moveprob_cons);
+set(handles.slider36,'Value',handles.ck_moveprob_cons_rh);
+set(handles.slider37,'Value',handles.ck_move_norm_cons);
+set(handles.slider38,'Value',handles.ck_move_norm_cons_rh);
+set(handles.slider39,'Value',handles.ck_move_norm_slope);
+set(handles.slider40,'Value',handles.ck_move_norm_slope_rh);
+set(handles.slider41,'Value',handles.c_pmove_grad);
+set(handles.slider42,'Value',handles.c_pmove_grad_rh);
+set(handles.text163,'String',num2str(handles.ck_moveprob_cons));
+set(handles.text164,'String',num2str(handles.ck_moveprob_cons_rh));
+set(handles.text166,'String',num2str(handles.ck_move_norm_cons));
+set(handles.text167,'String',num2str(handles.ck_move_norm_cons_rh));
+set(handles.text169,'String',num2str(handles.ck_move_norm_slope));
+set(handles.text170,'String',num2str(handles.ck_move_norm_slope_rh));
+set(handles.text172,'String',num2str(handles.c_pmove_grad));
+set(handles.text173,'String',num2str(handles.c_pmove_grad_rh));
+set(handles.popupmenu30,'Value',2-mod(1,handles.ck_ret_on));
+
+% Set the parameters in the Ret transform panel
+set(handles.slider43,'Value',handles.ck_rh_num);
+set(handles.text182,'String',num2str(handles.ck_rh_num));
+set(handles.slider44,'Value',handles.c_retlh_prob);
+set(handles.text183,'String',num2str(handles.c_retlh_prob));
+set(handles.slider45,'Value',handles.c_rethl_prob);
+set(handles.text184,'String',num2str(handles.c_rethl_prob));
+set(handles.slider46,'Value',handles.c_retlh_prob_GDNF_C0);
+set(handles.text188,'String',num2str(handles.c_retlh_prob_GDNF_C0));
+set(handles.slider47,'Value',handles.c_retlh_prob_GDNF_C1);
+set(handles.text189,'String',num2str(handles.c_retlh_prob_GDNF_C1));
+set(handles.slider48,'Value',handles.c_rethl_prob_GDNF_C0);
+set(handles.text193,'String',num2str(handles.c_rethl_prob_GDNF_C0));
+set(handles.slider49,'Value',handles.c_reth1_prob_GDNF_C1);
+set(handles.text194,'String',num2str(handles.c_reth1_prob_GDNF_C1));
+
+% Hide the Ret competition panel
+set(handles.uipanel18,'Visible','off')
+
+% Set the various sliders etc. in the Ret competition panel to their
+% correct positions
+set(handles.popupmenu32,'Value',2-mod(1,handles.v_parameters(53)));
+set(handles.popupmenu33,'Value',handles.v_parameters(56));
+set(handles.slider50,'Value',handles.v_parameters(55));
+set(handles.slider51,'Value',handles.v_parameters(57));
+set(handles.slider52,'Value',handles.v_parameters(58));
+set(handles.slider53,'Value',handles.v_parameters(59));
+set(handles.text195,'String',num2str(handles.v_parameters(55)));
+set(handles.text199,'String',num2str(handles.v_parameters(57)));
+set(handles.text202,'String',num2str(handles.v_parameters(58)));
+set(handles.text204,'String',num2str(handles.v_parameters(59)));
+
 % Hide the diagnostic panel
 set(handles.uipanel5,'Visible','off')
 
@@ -51,6 +111,11 @@ set(handles.popupmenu27,'Value',handles.v_parameters(30));
  % Set the active mesenchyme popupmenu to the correct position
  set(handles.popupmenu24,'Value',handles.v_parameters(33)+1);
 
+ % Initially hide the panel with Ret transformation options
+ set(handles.uipanel17,'Visible','off')
+ 
+ % Set various popups to correct position
+ set(handles.popupmenu8,'Value',handles.ck_prolifprob_rule);
 
 
 if handles.ck_neighbours == 4

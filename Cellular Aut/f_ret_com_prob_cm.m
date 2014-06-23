@@ -19,7 +19,7 @@ switch c_ret_prob_rule
             'An error has been made in f_ret_com_prob_cm where the GDNF gradient is negative'
             return;
         end
-        c_prob_comp = normcdf(c_ret_prob_rule2_C0 + c_ret_prob_rule2_C1*c_GDNF_grad)
+        c_prob_comp = normcdf(c_ret_prob_rule2_C0 + c_ret_prob_rule2_C1*c_GDNF_grad);
         return;
 end
         
