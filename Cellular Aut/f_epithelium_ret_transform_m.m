@@ -42,6 +42,7 @@ switch c_ret_transformation
         if c_celltype == 1
             c_prob_transform = f_epithelium_ret_GDNF_prob_c(c_x,c_y,m_GDNF,v_parameters,1); % Work out probability
             c_transform = f_prob_arbiter_c(c_prob_transform); % Work out whether to tranform based on probability
+            
         else
             c_prob_transform = f_epithelium_ret_GDNF_prob_c(c_x,c_y,m_GDNF,v_parameters,2); % Work out probability
             c_transform = f_prob_arbiter_c(c_prob_transform); % Work out whether to tranform based on probability

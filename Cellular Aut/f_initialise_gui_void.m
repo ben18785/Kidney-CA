@@ -28,6 +28,7 @@ set(handles.text170,'String',num2str(handles.ck_move_norm_slope_rh));
 set(handles.text172,'String',num2str(handles.c_pmove_grad));
 set(handles.text173,'String',num2str(handles.c_pmove_grad_rh));
 set(handles.popupmenu30,'Value',2-mod(1,handles.ck_ret_on));
+set(handles.popupmenu31,'Value',handles.c_ret_transformation+1)
 
 % Set the parameters in the Ret transform panel
 set(handles.slider43,'Value',handles.ck_rh_num);

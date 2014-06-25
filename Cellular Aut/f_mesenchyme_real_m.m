@@ -57,7 +57,7 @@ v_moves_prob = zeros(cn_mes_moves,1);
 for i = 1:cn_mes_moves
     v_moves_prob(i) =exp(c_beta_mesmove*(v_square_difference(i)))/c_denominator;
 end
-if sum(v_moves_prob) < 0.99
+if sum(v_moves_prob) < 0.99 && sum(v_moves_prob) > 1.1
     'error'
 end
 
@@ -72,7 +72,7 @@ end
 
 % Now generating the random number to then compare to the interval matrix
 cr_a = rand();
-
+c_move_index = 0;
 for i = 1:cn_mes_moves
    if  cr_a > m_intervals(i,1) && cr_a < m_intervals(i,2)
        c_move_index = i;
@@ -80,6 +80,14 @@ for i = 1:cn_mes_moves
    end
 end
 
+if c_move_index == 0
+    'An error has been made where c_move_index is not assigned'
+    cn_mes_moves
+    v_moves_prob
+    c_denominator
+    c_beta_mesmove
+    v_square_difference
+end
 
 % Now implementing the move
 m_cell(c_xmes,c_ymes) = 0;

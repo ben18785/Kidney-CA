@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  23 JUN 2014 18:25
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  25 JUN 2014 18:38
 entering extended mode
 **Kidney*CA*-*project*write*up.tex
 
@@ -934,7 +934,7 @@ Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count181
 
-Underfull \vbox (badness 1496) has occurred while \output is active []
+Underfull \vbox (badness 1502) has occurred while \output is active []
 
  [1
 Non-PDF special ignored!
@@ -953,7 +953,31 @@ Non-PDF special ignored!
 Non-PDF special ignored!
 
 ]
-Underfull \hbox (badness 1448) in paragraph at lines 54--55
+Package epstopdf Info: Source file: <real-branching.eps>
+(epstopdf)                    date: 2014-06-24 15:32:08
+(epstopdf)                    size: 245155 bytes
+(epstopdf)             Output file: <real-branching-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-06-24 15:34:24
+(epstopdf)                    size: 27714 bytes
+(epstopdf)             Command: <epstopdf --outfile=real-branching-eps-converte
+d-to.pdf real-branching.eps>
+(epstopdf)             \includegraphics on input line 54.
+Package epstopdf Info: Output file is already uptodate.
+
+<real-branching-eps-converted-to.pdf, id=10, 908.39375pt x 117.43875pt>
+File: real-branching-eps-converted-to.pdf Graphic file (type pdf)
+
+<use real-branching-eps-converted-to.pdf>
+Package pdftex.def Info: real-branching-eps-converted-to.pdf used on input line
+ 54.
+(pdftex.def)             Requested size: 908.39154pt x 117.43845pt.
+
+Overfull \hbox (2.19577pt too wide) in paragraph at lines 54--55
+ [][] 
+ []
+
+
+Underfull \hbox (badness 1448) in paragraph at lines 61--62
 []\OT1/pxr/m/n/10 GDNF is pro-duced by the MM, and acts
  []
 
@@ -965,103 +989,255 @@ Package epstopdf Info: Source file: <pathways.eps>
 (epstopdf)                    size: 16752 bytes
 (epstopdf)             Command: <epstopdf --outfile=pathways-eps-converted-to.p
 df pathways.eps>
-(epstopdf)             \includegraphics on input line 63.
+(epstopdf)             \includegraphics on input line 70.
 Package epstopdf Info: Output file is already uptodate.
-<pathways-eps-converted-to.pdf, id=9, 709.65125pt x 552.0625pt>
+<pathways-eps-converted-to.pdf, id=11, 709.65125pt x 552.0625pt>
 File: pathways-eps-converted-to.pdf Graphic file (type pdf)
 
 <use pathways-eps-converted-to.pdf>
-Package pdftex.def Info: pathways-eps-converted-to.pdf used on input line 63.
+Package pdftex.def Info: pathways-eps-converted-to.pdf used on input line 70.
 (pdftex.def)             Requested size: 709.6495pt x 552.06114pt.
 
-
-LaTeX Warning: Citation `srinivas1999expression' on page 2 undefined on input l
-ine 68.
-
-
-LaTeX Warning: Citation `cebrian2004morphometric' on page 2 undefined on input 
-line 68.
-
-
-LaTeX Warning: Citation `qiao1999branching' on page 2 undefined on input line 7
-0.
+Underfull \hbox (badness 1112) in paragraph at lines 77--78
+\OT1/pxr/m/n/10 tant mech-a-nism for branch-ing is cell-contact-
+ []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 76--76
+Package epstopdf Info: Source file: <UB_branch.eps>
+(epstopdf)                    date: 2014-06-02 20:22:06
+(epstopdf)                    size: 30134 bytes
+(epstopdf)             Output file: <UB_branch-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-06-02 20:26:04
+(epstopdf)                    size: 12500 bytes
+(epstopdf)             Command: <epstopdf --outfile=UB_branch-eps-converted-to.
+pdf UB_branch.eps>
+(epstopdf)             \includegraphics on input line 82.
+Package epstopdf Info: Output file is already uptodate.
+ <UB_branch-eps-converted-to.pdf, id=17, 1557.82pt x 589.20125pt>
+File: UB_branch-eps-converted-to.pdf Graphic file (type pdf)
+
+<use UB_branch-eps-converted-to.pdf>
+Package pdftex.def Info: UB_branch-eps-converted-to.pdf used on input line 82.
+(pdftex.def)             Requested size: 1557.81622pt x 589.1998pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
+/Ret HL/real-branching-eps-converted-to.pdf> <C:/Users/Ben/Dropbox/Kidney Morph
+ogenesis/Modelling/Mathematical modelling/Ret HL/pathways-eps-converted-to.pdf>
+]
+Underfull \hbox (badness 1052) in paragraph at lines 90--91
+\OT1/pxr/m/n/10 ing Costan-tini and Kopan [[]] cast doubt on
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+pxr on input line 93.
+("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\omspxr.fd"
+File: omspxr.fd 2000/12/14 v1.0
+)
+LaTeX Font Info:    Font shape `OMS/pxr/m/n' in size <10> not available
+(Font)              Font shape `OMS/pxsy/m/n' tried instead on input line 93.
+Package epstopdf Info: Source file: <UB_branch_ret.eps>
+(epstopdf)                    date: 2014-06-25 15:28:01
+(epstopdf)                    size: 31293 bytes
+(epstopdf)             Output file: <UB_branch_ret-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-06-25 15:29:26
+(epstopdf)                    size: 12937 bytes
+(epstopdf)             Command: <epstopdf --outfile=UB_branch_ret-eps-converted
+-to.pdf UB_branch_ret.eps>
+(epstopdf)             \includegraphics on input line 101.
+Package epstopdf Info: Output file is already uptodate.
+
+<UB_branch_ret-eps-converted-to.pdf, id=35, 1557.82pt x 589.20125pt>
+File: UB_branch_ret-eps-converted-to.pdf Graphic file (type pdf)
+
+<use UB_branch_ret-eps-converted-to.pdf>
+Package pdftex.def Info: UB_branch_ret-eps-converted-to.pdf used on input line 
+101.
+(pdftex.def)             Requested size: 1557.81622pt x 589.1998pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 116--116
 []\OT1/pxr/bx/n/14.4 Differentiation of mes-
  []
 
 
-Underfull \hbox (badness 1199) in paragraph at lines 76--76
+Underfull \hbox (badness 1199) in paragraph at lines 116--116
 \OT1/pxr/bx/n/14.4 enchyme into nephron pro-
  []
 
 
-("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Re
-t HL\Kidney CA - project write up.bbl"
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+ [4 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
+/Ret HL/UB_branch-eps-converted-to.pdf>]
+Underfull \vbox (badness 1173) has occurred while \output is active []
 
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
+/Ret HL/UB_branch_ret-eps-converted-to.pdf>] [6] [7]
+Package epstopdf Info: Source file: <connected.eps>
+(epstopdf)                    date: 2014-05-22 16:45:04
+(epstopdf)                    size: 34496 bytes
+(epstopdf)             Output file: <connected-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-05-22 16:45:09
+(epstopdf)                    size: 13737 bytes
+(epstopdf)             Command: <epstopdf --outfile=connected-eps-converted-to.
+pdf connected.eps>
+(epstopdf)             \includegraphics on input line 256.
+Package epstopdf Info: Output file is already uptodate.
+
+<connected-eps-converted-to.pdf, id=60, 831.105pt x 323.2075pt>
+File: connected-eps-converted-to.pdf Graphic file (type pdf)
+
+<use connected-eps-converted-to.pdf>
+Package pdftex.def Info: connected-eps-converted-to.pdf used on input line 256.
+
+(pdftex.def)             Requested size: 831.10297pt x 323.20671pt.
+ [8] [9 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical model
+ling/Ret HL/connected-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <axes.eps>
+(epstopdf)                    date: 2014-06-25 16:44:05
+(epstopdf)                    size: 197281 bytes
+(epstopdf)             Output file: <axes-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-06-25 16:44:10
+(epstopdf)                    size: 93909 bytes
+(epstopdf)             Command: <epstopdf --outfile=axes-eps-converted-to.pdf a
+xes.eps>
+(epstopdf)             \includegraphics on input line 313.
+Package epstopdf Info: Output file is already uptodate.
+ <axes-eps-converted-to.pdf, id=72, 1089.06876pt x 460.72125pt>
+File: axes-eps-converted-to.pdf Graphic file (type pdf)
+
+<use axes-eps-converted-to.pdf>
+Package pdftex.def Info: axes-eps-converted-to.pdf used on input line 313.
+(pdftex.def)             Requested size: 1089.0661pt x 460.72012pt.
+ [10]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [11 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modellin
+g/Ret HL/axes-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <bifucations.eps>
+(epstopdf)                    date: 2014-06-25 18:37:31
+(epstopdf)                    size: 189047 bytes
+(epstopdf)             Output file: <bifucations-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-06-25 18:38:22
+(epstopdf)                    size: 37675 bytes
+(epstopdf)             Command: <epstopdf --outfile=bifucations-eps-converted-t
+o.pdf bifucations.eps>
+(epstopdf)             \includegraphics on input line 340.
+Package epstopdf Info: Output file is already uptodate.
+
+<bifucations-eps-converted-to.pdf, id=100, 425.59pt x 219.82124pt>
+File: bifucations-eps-converted-to.pdf Graphic file (type pdf)
+
+<use bifucations-eps-converted-to.pdf>
+Package pdftex.def Info: bifucations-eps-converted-to.pdf used on input line 34
+0.
+(pdftex.def)             Requested size: 425.58894pt x 219.8207pt.
+
+("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Re
+t HL\Kidney CA - project write up.bbl"
+Underfull \vbox (badness 4328) has occurred while \output is active []
+
+ [12]
 Underfull \hbox (badness 1616) in paragraph at lines 10--16
 []\OT1/pxr/m/n/10 M Al-bert Bas-son, Simge Ak-bu-lut, Judy
  []
 
-[3 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling/
-Ret HL/pathways-eps-converted-to.pdf>]
-Underfull \hbox (badness 3078) in paragraph at lines 33--38
-\OT1/pxr/m/n/10 glas Den-ton, Monika Zi-manyi, Ter-ence
+
+Underfull \hbox (badness 1490) in paragraph at lines 31--37
+\OT1/pxr/m/n/10 Licht, Naoya Asai, Masahide Taka-hashi,
  []
 
 
-Underfull \hbox (badness 6396) in paragraph at lines 64--68
+Underfull \hbox (badness 1067) in paragraph at lines 31--37
+\OT1/pxr/m/n/10 Nobu-taka Ohgami, Masashi Kato, Cathy
+ []
+
+
+Underfull \hbox (badness 3078) in paragraph at lines 54--59
+\OT1/pxr/m/n/10 glas Den-ton, Monika Zi-manyi, Ter-ence
+ []
+
+[13 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
+/Ret HL/bifucations-eps-converted-to.pdf>]
+Underfull \hbox (badness 1565) in paragraph at lines 93--99
+[]\OT1/pxr/m/n/10 Tobias N Meyer, Cather-ine Schwesinger,
+ []
+
+
+Underfull \hbox (badness 1348) in paragraph at lines 107--113
+\OT1/pxr/m/n/10 Anna-Katerina Had-jan-ton-akis, Hui Zong,
+ []
+
+
+Underfull \hbox (badness 6396) in paragraph at lines 115--119
 []\OT1/pxr/m/n/10 Carmen V Pepi-celli, An-dreas Kispert,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--114
+Underfull \hbox (badness 2205) in paragraph at lines 161--165
+[]\OT1/pxr/m/n/10 S Srini-vas, MR Gold-berg, T Watan-abe,
+ []
+
+
+Underfull \hbox (badness 1533) in paragraph at lines 167--171
+\OT1/pxr/m/n/10 gen-er-a-tive ca-pac-ity in the re-nal ureteric
+ []
+
+[14]
+Underfull \hbox (badness 1292) in paragraph at lines 192--195
+[]\OT1/pxr/m/n/10 Tomoko Watan-abe and Frank Costan-tini.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 197--204
 []\OT1/pxr/m/n/10 Stefanie We-ber, Vin-cent Moriniere,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 107--114
+Underfull \hbox (badness 10000) in paragraph at lines 197--204
 \OT1/pxr/m/n/10 Tanja Kn[]uppel, Ma-rina Char-bit, Jir[]
  []
 
 
-Underfull \hbox (badness 1221) in paragraph at lines 107--114
+Underfull \hbox (badness 1221) in paragraph at lines 197--204
 \OT1/pxr/m/n/10 Dusek, Gian Marco Ghig-geri, Au-gustina
  []
 
 
-Underfull \hbox (badness 1158) in paragraph at lines 107--114
+Underfull \hbox (badness 1158) in paragraph at lines 197--204
 \OT1/pxr/m/n/10 Amira Peco-Antic, et al.  Preva-lence of
  []
 
-) [4]
+) [15
+
+]
 ("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Re
-t HL\Kidney CA - project write up.aux")
-
-LaTeX Warning: There were undefined references.
-
- ) 
+t HL\Kidney CA - project write up.aux") ) 
 Here is how much of TeX's memory you used:
- 12640 strings out of 494045
- 179603 string characters out of 3148393
- 369838 words of memory out of 3000000
- 15644 multiletter control sequences out of 15000+200000
- 33702 words of font info for 107 fonts, out of 3000000 for 9000
+ 12733 strings out of 494045
+ 181456 string characters out of 3148393
+ 371094 words of memory out of 3000000
+ 15720 multiletter control sequences out of 15000+200000
+ 37685 words of font info for 116 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 52i,9n,92p,3257b,362s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/fontname/8r.enc}<C:/Program File
-s/MiKTeX 2.9/fonts/type1/public/pxfonts/pxsy.pfb><C:/Program Files/MiKTeX 2.9/f
-onts/type1/public/pxfonts/rpxb.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
-lic/pxfonts/rpxmi.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/r
-pxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplb8a.pfb><C:/Pr
-ogram Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb><C:/Program Files/Mi
-KTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on "Kidney CA - project write up.pdf" (4 pages, 96304 bytes).
+ 52i,10n,92p,3257b,362s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc
+/dvips/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/
+pxex.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/pxsy.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxb.pfb><C:/Program Files/M
+iKTeX 2.9/fonts/type1/public/pxfonts/rpxmi.pfb><C:/Program Files/MiKTeX 2.9/fon
+ts/type1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/p
+alatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on "Kidney CA - project write up.pdf" (15 pages, 337247 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
+ 145 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -9,8 +9,8 @@ switch c_epithelium_type
         C0 = v_parameters(49);
         C1 = v_parameters(50);
     case 2 % retH
-        C0 = v_parameters(49);
-        C1 = v_parameters(50);
+        C0 = v_parameters(51);
+        C1 = v_parameters(52);
 end
 
 
