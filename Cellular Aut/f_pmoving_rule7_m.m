@@ -1,4 +1,4 @@
-function cell_measurables = f_pmoving_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function cell_measurables = f_pmoving_rule7_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters,c_ret)
 % A function which chooses between the allowed movements and implements one
 % of them. In this rule the probability of one particular move is equal to
 % 1/#moves; ie the same across all the available moves. (c_x,c_y) is the

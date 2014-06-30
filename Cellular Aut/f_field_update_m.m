@@ -21,7 +21,9 @@ m_lap = -m_lap;
 for i = 1:c_depth_full
     for j = 1:c_width_full
         switch m_cell(i,j)
-            case 1
+            case 1 % Ret-low
+                m_lap((i-1)*c_width_full+j,(i-1)*c_width_full+j) = m_lap((i-1)*c_width_full+j,(i-1)*c_width_full+j) - (1/c_dg); % It is minus for the second part because the matrix is already negative (if unsure check the Smallbone Matlab thing)
+            case 2 % Ret - high: same as above. Just avoids me having to rewrite the code to take into account Ret levels.
                 m_lap((i-1)*c_width_full+j,(i-1)*c_width_full+j) = m_lap((i-1)*c_width_full+j,(i-1)*c_width_full+j) - (1/c_dg); % It is minus for the second part because the matrix is already negative (if unsure check the Smallbone Matlab thing)
         end
     end

@@ -27,12 +27,33 @@ c_mesenchyme_select = 0;
 c_cell_options = 0;
 
 % If we have active mesenchyme and are using a rule related to distance
-% then update the cell distance matrix
+% then update the cell distance matrix. Also dependent on the rule being
+% used, make mesenchyme cells attracted towards Ret-high cells by
+% calculating the distance matrix from these cells only
 m_distance = [];
-if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
-    'Distance matrix calculated'
-    m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
+ck_ret_on = v_parameters(40);
+if sum(sum(m_cell>1)) > 0
+    switch ck_ret_on
+        case 0 % No Ret dependence
+            if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
+                'Distance matrix calculated'
+                m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
+            end
+        case 1 % Ret dependence, therefore only work out distance from the Ret-high cells
+            if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
+                'Distance matrix from Ret-high calculated'
+                m_cell_rh = double(m_cell==2);
+                m_distance = f_distance_matrix_calculator_m(m_cell_rh,v_parameters);
+            end
+    end
+else
+    if and(v_parameters(33) == 1, or(v_parameters(27) == 2,v_parameters(31) == 2))
+                'Distance matrix calculated'
+                m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
+    end
 end
+    
+        
 
 for i = 1:cn_cells
     if mod(i,1000) == 0
@@ -42,14 +63,14 @@ for i = 1:cn_cells
         m_cellindices = f_random_indices(m_cellindices);
     end
     
-    if m_cell(m_cellindices(i,1),m_cellindices(i,2)) ~= m_cellindices(i,3)
-        'f_update_cells: An error has been made whereby a cell has been passed to f_update_cells which has type different to what is should'
-        m_cell(m_cellindices(i,1),m_cellindices(i,2))
-        m_cellindices(i,3)
-        m_cellindices(i,1)
-        m_cellindices(i,2)
-        gc_error_count = gc_error_count + 1;
-    end
+%     if m_cell(m_cellindices(i,1),m_cellindices(i,2)) ~= m_cellindices(i,3)
+%         'f_update_cells: An error has been made whereby a cell has been passed to f_update_cells which has type different to what is should'
+%         m_cell(m_cellindices(i,1),m_cellindices(i,2))
+%         m_cellindices(i,3)
+%         m_cellindices(i,1)
+%         m_cellindices(i,2)
+%         gc_error_count = gc_error_count + 1;
+%     end
     [cell_measurables,m_cellindices] = f_update_cell_m(m_cellindices(i,:),m_cell,m_GDNF,m_distance,m_cellindices,i,v_parameters);
     m_cell = cell_measurables{1,1};
     c_hetero = c_hetero + cell_measurables{2,1};

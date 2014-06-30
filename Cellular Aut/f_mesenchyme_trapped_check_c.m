@@ -30,7 +30,7 @@ end
 c_epithelium_count = 0;
 
 for i = 1:c_numindices
-   if m_cell(m_allindices(i,1),m_allindices(i,2)) == 1
+   if or(m_cell(m_allindices(i,1),m_allindices(i,2)) == 1,m_cell(m_allindices(i,1),m_allindices(i,2)) == 2)
        c_epithelium_count = c_epithelium_count + 1;
    end
 end

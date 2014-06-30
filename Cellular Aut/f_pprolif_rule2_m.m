@@ -1,4 +1,4 @@
-function cell_measurables = f_pprolif_rule2_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters)
+function cell_measurables = f_pprolif_rule2_m(c_x,c_y,m_allowedindices,m_cell,m_GDNF,v_parameters,c_ret)
 % A function which chooses between the allowed movements and creates a daughter cell there. 
 % In this rule the probability of one particular move is related
 % to the magnitude of the gradient of GDNF for that particular move
@@ -16,7 +16,12 @@ end
 
 % Getting the parameters controlling the magnitude of the strength of the
 % effect of gradients of GDNF on the probability of a particular move
-c_pmove_grad = v_parameters(13);
+switch c_ret
+    case 1 % Ret-low
+        c_pmove_grad = v_parameters(13);
+    case 2 % Ret-high
+        c_pmove_grad = v_parameters(45);
+end
 
 % Calculating a parameter on (0,1) which relates probability of a move to
 % the magnitude of the gradient in GDNF. Making this a row vector so that

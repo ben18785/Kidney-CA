@@ -49,11 +49,7 @@ v_parameters = [ck_dg;ck_gamma; ckp_moveprob; ck_neighbours;ck_movement_rule;c_d
 %% Initial area of epithelium and mesenchyme created, and the initial field of GDNF calculated
 % Create the epithelium layer, and the mesenchyme
 m_cell = f_create_area_m(c_width_full, c_depth_full);
-m_cell = f_create_random_epithelium_new_m(m_cell, c_depth_full/2,c_width_full/2, 500,v_parameters);
+m_cell = f_create_epithelium_ret_m(m_cell, c_depth_full/2,c_width_full/2, 500,v_parameters);
 m_cell = f_create_mesenchyme_m(m_cell, c_width_m, c_depth_m, c_mesenchyme_density, c_depth_mesenstart,c_width_mesenstart);
 
 
-
-m_distance = f_distance_matrix_calculator_m(m_cell,v_parameters);
-subplot(1,2,1),imagesc(m_cell);
-subplot(1,2,2),imagesc(m_distance);

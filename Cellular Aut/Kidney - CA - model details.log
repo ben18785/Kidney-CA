@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  23 MAY 2014 15:05
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  25 JUN 2014 15:52
 entering extended mode
 **Kidney*-*CA*-*model*details.tex
 
-("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
-dney - CA - model details.tex"
+("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Re
+t HL\Kidney - CA - model details.tex"
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -897,44 +897,44 @@ LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
 LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
 (Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
 )
-("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
-dney - CA - model details.aux")
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 33.
-LaTeX Font Info:    Try loading font information for OML+pxmi on input line 33.
+("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Re
+t HL\Kidney - CA - model details.aux")
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 32.
+LaTeX Font Info:    Try loading font information for OML+pxmi on input line 32.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\omlpxmi.fd"
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 33.
-LaTeX Font Info:    Try loading font information for OMS+pxsy on input line 33.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 32.
+LaTeX Font Info:    Try loading font information for OMS+pxsy on input line 32.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\omspxsy.fd"
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 33.
-LaTeX Font Info:    Try loading font information for OMX+pxex on input line 33.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 32.
+LaTeX Font Info:    Try loading font information for OMX+pxex on input line 32.
 
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\omxpxex.fd"
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 33.
-LaTeX Font Info:    Try loading font information for U+pxexa on input line 33.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 32.
+LaTeX Font Info:    Try loading font information for U+pxexa on input line 32.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\upxexa.fd"
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 33.
-LaTeX Font Info:    Try loading font information for OT1+pxr on input line 33.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Try loading font information for OT1+pxr on input line 32.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\ot1pxr.fd"
 File: ot1pxr.fd 2000/12/14 v1.0
@@ -967,35 +967,35 @@ l.1253 \newdimen\MPscratchDim
 \makeMPintoPDFobject=\count184
 \everyMPtoPDFconversion=\toks44
 )
-LaTeX Font Info:    Try loading font information for U+pxmia on input line 33.
+LaTeX Font Info:    Try loading font information for U+pxmia on input line 32.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\upxmia.fd"
 File: upxmia.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for U+pxsya on input line 33.
+LaTeX Font Info:    Try loading font information for U+pxsya on input line 32.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\upxsya.fd"
 File: upxsya.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for U+pxsyb on input line 33.
+LaTeX Font Info:    Try loading font information for U+pxsyb on input line 32.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\upxsyb.fd"
 File: utxsyb.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Try loading font information for U+pxsyc on input line 33.
+LaTeX Font Info:    Try loading font information for U+pxsyc on input line 32.
 
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\upxsyc.fd"
 File: upxsyc.fd 2000/12/14 v1.0
 )
-Package xypdf Info: Line width: 0.59pt on input line 33.
-LaTeX Info: Redefining \celsius on input line 33.
-Package gensymb Info: Faking symbols for \degree and \celsius on input line 33.
+Package xypdf Info: Line width: 0.59pt on input line 32.
+LaTeX Info: Redefining \celsius on input line 32.
+Package gensymb Info: Faking symbols for \degree and \celsius on input line 32.
 
 
 
 Package gensymb Warning: Not defining \perthousand.
 
-LaTeX Info: Redefining \ohm on input line 33.
-Package gensymb Info: Using \Omega for \ohm on input line 33.
+LaTeX Info: Redefining \ohm on input line 32.
+Package gensymb Info: Using \Omega for \ohm on input line 32.
 
 Package gensymb Warning: Not defining \micro.
 
@@ -1042,12 +1042,12 @@ Package caption Info: End \AtBeginDocument code.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count185
-LaTeX Font Info:    Try loading font information for OMS+pxr on input line 40.
+LaTeX Font Info:    Try loading font information for OMS+pxr on input line 39.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\pxfonts\omspxr.fd"
 File: omspxr.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `OMS/pxr/m/n' in size <10> not available
-(Font)              Font shape `OMS/pxsy/m/n' tried instead on input line 40.
+(Font)              Font shape `OMS/pxsy/m/n' tried instead on input line 39.
  [1
 Non-PDF special ignored!
 Non-PDF special ignored!
@@ -1072,14 +1072,14 @@ Package epstopdf Info: Source file: <connected.eps>
 (epstopdf)                    size: 13737 bytes
 (epstopdf)             Command: <epstopdf --outfile=connected-eps-converted-to.
 pdf connected.eps>
-(epstopdf)             \includegraphics on input line 223.
+(epstopdf)             \includegraphics on input line 222.
 Package epstopdf Info: Output file is already uptodate.
 
 <connected-eps-converted-to.pdf, id=25, 831.105pt x 323.2075pt>
 File: connected-eps-converted-to.pdf Graphic file (type pdf)
 
 <use connected-eps-converted-to.pdf>
-Package pdftex.def Info: connected-eps-converted-to.pdf used on input line 223.
+Package pdftex.def Info: connected-eps-converted-to.pdf used on input line 222.
 
 (pdftex.def)             Requested size: 831.10297pt x 323.20671pt.
  [6]
@@ -1091,20 +1091,20 @@ Package epstopdf Info: Source file: <8-NN.eps>
 (epstopdf)                    size: 52592 bytes
 (epstopdf)             Command: <epstopdf --outfile=8-NN-eps-converted-to.pdf 8
 -NN.eps>
-(epstopdf)             \includegraphics on input line 241.
+(epstopdf)             \includegraphics on input line 240.
 Package epstopdf Info: Output file is already uptodate.
 
 <8-NN-eps-converted-to.pdf, id=29, 416.55624pt x 259.97125pt>
 File: 8-NN-eps-converted-to.pdf Graphic file (type pdf)
 
 <use 8-NN-eps-converted-to.pdf>
-Package pdftex.def Info: 8-NN-eps-converted-to.pdf used on input line 241.
+Package pdftex.def Info: 8-NN-eps-converted-to.pdf used on input line 240.
 (pdftex.def)             Requested size: 416.55522pt x 259.97061pt.
  [7 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
-/connected-eps-converted-to.pdf> <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Mod
-elling/Mathematical modelling/8-NN-eps-converted-to.pdf>]
+/Ret HL/connected-eps-converted-to.pdf> <C:/Users/Ben/Dropbox/Kidney Morphogene
+sis/Modelling/Mathematical modelling/Ret HL/8-NN-eps-converted-to.pdf>]
 ! Extra }, or forgotten $.
-l.261 ...) = \Phi(c_1 + c_2 \sum\limits_{allowed}}
+l.260 ...) = \Phi(c_1 + c_2 \sum\limits_{allowed}}
                                                    (g^{neighbours} - g^{curr...
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1112,7 +1112,7 @@ you forgot something else, as in `\hbox{$x}'. In such cases
 the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
-LaTeX Font Info:    Try loading font information for U+bbm on input line 261.
+LaTeX Font Info:    Try loading font information for U+bbm on input line 260.
 ("C:\Program Files\MiKTeX 2.9\tex\latex\bbm\ubbm.fd"
 File: ubbm.fd 1999/03/15 V 1.2 Font definition for bbm font - TH
 ) [8] [9] [10]
@@ -1124,18 +1124,18 @@ Package epstopdf Info: Source file: <weighting.eps>
 (epstopdf)                    size: 106256 bytes
 (epstopdf)             Command: <epstopdf --outfile=weighting-eps-converted-to.
 pdf weighting.eps>
-(epstopdf)             \includegraphics on input line 337.
+(epstopdf)             \includegraphics on input line 336.
 Package epstopdf Info: Output file is already uptodate.
 
 <weighting-eps-converted-to.pdf, id=57, 873.2625pt x 317.185pt>
 File: weighting-eps-converted-to.pdf Graphic file (type pdf)
 
 <use weighting-eps-converted-to.pdf>
-Package pdftex.def Info: weighting-eps-converted-to.pdf used on input line 337.
+Package pdftex.def Info: weighting-eps-converted-to.pdf used on input line 336.
 
 (pdftex.def)             Requested size: 873.26036pt x 317.1842pt.
  [11 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modellin
-g/weighting-eps-converted-to.pdf>]
+g/Ret HL/weighting-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <axes.eps>
 (epstopdf)                    date: 2014-05-22 16:35:59
 (epstopdf)                    size: 197789 bytes
@@ -1144,22 +1144,22 @@ Package epstopdf Info: Source file: <axes.eps>
 (epstopdf)                    size: 94008 bytes
 (epstopdf)             Command: <epstopdf --outfile=axes-eps-converted-to.pdf a
 xes.eps>
-(epstopdf)             \includegraphics on input line 374.
+(epstopdf)             \includegraphics on input line 373.
 Package epstopdf Info: Output file is already uptodate.
 
 <axes-eps-converted-to.pdf, id=72, 1073.00874pt x 460.72125pt>
 File: axes-eps-converted-to.pdf Graphic file (type pdf)
 
 <use axes-eps-converted-to.pdf>
-Package pdftex.def Info: axes-eps-converted-to.pdf used on input line 374.
+Package pdftex.def Info: axes-eps-converted-to.pdf used on input line 373.
 (pdftex.def)             Requested size: 1073.00612pt x 460.72012pt.
 
-Overfull \hbox (11.26517pt too wide) in paragraph at lines 374--375
+Overfull \hbox (11.26517pt too wide) in paragraph at lines 373--374
  [][] 
  []
 
 ! Extra }, or forgotten $.
-l.378 ...maximum move length has been reached, $p}
+l.377 ...maximum move length has been reached, $p}
                                                   $; resulting in a length o...
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1176,24 +1176,71 @@ Package epstopdf Info: Source file: <rectangular.eps>
 (epstopdf)                    size: 201690 bytes
 (epstopdf)             Command: <epstopdf --outfile=rectangular-eps-converted-t
 o.pdf rectangular.eps>
-(epstopdf)             \includegraphics on input line 383.
+(epstopdf)             \includegraphics on input line 382.
 Package epstopdf Info: Output file is already uptodate.
  <rectangular-eps-converted-to.pdf, id=76, 1072.005pt x 913.4125pt>
 File: rectangular-eps-converted-to.pdf Graphic file (type pdf)
 
 <use rectangular-eps-converted-to.pdf>
 Package pdftex.def Info: rectangular-eps-converted-to.pdf used on input line 38
-3.
+2.
 (pdftex.def)             Requested size: 1072.0024pt x 913.41028pt.
 
-Overfull \hbox (10.7633pt too wide) in paragraph at lines 383--384
+Overfull \hbox (10.7633pt too wide) in paragraph at lines 382--383
  [][] 
  []
 
 [13 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
-/axes-eps-converted-to.pdf>]
+/Ret HL/axes-eps-converted-to.pdf>]
+Package epstopdf Info: Source file: <condensation.eps>
+(epstopdf)                    date: 2014-06-02 23:47:54
+(epstopdf)                    size: 64718 bytes
+(epstopdf)             Output file: <condensation-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-06-02 23:48:07
+(epstopdf)                    size: 43615 bytes
+(epstopdf)             Command: <epstopdf --outfile=condensation-eps-converted-
+to.pdf condensation.eps>
+(epstopdf)             \includegraphics on input line 399.
+Package epstopdf Info: Output file is already uptodate.
+
+<condensation-eps-converted-to.pdf, id=102, 945.5325pt x 705.63625pt>
+File: condensation-eps-converted-to.pdf Graphic file (type pdf)
+
+<use condensation-eps-converted-to.pdf>
+Package pdftex.def Info: condensation-eps-converted-to.pdf used on input line 3
+99.
+(pdftex.def)             Requested size: 945.5302pt x 705.63452pt.
+ [14 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modellin
+g/Ret HL/rectangular-eps-converted-to.pdf>] [15 <C:/Users/Ben/Dropbox/Kidney Mo
+rphogenesis/Modelling/Mathematical modelling/Ret HL/condensation-eps-converted-
+to.pdf>]
+Package epstopdf Info: Source file: <UB_branch.eps>
+(epstopdf)                    date: 2014-06-02 20:22:06
+(epstopdf)                    size: 30134 bytes
+(epstopdf)             Output file: <UB_branch-eps-converted-to.pdf>
+(epstopdf)                    date: 2014-06-02 20:26:04
+(epstopdf)                    size: 12500 bytes
+(epstopdf)             Command: <epstopdf --outfile=UB_branch-eps-converted-to.
+pdf UB_branch.eps>
+(epstopdf)             \includegraphics on input line 433.
+Package epstopdf Info: Output file is already uptodate.
+
+<UB_branch-eps-converted-to.pdf, id=118, 1557.82pt x 589.20125pt>
+File: UB_branch-eps-converted-to.pdf Graphic file (type pdf)
+
+<use UB_branch-eps-converted-to.pdf>
+Package pdftex.def Info: UB_branch-eps-converted-to.pdf used on input line 433.
+
+(pdftex.def)             Requested size: 1557.81622pt x 589.1998pt.
+
+Overfull \hbox (20.0073pt too wide) in paragraph at lines 433--434
+ [][] 
+ []
+
+[16 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
+/Ret HL/UB_branch-eps-converted-to.pdf>] [17] [18] [19]
 ! Extra }, or forgotten $.
-l.401 ...r having a ratio of $ratio = \frac{2}{r}}
+l.499 ...r having a ratio of $ratio = \frac{2}{r}}
                                                   $, this could be taken to ...
 I've deleted a group-closing symbol because it seems to be
 spurious, as in `$x}$'. But perhaps the } is legitimate and
@@ -1201,8 +1248,7 @@ you forgot something else, as in `\hbox{$x}'. In such cases
 the way to recover is to insert both the forgotten and the
 deleted material, e.g., by typing `I$}'.
 
-[14 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modelling
-/rectangular-eps-converted-to.pdf>]
+[20]
 Package epstopdf Info: Source file: <medial.eps>
 (epstopdf)                    date: 2014-05-22 18:03:39
 (epstopdf)                    size: 35335 bytes
@@ -1211,39 +1257,38 @@ Package epstopdf Info: Source file: <medial.eps>
 (epstopdf)                    size: 14044 bytes
 (epstopdf)             Command: <epstopdf --outfile=medial-eps-converted-to.pdf
  medial.eps>
-(epstopdf)             \includegraphics on input line 413.
+(epstopdf)             \includegraphics on input line 511.
 Package epstopdf Info: Output file is already uptodate.
-
-<medial-eps-converted-to.pdf, id=108, 966.61125pt x 522.95375pt>
+ <medial-eps-converted-to.pdf, id=140, 966.61125pt x 522.95375pt>
 File: medial-eps-converted-to.pdf Graphic file (type pdf)
 
 <use medial-eps-converted-to.pdf>
-Package pdftex.def Info: medial-eps-converted-to.pdf used on input line 413.
+Package pdftex.def Info: medial-eps-converted-to.pdf used on input line 511.
 (pdftex.def)             Requested size: 966.6089pt x 522.95247pt.
- [15] [16 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical mod
-elling/medial-eps-converted-to.pdf>]
-("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Ki
-dney - CA - model details.aux") ) 
+ [21] [22 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical mod
+elling/Ret HL/medial-eps-converted-to.pdf>]
+("C:\Users\Ben\Dropbox\Kidney Morphogenesis\Modelling\Mathematical modelling\Re
+t HL\Kidney - CA - model details.aux") ) 
 Here is how much of TeX's memory you used:
- 13547 strings out of 494045
- 192274 string characters out of 3148393
- 384762 words of memory out of 3000000
- 16511 multiletter control sequences out of 15000+200000
+ 13567 strings out of 494045
+ 192806 string characters out of 3148393
+ 384861 words of memory out of 3000000
+ 16529 multiletter control sequences out of 15000+200000
  40711 words of font info for 125 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
  52i,10n,92p,3256b,502s stack positions out of 5000i,500n,10000p,200000b,50000s
- <C:\Users\Ben\AppData\Local\MiKTeX\2.9\fonts\
-pk\ljfour\public\bbm\dpi600\bbm10.pk>{C:/Program Files/MiKTeX 2.9/fonts/enc/dvi
-ps/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/pxex
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/pxsy.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxb.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/pxfonts/rpxmi.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
-ype1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palat
-ino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on "Kidney - CA - model details.pdf" (16 pages, 592890 bytes).
+ <C:\Users\Ben\AppData\Local\MiKTeX\2.9
+\fonts\pk\ljfour\public\bbm\dpi600\bbm10.pk>{C:/Program Files/MiKTeX 2.9/fonts/
+enc/dvips/fontname/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfon
+ts/pxex.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/pxsy.pfb><C
+:/Program Files/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxb.pfb><C:/Program File
+s/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxmi.pfb><C:/Program Files/MiKTeX 2.9/
+fonts/type1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/ur
+w/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/upl
+r8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on "Kidney - CA - model details.pdf" (22 pages, 664432 bytes).
 PDF statistics:
- 151 PDF objects out of 1000 (max. 8388607)
+ 183 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

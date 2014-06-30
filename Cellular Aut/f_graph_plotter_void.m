@@ -1,4 +1,4 @@
-function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,v_perimeter_GDNF,v_perimeter_GDNF_average,t,graph_selector,handles)
+function [] = f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,v_perimeter_GDNF,v_perimeter_GDNF_average,v_epithelium_RH,v_epithelium_RL,t,graph_selector,handles)
 % A function which plots the relevant images in response to the user selecting a plot
 % choice from a dropdown menu
 
@@ -33,13 +33,16 @@ switch handles.graph_selector
 
     case 0 % Images
             axes(handles.axes1)
-            imagesc(m_cell)
-            
+            cmap = [0 0 1; 1 1 1; 1 1 0; 1 0 0];
+            colormap(cmap);
+            imagesc(flip(m_cell))
+            freezeColors
 
+            colormap('default')
             axes(handles.axes2)
-            imagesc(m_GDNF)
+            imagesc(flip(m_GDNF))
             hold on
-            c=contour(m_GDNF);
+            c=contour(flip(m_GDNF));
             clabel(c)
             hold off
             
@@ -51,29 +54,58 @@ switch handles.graph_selector
             pause(0.01)
             
     case 1 % Cell numbers and perimeter
+        
+            if handles.ck_ret_on == 0 % Ret not being considered  
             
-            axes(handles.axes1)
-            plot(1:t,v_epithelium,'r','LineWidth',4)
-            hold on
-            plot(1:t,v_mesenchyme,'b','LineWidth',4)
-%             legend('Epithelium','Mesenchyme')
-            hold off
-            xlim([1 handles.c_T])
-            ylim([0 handles.c_width_full*handles.c_depth_full])
-            xlabel('Simulation time')
-            ylabel('Cell numbers')
-            
-            
-            
-            axes(handles.axes2)
-            plot(1:t,v_perimeter,'LineWidth',4)
-            xlim([1 handles.c_T])
-            ylim([0 1000])
-            xlabel('Simulation time')
-            ylabel('Perimeter estimate')
-            
-            set(handles.text7,'String','Cell numbers');
-            set(handles.text9,'String','Perimeter');
+                axes(handles.axes1)
+                plot(1:t,v_epithelium,'r','LineWidth',4)
+                hold on
+                plot(1:t,v_mesenchyme,'b','LineWidth',4)
+    %             legend('Epithelium','Mesenchyme')
+                hold off
+                xlim([1 handles.c_T])
+                ylim([0 handles.c_width_full*handles.c_depth_full])
+                xlabel('Simulation time')
+                ylabel('Cell numbers')
+
+
+
+                axes(handles.axes2)
+                plot(1:t,v_perimeter,'LineWidth',4)
+                xlim([1 handles.c_T])
+                ylim([0 1000])
+                xlabel('Simulation time')
+                ylabel('Perimeter estimate')
+
+                set(handles.text7,'String','Cell numbers');
+                set(handles.text9,'String','Perimeter');
+                
+            else
+                axes(handles.axes1)
+                plot(1:t,v_epithelium_RH,'r','LineWidth',4)
+                hold on
+                plot(1:t,v_epithelium_RL,'m','LineWidth',4)
+                hold on
+                plot(1:t,v_mesenchyme,'b','LineWidth',4)
+   
+                hold off
+                xlim([1 handles.c_T])
+                ylim([0 handles.c_width_full*handles.c_depth_full])
+                xlabel('Simulation time')
+                ylabel('Cell numbers')
+
+
+
+                axes(handles.axes2)
+                plot(1:t,v_perimeter,'LineWidth',4)
+                xlim([1 handles.c_T])
+                ylim([0 1000])
+                xlabel('Simulation time')
+                ylabel('Perimeter estimate')
+
+                set(handles.text7,'String','Cell numbers');
+                set(handles.text9,'String','Perimeter');
+            end
             
             
     case 2
@@ -140,9 +172,13 @@ switch handles.graph_selector
             
             
             axes(handles.axes1)
-            imagesc(m_cell)
+            cmap = [0 0 1; 1 1 1; 1 1 0; 1 0 0];
+            colormap(cmap);
+            imagesc(flip(m_cell))
+            freezeColors
             
-            m_cell = double(m_cell==1);
+            colormap('default')
+            m_cell = double(m_cell>=1);
 
             skelImg   = bwmorph(m_cell, 'thin', 'inf');
             branchImg = bwmorph(skelImg, 'branchpoints');
@@ -156,7 +192,7 @@ switch handles.graph_selector
 
             axes(handles.axes2)
 
-            imagesc(skelImg); 
+            imagesc(flip(skelImg)); 
 
             pause(0.01)
             
@@ -164,13 +200,14 @@ switch handles.graph_selector
             set(handles.text7,'String','Initial mesenchyme');
             set(handles.text9,'String','Current mesenchyme');
             
-            
+            cmap = [1 1 1; 0 0 1];
+            colormap(cmap);
             axes(handles.axes1)
-            imagesc(handles.m_mesenchyme_init)
+            imagesc(flip(handles.m_mesenchyme_init))
             
             axes(handles.axes2)
             m_mesenchyme = double(m_cell==-1);
-            imagesc(m_mesenchyme)
+            imagesc(flip(m_mesenchyme))
             pause(0.01)
             
     case 6
@@ -201,13 +238,19 @@ switch handles.graph_selector
             v_parameters = handles.v_parameters;
             set(handles.text7,'String','Cell distribution with perimeter');
             set(handles.text9,'String','Comparison of perimeter estimation methods');
+            cmap = [0 0 1; 1 1 1; 1 1 0; 1 0 0];
+            colormap(cmap);
             axes(handles.axes1)
-            imagesc(m_cell)
+            imagesc(flip(m_cell))
             hold on
+            
+            c_depth_full = v_parameters(7);
             m_perimeter_approx = f_perimeter_edge_approx_m(m_cell,v_parameters,20);
-            scatter(m_perimeter_approx(:,2),m_perimeter_approx(:,1),'m.')
+            v_perimeter_height = c_depth_full - m_perimeter_approx(:,1)
+            scatter(m_perimeter_approx(:,2), v_perimeter_height,'m.')
             hold off
-        
+            
+            
             axes(handles.axes2)
             plot(v_perimeter,'b','LineWidth',4)
             hold on

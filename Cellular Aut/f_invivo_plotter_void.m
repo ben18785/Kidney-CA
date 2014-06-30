@@ -5,8 +5,8 @@ function [] = f_invivo_plotter_void(hObject,handles)
 handles.c_depth_e = 20;
 handles.c_separation = 20;
 handles.c_depth_m = 20;
-handles.c_width_mesenstart = 60;
-handles.c_width_m = 80;
+handles.c_width_mesenstart = 80;
+handles.c_width_m = 40;
 handles.c_depth_mesenstart = handles.c_depth_e+handles.c_separation;
 guidata(hObject, handles);
 
@@ -26,7 +26,15 @@ f_print_parameters_void(hObject,handles);
 %% Initial area of epithelium and mesenchyme created, and the initial field of GDNF calculated
 % Create the epithelium layer, and the mesenchyme
 m_cell = f_create_area_m(handles.c_width_full, handles.c_depth_full);
-m_cell = f_create_epithelium_m(m_cell, handles.c_width_e, handles.c_depth_e, handles.c_epithelium_density);
+% Dependent on whether we are dealing with Ret dependency create epithelium
+% accordingly
+ck_ret_on = v_parameters(40);
+switch ck_ret_on
+    case 0 % No Ret dependence
+        m_cell = f_create_epithelium_m(m_cell, handles.c_width_e, handles.c_depth_e, handles.c_epithelium_density);
+    case 1 % Ret dependence
+        m_cell = f_create_epithelium_ret_m(m_cell, handles.c_width_e, handles.c_depth_e, handles.c_epithelium_density,handles.v_parameters);
+end
 m_cell = f_create_mesenchyme_m(m_cell, handles.c_width_m, handles.c_depth_m, handles.c_mesenchyme_density, handles.c_depth_mesenstart,handles.c_width_mesenstart);
 
 handles.m_mesenchyme_init = double(m_cell==-1);

@@ -10,7 +10,7 @@ m_allowedindices = zeros(cd_indicesmax,2);
 % either mesenchyme or epithelium
 k = 1;
 for i = 1:cd_indicesmax
-    if m_cell(m_allindices(i,1),m_allindices(i,2)) ~= 1 % If cell is vacant then add it to possible move locations
+    if and(m_cell(m_allindices(i,1),m_allindices(i,2)) ~= 1,m_cell(m_allindices(i,1),m_allindices(i,2)) ~= 2) % If cell is vacant then add it to possible move locations
         m_allowedindices(k,:) = [m_allindices(i,1),m_allindices(i,2)];
         k = k + 1;
     end

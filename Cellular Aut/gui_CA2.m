@@ -23,11 +23,12 @@ end
 function gui_CA2_OpeningFcn(hObject, eventdata, handles, varargin)
 
 
+
 % Specify basic simulation parameters governing time and initial location
 % of epithelium and mesenchyme
 handles.c_T = 200;
 
-handles.c_simulation = 1;
+handles.c_simulation = 2;
 handles.c_size = 200;
 handles.c_width_full = handles.c_size;
 handles.c_depth_full = handles.c_size;
@@ -37,7 +38,7 @@ handles.c_depth_e = 1;
 handles.c_separation = 0;
 handles.c_depth_m = handles.c_size;
 handles.c_epithelium_density = 1; 
-handles.c_mesenchyme_density = 0.1;
+handles.c_mesenchyme_density = 0.5;
 handles.c_depth_mesenstart = 1;
 handles.c_width_mesenstart = 1;
 
@@ -46,7 +47,7 @@ handles.c_width_mesenstart = 1;
 handles.ck_dg = 100;
 handles.ck_gamma = 1;
 handles.ckp_moveprob = 0.5; % Probability of move vs proliferate. 1 means always move. 0 always proliferate
-handles.ck_neighbours = 4; % Choose the number of nearest neighbours for movement/proliferation: 4 or 8
+handles.ck_neighbours = 8; % Choose the number of nearest neighbours for movement/proliferation: 4 or 8
 handles.ck_movement_rule = 8; % Choose a particular rule for allowed moves. 1 is allow all possible moves into vacant spots only; 2 is don't allow movements into cells which
 % are unconnected only for the active cell in question; 3 doesn't allow
 % moves which create any cells which are unconnected (so not just for the
@@ -54,13 +55,13 @@ handles.ck_movement_rule = 8; % Choose a particular rule for allowed moves. 1 is
 % mesenchyme spot; 5 is the same as 2 but allows for movement into
 % mesenchyme; 6 allows all moves and allows the movement into the
 % mesenchyme iff there are available spots for the mesenchyme cell
-handles.ck_moveprob_rule = 1; % Select the type of rule to use for P(move). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
+handles.ck_moveprob_rule = 2; % Select the type of rule to use for P(move). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
 % if the concentration of GDNF is higher. 3 is for when the probability of
 % a movement is dependent on the sum of all positive local GDNF gradients
 handles.ck_moveprob_cons = 1; % The constant used in rule 1 for P(move)
 handles.ck_move_norm_cons = -150; % The constant to be used in the argument of the norm cdf function used in rule 2/3
 handles.ck_move_norm_slope = 50; % The constant to be used to multiply the local GDNF concentration by in the argument to the normal cdf in rule 2/3
-handles.ck_moving_rule = 7; % Select the type of move for probabilistically choosing between the available moves 
+handles.ck_moving_rule = 6; % Select the type of move for probabilistically choosing between the available moves 
 handles.c_pmove_grad = 10; %The coefficients used in targeting cells
 % handles.c_target_cons = 0; % Another constant used in targeting cells
 handles.ck_prolifprob_rule = handles.ck_moveprob_rule; % Select the type of rule to use for P(prolif). 1 for a constant probability of move. 2 for a rule in which the probability of a move increases
@@ -68,15 +69,15 @@ handles.ck_prolifprob_rule = handles.ck_moveprob_rule; % Select the type of rule
 % a movement is dependent on the sum of all positive local GDNF gradients
 handles.ck_prolif_choosecell_rule = handles.ck_moving_rule; % Select the type of move for probabilistically choosing between the available moves 
 handles.c_beta_mesmove = -3; % A coefficient measuring the strength of discrimination against those moves for mesenchyme which are not in the direction they were pushed.
-handles.c_mes_movement = 2; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
+handles.c_mes_movement = 1; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
 handles.c_mes_trapped = 8; % The maximum number of 8-nearest neighbour epithelium cells which can be neighbouring on a given mesenchyme cell after moving it. Aims to stop MM becoming trapped!
 handles.c_mes_allowed = 1; % Choose the rule specifying whether a mesenchyme can occupy a spot. 1 means all vacant spots, 2 means only those spots which are connected less than c_mes_trapped
-handles.c_principal = 10; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
-handles.c_secondary = 2; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+handles.c_principal = 20; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+handles.c_secondary = 10; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
 
 % Active mesenchyme parameters
-handles.ck_mes_move = 0.1; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
-handles.ck_mes_prolif = 0.9; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
+handles.ck_mes_move = 0.4; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
+handles.ck_mes_prolif = 0.6; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
 handles.ck_mes_diff = 0; % The probability of a mesenchyme choosing to go down branch corresponding to 'differentiating'
 handles.ck_mes_death = 1 - handles.ck_mes_move - handles.ck_mes_prolif - handles.ck_mes_diff; % The probability of a mesenchyme choosing to go down branch corresponding to 'die'
 handles.ck_mes_target_allowed = 1; % The rule to be used to determine those allowed cells which the mesenchyme can move into. 1 is local 8-NN if there are free cells.
@@ -87,12 +88,35 @@ handles.ck_mes_prolif_target_rule = 2; % The rule used to select between target 
 handles.ck_mes_prolifprob_rule = 2;% The rule used for P(mes prolif) in f_mes_move_prob_c
 handles.ck_mes_prolifprob_rule1_cons = 0; % The constant used for P(mes prolif) if rule 1 is selected in f_mes_move_prob_c
 handles.c_turn_on_active_mesenchyme = 1; % A switch to allow the user to turn on or off the updating of the mesenchyme
-handles.ck_mes_moveprob_rule2_discons_move_c1 = -10; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
-handles.ck_mes_moveprob_rule2_discons_move_c2 = 0; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving. Should be negative
+handles.ck_mes_moveprob_rule2_discons_move_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
+handles.ck_mes_moveprob_rule2_discons_move_c2 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving. Should be negative
 handles.ck_mes_moveprob_rule2_discons_prolif_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating
 handles.ck_mes_moveprob_rule2_discons_prolif_c2 = -0.1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating. Should be negative
 handles.ck_mes_move_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in moving a mesenchyme actively) which are further away from the mesenchyme are discriminated
 handles.ck_mes_prolif_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in proliferating a mesenchyme actively) which are further away from the mesenchyme are discriminated
+
+
+% Those parameters which are to do with Ret-high and Ret-low epithelium
+handles.ck_ret_on = 1; % A parameter which either turns on (if it is 1) or turns off the Ret-high/low feature
+handles.ck_rh_num = 0.1; % A parameter which specifies the proportion of initially created epithelium cells which are Ret-high
+handles.ck_moveprob_cons_rh = handles.ck_moveprob_cons; % A parameter which determines the probability of a move occuring in f_probmove_rule1 if a cell is Ret-high
+handles.ck_move_norm_cons_rh = -20; % Constant C1 in rule f_probmove_rule2
+handles.ck_move_norm_slope_rh = 60; % Constant C2 in rule f_probmove_rule2
+handles.c_pmove_grad_rh = handles.c_pmove_grad; % Ret-high parameter for f_pmoving_rule2; governing chemotaxtic movement
+handles.c_ret_transformation = 4; % Rule selection for Ret-induced transformation of epithelium. See f_update_vparameters_void for a full description
+handles.c_retlh_prob = 0.1; % retL->retH arbitrary probability
+handles.c_rethl_prob = 0; % retH->retL arbitrary probability
+handles.c_retlh_prob_GDNF_C0 = -3; % retL->retH GDNF probability constant
+handles.c_retlh_prob_GDNF_C1 = 3; % retL->retH GDNF probability gradient
+handles.c_rethl_prob_GDNF_C0 = 1; % retH->retL GDNF probability constant
+handles.c_reth1_prob_GDNF_C1 = -10; % retH->retL GDNF probability gradient
+handles.c_ret_competition = 1; % Ret competition rule selector. See f_update_vparameters_void for a full description
+handles.c_ret_prob_rule = 1; % Ret competition probability rule. See f_update_vparameters_void for a full description
+handles.c_ret_prob_rule1_cons = 0.2; % Probability of Ret competition occuring if above rule is '1'
+handles.c_ret_comp_prob = 1; % P(comp) rule once this path has been started down
+handles.c_ret_comp_prob_rule1_cons = 1; % The probability of competiting is a constant in rule 1 above
+handles.c_ret_comp_prob_rule2_C0 = -3; % Constant used in rule 2
+handles.c_ret_comp_prob_rule2_C1 = 5; % GDNF-multiplier constant used in rule 2
 
 
 global error_count;
@@ -697,13 +721,30 @@ if handles.graph_selector == 0
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','off')
     set(handles.text77,'Visible','off')
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
 elseif handles.graph_selector == 1
     set(handles.text7,'String','Cell numbers');
     set(handles.text9,'String','Perimeter');
-    set(handles.text74,'Visible','on')
-    set(handles.text75,'Visible','on')
-    set(handles.text76,'Visible','off')
-    set(handles.text77,'Visible','off')
+    if handles.ck_ret_on == 0
+        set(handles.text74,'Visible','on')
+        set(handles.text75,'Visible','on')
+        set(handles.text157,'Visible','off')
+        set(handles.text158,'Visible','off')
+        set(handles.text159,'Visible','off')
+        set(handles.text76,'Visible','off')
+        set(handles.text77,'Visible','off')
+    else
+        set(handles.text74,'Visible','off')
+        set(handles.text75,'Visible','off')
+        set(handles.text157,'Visible','on')
+        set(handles.text158,'Visible','on')
+        set(handles.text159,'Visible','on')
+        set(handles.text76,'Visible','off')
+        set(handles.text77,'Visible','off')
+    end
+        
 elseif handles.graph_selector == 2
     set(handles.text7,'String','Acceptance probability');
     set(handles.text9,'String','Target cell selection heterogeneity');
@@ -711,17 +752,25 @@ elseif handles.graph_selector == 2
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','off')
     set(handles.text77,'Visible','off')
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
 elseif handles.graph_selector == 3
     set(handles.text74,'Visible','off')
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','on')
     set(handles.text77,'Visible','on')
-    
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
 else
     set(handles.text74,'Visible','off')
     set(handles.text75,'Visible','off')
     set(handles.text76,'Visible','off')
     set(handles.text77,'Visible','off')
+    set(handles.text157,'Visible','off')
+    set(handles.text158,'Visible','off')
+    set(handles.text159,'Visible','off')
     
 end
 
@@ -762,10 +811,25 @@ c_temp = get(hObject,'Value');
 switch c_temp
     case 1
         set(handles.uipanel10,'Visible','off')
+        set(handles.uipanel17,'Visible','off')
         set(handles.uipanel3,'Visible','on')
+        set(handles.uipanel18,'Visible','off')
     case 2
         set(handles.uipanel10,'Visible','on')
+        set(handles.uipanel17,'Visible','off')
         set(handles.uipanel3,'Visible','off')
+        set(handles.uipanel18,'Visible','off')
+    case 3
+        set(handles.uipanel17,'Visible','on')
+        set(handles.uipanel10,'Visible','off')
+        set(handles.uipanel3,'Visible','off')
+        set(handles.uipanel18,'Visible','off')
+    case 4
+        set(handles.uipanel17,'Visible','off')
+        set(handles.uipanel10,'Visible','off')
+        set(handles.uipanel3,'Visible','off')
+        set(handles.uipanel18,'Visible','on')
+        
 end
 
 
@@ -1089,17 +1153,25 @@ switch c_temp
         set(handles.uipanel12,'Visible','off')
         set(handles.uipanel11,'Visible','off')
         set(handles.uipanel5,'Visible','off')
-        set(handles.uipanel4,'Visible','on')
+        if handles.ck_ret_on == 0
+            set(handles.uipanel4,'Visible','on')
+            set(handles.uipanel14,'Visible','off')
+        else
+            set(handles.uipanel4,'Visible','off')
+            set(handles.uipanel14,'Visible','on')
+        end
     case 2
         set(handles.uipanel12,'Visible','off')
         set(handles.uipanel11,'Visible','on')
         set(handles.uipanel5,'Visible','off')
         set(handles.uipanel4,'Visible','off')
+        set(handles.uipanel14,'Visible','off')
     case 3
         set(handles.uipanel12,'Visible','on')
         set(handles.uipanel11,'Visible','off')
         set(handles.uipanel5,'Visible','off')
         set(handles.uipanel4,'Visible','off')
+        set(handles.uipanel14,'Visible','off')
 end
 
 % A slider which allows the user to specify the panel that they want to see
@@ -1231,6 +1303,522 @@ f_simulation_selector_void(hObject,handles);
 % Allows the user to select the strength of discrimination against target
 % cells which are further away when proliferating the mesenchyme
 function slider34_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-L constant for P(move/prolif) if rule 1 is
+% chosen1
+function slider35_Callback(hObject, eventdata, handles)
+handles.ck_moveprob_cons = get(hObject,'Value');
+handles.v_parameters(9) = handles.ck_moveprob_cons;
+
+set(handles.text163,'String',num2str(handles.v_parameters(9)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows user to specify Ret-L constant for P(move/prolif) if rule 1 is
+% chosen1
+function slider35_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-H constant for P(move/prolif) if rule 1 is
+% chosen1
+function slider36_Callback(hObject, eventdata, handles)
+handles.ck_moveprob_cons_rh = get(hObject,'Value');
+handles.v_parameters(42) = handles.ck_moveprob_cons_rh;
+
+set(handles.text164,'String',num2str(handles.v_parameters(42)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows user to specify Ret-H constant for P(move/prolif) if rule 1 is
+% chosen1
+function slider36_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-L C1 for P(move/prolif) if rule 2 is
+% chosen1
+function slider37_Callback(hObject, eventdata, handles)
+handles.ck_move_norm_cons = get(hObject,'Value');
+handles.v_parameters(10) = handles.ck_move_norm_cons;
+
+set(handles.text166,'String',num2str(handles.v_parameters(10)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows user to specify Ret-L C1 for P(move/prolif) if rule 2 is
+% chosen1
+function slider37_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-H C1 for P(move/prolif) if rule 2 is
+% chosen1
+function slider38_Callback(hObject, eventdata, handles)
+handles.ck_move_norm_cons_rh = get(hObject,'Value');
+handles.v_parameters(43) = handles.ck_move_norm_cons_rh;
+
+set(handles.text167,'String',num2str(handles.v_parameters(43)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows user to specify Ret-H C1 for P(move/prolif) if rule 2 is
+% chosen1
+function slider38_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-L C2 for P(move/prolif) if rule 2 is
+% chosen1
+function slider39_Callback(hObject, eventdata, handles)
+handles.ck_move_norm_slope = get(hObject,'Value');
+handles.v_parameters(11) = handles.ck_move_norm_slope;
+
+set(handles.text169,'String',num2str(handles.v_parameters(11)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows user to specify Ret-L C2 for P(move/prolif) if rule 2 is
+% chosen1
+function slider39_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-H C2 for P(move/prolif) if rule 2 is
+% chosen1
+function slider40_Callback(hObject, eventdata, handles)
+handles.ck_move_norm_slope_rh = get(hObject,'Value');
+handles.v_parameters(44) = handles.ck_move_norm_slope_rh;
+
+set(handles.text170,'String',num2str(handles.v_parameters(44)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows user to specify Ret-H C2 for P(move/prolif) if rule 2 is
+% chosen1
+function slider40_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-L chemotaxis strength
+function slider41_Callback(hObject, eventdata, handles)
+handles.c_pmove_grad = get(hObject,'Value');
+handles.v_parameters(13) = handles.c_pmove_grad;
+
+set(handles.text172,'String',num2str(handles.v_parameters(13)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+% Allows user to specify Ret-L chemotaxis strength
+function slider41_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows user to specify Ret-H chemotaxis strength
+function slider42_Callback(hObject, eventdata, handles)
+handles.c_pmove_grad_rh = get(hObject,'Value');
+handles.v_parameters(45) = handles.c_pmove_grad_rh;
+
+set(handles.text173,'String',num2str(handles.v_parameters(45)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows user to specify Ret-H chemotaxis strength
+function slider42_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+% A function which allows the user to turn on or off the Ret related
+% activities
+function popupmenu30_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1 
+        handles.ck_ret_on = 0;
+    case 2
+        handles.ck_ret_on = 1;
+       
+end
+handles.v_parameters(40) = handles.ck_ret_on;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% A function which allows the user to turn on or off the Ret related
+% activities
+function popupmenu30_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% Allows the user to specify the initial proportion of Ret H cells in the
+% starting epithelium
+function slider43_Callback(hObject, eventdata, handles)
+handles.ck_rh_num = get(hObject,'Value');
+handles.v_parameters(41) = handles.ck_rh_num;
+
+set(handles.text182,'String',num2str(handles.v_parameters(41)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to specify the initial proportion of Ret H cells in the
+% starting epithelium
+function slider43_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows the user to specify the rule to use for determining whether a
+% Ret-L transforms into a Ret-H and vice versa
+function popupmenu31_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1 
+        handles.c_ret_transformation = 0;
+    case 2
+        handles.c_ret_transformation = 1;
+    case 3
+        handles.c_ret_transformation = 2;
+    case 4
+        handles.c_ret_transformation = 3;
+    case 5
+        handles.c_ret_transformation = 4;
+       
+end
+handles.v_parameters(46) = handles.c_ret_transformation;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to specify the rule to use for determining whether a
+% Ret-L transforms into a Ret-H and vice versa
+function popupmenu31_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% Allows the user to specify the probability for the transformation of
+% Ret-L into Ret-H in rules 1 and 2 for transformation
+function slider44_Callback(hObject, eventdata, handles)
+handles.c_retlh_prob = get(hObject,'Value');
+handles.v_parameters(47) = handles.c_retlh_prob;
+
+set(handles.text183,'String',num2str(handles.v_parameters(47)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to specify the probability for the transformation of
+% Ret-L into Ret-H in rules 1 and 2 for transformation
+function slider44_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows the user to specify the probability for the transformation of
+% Ret-H into Ret-L in rule 2 for transformation
+function slider45_Callback(hObject, eventdata, handles)
+handles.c_rethl_prob = get(hObject,'Value');
+handles.v_parameters(48) = handles.c_rethl_prob;
+
+set(handles.text184,'String',num2str(handles.v_parameters(48)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to specify the probability for the transformation of
+% Ret-H into Ret-L in rule 2 for transformation
+function slider45_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Constant C1 in Ret-L -> Ret-H transform rules 3 and 4
+function slider46_Callback(hObject, eventdata, handles)
+handles.c_retlh_prob_GDNF_C0 = get(hObject,'Value');
+handles.v_parameters(49) = handles.c_retlh_prob_GDNF_C0;
+
+set(handles.text188,'String',num2str(handles.v_parameters(49)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Constant C1 in Ret-L -> Ret-H transform rules 3 and 4
+function slider46_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Constant C2 in Ret-L -> Ret-H transform rules 3 and 4
+function slider47_Callback(hObject, eventdata, handles)
+handles.c_retlh_prob_GDNF_C1 = get(hObject,'Value');
+handles.v_parameters(50) = handles.c_retlh_prob_GDNF_C1;
+
+set(handles.text189,'String',num2str(handles.v_parameters(50)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+% Constant C2 in Ret-L -> Ret-H transform rules 3 and 4
+function slider47_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Constant C1 in Ret-H -> Ret-L transform rule 4
+function slider48_Callback(hObject, eventdata, handles)
+handles.c_rethl_prob_GDNF_C0 = get(hObject,'Value');
+handles.v_parameters(51) = handles.c_rethl_prob_GDNF_C0;
+
+set(handles.text193,'String',num2str(handles.v_parameters(51)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Constant C1 in Ret-H -> Ret-L transform rule 4
+function slider48_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Constant C2 in Ret-H -> Ret-L transform rule 4
+function slider49_Callback(hObject, eventdata, handles)
+handles.c_rethl_prob_GDNF_C1 = get(hObject,'Value');
+handles.v_parameters(52) = handles.c_rethl_prob_GDNF_C1;
+
+set(handles.text194,'String',num2str(handles.v_parameters(52)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Constant C2 in Ret-H -> Ret-L transform rule 4
+function slider49_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows the user to specify the P(comp) vs move/proliferating
+function slider50_Callback(hObject, eventdata, handles)
+handles.c_ret_prob_rule1_cons = get(hObject,'Value');
+handles.v_parameters(55) = handles.c_ret_prob_rule1_cons;
+
+set(handles.text195,'String',num2str(handles.v_parameters(55)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+
+% Allows the user to specify the P(comp) vs move/proliferating
+function slider50_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows the user to turn on or off Ret competition
+function popupmenu32_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1 
+        handles.c_ret_competition = 0;
+    case 2
+        handles.c_ret_competition = 1;
+end
+
+handles.v_parameters(53) = handles.c_ret_competition;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to turn on or off Ret competition
+function popupmenu32_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% Allows the user to specify the arbitrary P(comp) if rule 1 is selected
+% below
+function slider51_Callback(hObject, eventdata, handles)
+handles.c_ret_comp_prob_rule1_cons = get(hObject,'Value');
+handles.v_parameters(57) = handles.c_ret_comp_prob_rule1_cons;
+
+set(handles.text199,'String',num2str(handles.v_parameters(57)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+
+% Allows the user to specify the arbitrary P(comp) if rule 1 is selected
+% below
+function slider51_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Allows the user to specify the rule used for P(comp)
+function popupmenu33_Callback(hObject, eventdata, handles)
+c_temp = get(hObject,'Value');
+switch c_temp
+    case 1 
+        handles.c_ret_comp_prob = 1;
+    case 2
+        handles.c_ret_comp_prob = 2;
+end
+
+handles.v_parameters(56) = handles.c_ret_comp_prob;
+
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Allows the user to specify the rule used for P(comp)
+function popupmenu33_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% Alows the user to specify C1 if rule 2 is selected above in P(comp) = C1+
+% C2*GDNFmaxgrad
+function slider52_Callback(hObject, eventdata, handles)
+handles.c_ret_comp_prob_rule2_C0 = get(hObject,'Value');
+handles.v_parameters(58) = handles.c_ret_comp_prob_rule2_C0;
+
+set(handles.text202,'String',num2str(handles.v_parameters(58)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Alows the user to specify C1 if rule 2 is selected above in P(comp) = C1+
+% C2*GDNFmaxgrad
+function slider52_CreateFcn(hObject, eventdata, handles)
+
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% Alows the user to specify C1 if rule 2 is selected above in P(comp) = C1+
+% C2*GDNFmaxgrad
+function slider53_Callback(hObject, eventdata, handles)
+handles.c_ret_comp_prob_rule2_C1 = get(hObject,'Value');
+handles.v_parameters(59) = handles.c_ret_comp_prob_rule2_C1;
+
+set(handles.text204,'String',num2str(handles.v_parameters(59)));
+% Update handles structure
+guidata(hObject, handles)
+
+f_simulation_selector_void(hObject,handles);
+
+
+% Alows the user to specify C1 if rule 2 is selected above in P(comp) = C1+
+% C2*GDNFmaxgrad
+function slider53_CreateFcn(hObject, eventdata, handles)
 
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);

@@ -37,7 +37,13 @@ for t = 1:handles.c_T
         m_GDNF = f_field_update_m(m_cell,handles.v_parameters);
         
         % Get the total number of epithelium cells
-        c_epithelium = sum(sum(m_cell==1));
+        c_epithelium = sum(sum(m_cell>=1));
+        
+        % Get the total number of Ret-H and Ret-L cells
+        c_epithelium_RH = sum(sum(m_cell==2));
+        c_epithelium_RL = sum(sum(m_cell==1));
+        v_epithelium_RH(t) = c_epithelium_RH;
+        v_epithelium_RL(t) = c_epithelium_RL;
         
         % Now put it as a % of size of total region
         c_total = handles.c_depth_full*handles.c_width_full;
@@ -84,7 +90,7 @@ for t = 1:handles.c_T
         
          % Call a fn which plots the correct graph based on
         % handles.graph_selector
-        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,v_perimeter_GDNF,v_perimeter_GDNF_average,t,handles.graph_selector,handles)
+        f_graph_plotter_void(m_cell,m_GDNF,v_epithelium,v_mesenchyme,v_acceptance,v_heterogeneity,v_perimeter,v_perimeter_new,v_entropy,v_branch,v_mesenchyme_options,v_vacant_ratio,v_mesenchyme_ratio,v_perimeter_GDNF,v_perimeter_GDNF_average,v_epithelium_RH,v_epithelium_RL,t,handles.graph_selector,handles)
         
         
         

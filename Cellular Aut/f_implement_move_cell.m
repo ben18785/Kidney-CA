@@ -15,23 +15,25 @@ switch c_move
 
         if ck_moving_rule == 4 | ck_moving_rule == 6 | ck_moving_rule == 7 % Moving mesenchyme therefore have a cell array with their positions
             if m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) ~= -1 % If not mesenchyme
+                    
+                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = m_cell(c_x,c_y); % Now allow for either a Ret low or Ret high cell to move
                     m_cell(c_x,c_y) = 0;
-                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
                     c_mesenchyme_options = 0;
                     c_vacant_select = 1;
                     c_mesenchyme_select = 0;
             else % If mesenchyme
                     cell_temp = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),cellm_mesenchyme_available{c_move_index},v_parameters);
                     m_cell = cell_temp{1,1};
+                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = m_cell(c_x,c_y);
                     m_cell(c_x,c_y) = 0;
-                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
                     c_mesenchyme_options = length_new(cellm_mesenchyme_available{c_move_index});
                     c_vacant_select = 0;
                     c_mesenchyme_select = 1;
             end
         else 
+            
+            m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = m_cell(c_x,c_y);
             m_cell(c_x,c_y) = 0;
-            m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
             c_mesenchyme_options = 0;
             c_vacant_select = 1;
             c_mesenchyme_select = 0;
@@ -41,20 +43,20 @@ switch c_move
         ck_prolif_choosecell_rule = v_parameters(15);
         if ck_prolif_choosecell_rule == 4 | ck_prolif_choosecell_rule == 6 | ck_prolif_choosecell_rule == 7 % Moving mesenchyme therefore have a cell array with their positions
             if m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) ~= -1 % If not mesenchyme
-                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
+                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = m_cell(c_x,c_y);
                     c_mesenchyme_options = 0;
                     c_vacant_select = 1;
                     c_mesenchyme_select = 0;
             else % If mesenchyme
                     cell_temp = f_mesenchyme_target_choice_m(m_cell,c_x,c_y,m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2),cellm_mesenchyme_available{c_move_index},v_parameters);
                     m_cell = cell_temp{1,1};
-                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
+                    m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = m_cell(c_x,c_y);
                     c_mesenchyme_options = length_new(cellm_mesenchyme_available{c_move_index});
                     c_vacant_select = 0;
                     c_mesenchyme_select = 1;
             end
         else
-            m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = 1;
+            m_cell(m_allowedindices(c_move_index,1),m_allowedindices(c_move_index,2)) = m_cell(c_x,c_y);
             c_mesenchyme_options = 0;
             c_vacant_select = 1;
             c_mesenchyme_select = 0;

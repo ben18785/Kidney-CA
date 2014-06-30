@@ -5,7 +5,72 @@ guidata(hObject, handles)
 % Update some of the handles
 set(handles.slider22,'Value',handles.v_parameters(18));
 
-handles.v_parameters(33)
+% Update with the ret panel hidden if necessary
+if handles.ck_ret_on == 0
+    set(handles.uipanel4,'Visible','on')
+    set(handles.uipanel14,'Visible','off')
+else
+    set(handles.uipanel4,'Visible','off')
+    set(handles.uipanel14,'Visible','on')
+end
+
+% Set the visibility correctly for the Ret P(move/prolif) and chemotaxis
+% buttons
+if and(handles.ck_moveprob_rule == 1, handles.ck_prolifprob_rule == 1)
+    set(handles.slider35,'Visible','on');
+    set(handles.slider36,'Visible','on');
+    set(handles.text163,'Visible','on');
+    set(handles.text164,'Visible','on');
+    set(handles.slider37,'Visible','off');
+    set(handles.slider38,'Visible','off');
+    set(handles.slider39,'Visible','off');
+    set(handles.slider40,'Visible','off');
+    set(handles.text166,'Visible','off');
+    set(handles.text167,'Visible','off');
+    set(handles.text169,'Visible','off');
+    set(handles.text170,'Visible','off');
+    
+elseif or(handles.ck_moveprob_rule == 1,handles.ck_prolifprob_rule == 1)
+    set(handles.slider35,'Visible','on');
+    set(handles.slider36,'Visible','on');
+    set(handles.text163,'Visible','on');
+    set(handles.text164,'Visible','on');
+    set(handles.slider37,'Visible','on');
+    set(handles.slider38,'Visible','on');
+    set(handles.slider39,'Visible','on');
+    set(handles.slider40,'Visible','on');
+    set(handles.text166,'Visible','on');
+    set(handles.text167,'Visible','on');
+    set(handles.text169,'Visible','on');
+    set(handles.text170,'Visible','on');
+else
+    set(handles.slider35,'Visible','off');
+    set(handles.slider36,'Visible','off');
+    set(handles.text163,'Visible','off');
+    set(handles.text164,'Visible','off');
+    set(handles.slider37,'Visible','on');
+    set(handles.slider38,'Visible','on');
+    set(handles.slider39,'Visible','on');
+    set(handles.slider40,'Visible','on');
+    set(handles.text166,'Visible','on');
+    set(handles.text167,'Visible','on');
+    set(handles.text169,'Visible','on');
+    set(handles.text170,'Visible','on');
+end
+
+% Now doing the same for chemotaxis Ret sliders and text boxes
+if and(or(handles.ck_moving_rule==1,handles.ck_moving_rule==7),or(handles.ck_prolif_choosecell_rule==1,handles.ck_prolif_choosecell_rule==7))
+    set(handles.slider41,'Visible','off');
+    set(handles.slider42,'Visible','off');
+    set(handles.text172,'Visible','off');
+    set(handles.text173,'Visible','off');
+else
+    set(handles.slider41,'Visible','on');
+    set(handles.slider42,'Visible','on');
+    set(handles.text172,'Visible','on');
+    set(handles.text173,'Visible','on');
+end
+
 
 % Only allow the popup menu to allow the user to select active mesenchyme rules to be 
 % selected if we are actually using active mesenchyme
