@@ -50,6 +50,10 @@ Gregory~R Dressler.
 \newblock The cellular basis of kidney development.
 \newblock {\em Annu. Rev. Cell Dev. Biol.}, 22:509--529, 2006.
 
+\bibitem{HartmannDMiura}
+T~{Hartmann, D, Miura}.
+\newblock {Modelling in vitro lung branching morphogenesis during development}.
+
 \bibitem{hoy2008nephron}
 Wendy~E Hoy, John~F Bertram, Rebecca~Douglas Denton, Monika Zimanyi, Terence
   Samuel, and Michael~D Hughson.
@@ -102,6 +106,11 @@ Lydia Michael and Jamie~A Davies.
 \newblock Pattern and regulation of cell proliferation during murine ureteric
   bud development.
 \newblock {\em Journal of anatomy}, 204(4):241--255, 2004.
+
+\bibitem{miura2013modeling}
+Takashi Miura.
+\newblock Modeling lung branching morphogenesis.
+\newblock {\em Biological Theory}, 8(3):265--273, 2013.
 
 \bibitem{packard2013luminal}
 Adam Packard, Kylie Georgas, Odyss{\'e} Michos, Paul Riccio, Cristina Cebrian,
@@ -187,6 +196,14 @@ James~JS Treanor, Laurie Goodman, Frederic de~Sauvage, Donna~M Stone, Kris~T
   Franz Hefti, et~al.
 \newblock Characterization of a multicomponent receptor for gdnf.
 \newblock 1996.
+
+\bibitem{vlad}
+K.M. Short J. Lefevre A.L. Ju K.M. Georgas B.A. Rumballe L. O'Brien A.P.
+  McMahon N.A. Hamilton I.M. Smyth M.H. Little H.M.~Byrne V.S.~Zubkov,
+  A.N.~Combes.
+\newblock A spatially-averaged mathematical model of kidney branching
+  morphogenesis.
+\newblock 2013.
 
 \bibitem{watanabe2004real}
 Tomoko Watanabe and Frank Costantini.

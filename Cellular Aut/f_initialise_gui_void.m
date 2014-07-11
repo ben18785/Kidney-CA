@@ -11,6 +11,8 @@ else
     set(handles.uipanel4,'Visible','off')
     set(handles.uipanel14,'Visible','on')
 end
+
+set(handles.popupmenu1,'Value',handles.c_simulation)
 set(handles.slider35,'Value',handles.ck_moveprob_cons);
 set(handles.slider36,'Value',handles.ck_moveprob_cons_rh);
 set(handles.slider37,'Value',handles.ck_move_norm_cons);

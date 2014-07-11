@@ -3,7 +3,7 @@ function [] = f_invivo_plotter_void(hObject,handles)
 
 % Specify the parameters for the area
 handles.c_depth_e = 20;
-handles.c_separation = 20;
+handles.c_separation = 5;
 handles.c_depth_m = 20;
 handles.c_width_mesenstart = 80;
 handles.c_width_m = 40;

@@ -9,6 +9,12 @@ c_depth_full = c_size;
 c_width_e = c_width_full;
 c_epithelium_density = 1; 
 c_mesenchyme_density = 0.5;
+c_depth_e = 20;
+c_separation = 5;
+c_depth_m = 20;
+c_width_mesenstart = 80;
+c_width_m = 40;
+c_depth_mesenstart = c_depth_e+c_separation;
 
 
 
@@ -41,12 +47,12 @@ c_beta_mesmove = -3; % A coefficient measuring the strength of discrimination ag
 c_mes_movement = 1; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
 c_mes_trapped = 8; % The maximum number of 8-nearest neighbour epithelium cells which can be neighbouring on a given mesenchyme cell after moving it. Aims to stop MM becoming trapped!
 c_mes_allowed = 1; % Choose the rule specifying whether a mesenchyme can occupy a spot. 1 means all vacant spots, 2 means only those spots which are connected less than c_mes_trapped
-c_principal = 20; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
-c_secondary = 10; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+c_principal = 10; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+c_secondary = 2; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
 
 % Active mesenchyme parameters
-ck_mes_move = 0.1; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
-ck_mes_prolif = 0.9; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
+ck_mes_move = 0.7; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
+ck_mes_prolif = 1-ck_mes_move; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
 ck_mes_diff = 0; % The probability of a mesenchyme choosing to go down branch corresponding to 'differentiating'
 ck_mes_death = 1 - ck_mes_move - ck_mes_prolif - ck_mes_diff; % The probability of a mesenchyme choosing to go down branch corresponding to 'die'
 ck_mes_target_allowed = 1; % The rule to be used to determine those allowed cells which the mesenchyme can move into. 1 is local 8-NN if there are free cells.
@@ -57,8 +63,8 @@ ck_mes_prolif_target_rule = 2; % The rule used to select between target cells fo
 ck_mes_prolifprob_rule = 2;% The rule used for P(mes prolif) in f_mes_move_prob_c
 ck_mes_prolifprob_rule1_cons = 0; % The constant used for P(mes prolif) if rule 1 is selected in f_mes_move_prob_c
 c_turn_on_active_mesenchyme = 1; % A switch to allow the user to turn on or off the updating of the mesenchyme
-ck_mes_moveprob_rule2_discons_move_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
-ck_mes_moveprob_rule2_discons_move_c2 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving. Should be negative
+ck_mes_moveprob_rule2_discons_move_c1 = 2; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
+ck_mes_moveprob_rule2_discons_move_c2 = 0; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving. Should be negative
 ck_mes_moveprob_rule2_discons_prolif_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating
 ck_mes_moveprob_rule2_discons_prolif_c2 = -0.05; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating. Should be negative
 ck_mes_move_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in moving a mesenchyme actively) which are further away from the mesenchyme are discriminated
@@ -70,15 +76,15 @@ ck_ret_on = 1; % A parameter which either turns on (if it is 1) or turns off the
 ck_rh_num = 0.1; % A parameter which specifies the proportion of initially created epithelium cells which are Ret-high
 ck_moveprob_cons_rh = ck_moveprob_cons; % A parameter which determines the probability of a move occuring in f_probmove_rule1 if a cell is Ret-high
 ck_move_norm_cons_rh = -20; % Constant C1 in rule f_probmove_rule2
-ck_move_norm_slope_rh = 60; % Constant C2 in rule f_probmove_rule2
+ck_move_norm_slope_rh = 40; % Constant C2 in rule f_probmove_rule2
 c_pmove_grad_rh = c_pmove_grad; % Ret-high parameter for f_pmoving_rule2; governing chemotaxtic movement
 c_ret_transformation = 4; % Rule selection for Ret-induced transformation of epithelium. See f_update_vparameters_void for a full description
 c_retlh_prob = 0.1; % retL->retH arbitrary probability
 c_rethl_prob = 0; % retH->retL arbitrary probability
 c_retlh_prob_GDNF_C0 = -3; % retL->retH GDNF probability constant
-c_retlh_prob_GDNF_C1 = 3; % retL->retH GDNF probability gradient
+c_retlh_prob_GDNF_C1 = 2; % retL->retH GDNF probability gradient
 c_rethl_prob_GDNF_C0 = 1; % retH->retL GDNF probability constant
-c_reth1_prob_GDNF_C1 = -10; % retH->retL GDNF probability gradient
+c_reth1_prob_GDNF_C1 = -3; % retH->retL GDNF probability gradient
 c_ret_competition = 1; % Ret competition rule selector. See f_update_vparameters_void for a full description
 c_ret_prob_rule = 1; % Ret competition probability rule. See f_update_vparameters_void for a full description
 c_ret_prob_rule1_cons = 0.2; % Probability of Ret competition occuring if above rule is '1'
@@ -87,12 +93,7 @@ c_ret_comp_prob_rule1_cons = 1; % The probability of competiting is a constant i
 c_ret_comp_prob_rule2_C0 = -3; % Constant used in rule 2
 c_ret_comp_prob_rule2_C1 = 5; % GDNF-multiplier constant used in rule 2
 
-c_depth_e = 20;
-c_separation = 20;
-c_depth_m = 20;
-c_width_mesenstart = 80;
-c_width_m = 40;
-c_depth_mesenstart = c_depth_e+c_separation;
+
 
 
 %% Allocate parameters into a vector
@@ -264,7 +265,7 @@ for t = 1:c_T
         
         cmap = [0 0 1; 1 1 1; 1 1 0; 1 0 0];
         colormap(cmap);
-        subplot(1,2,1),imagesc(flip(m_cell))
+        subplot(1,2,1),imagesc((m_cell))
         title('Cell distribution','FontSize', 20)
         hold on
         % unique rectangles
@@ -274,12 +275,12 @@ for t = 1:c_T
         hold off
         freezeColors
         
-        subplot(1,2,2),imagesc(flip(m_GDNF))
+        subplot(1,2,2),imagesc((m_GDNF))
         colormap('default')
         
         title('GDNF distribution','FontSize', 20)
-        A{t} = flip(m_cell);
-        B{t} = flip(m_GDNF);
+        A{t} = (m_cell);
+        B{t} = (m_GDNF);
         
  
         

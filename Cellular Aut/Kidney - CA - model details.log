@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  25 JUN 2014 15:52
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.3.14)  11 JUL 2014 15:36
 entering extended mode
 **Kidney*-*CA*-*model*details.tex
 
@@ -1065,23 +1065,23 @@ Non-PDF special ignored!
 Non-PDF special ignored!{C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
 [2] [3] [4] [5]
 Package epstopdf Info: Source file: <connected.eps>
-(epstopdf)                    date: 2014-05-22 16:45:04
-(epstopdf)                    size: 34496 bytes
+(epstopdf)                    date: 2014-07-04 11:38:14
+(epstopdf)                    size: 34693 bytes
 (epstopdf)             Output file: <connected-eps-converted-to.pdf>
-(epstopdf)                    date: 2014-05-22 16:45:09
-(epstopdf)                    size: 13737 bytes
+(epstopdf)                    date: 2014-07-04 11:38:56
+(epstopdf)                    size: 13793 bytes
 (epstopdf)             Command: <epstopdf --outfile=connected-eps-converted-to.
 pdf connected.eps>
 (epstopdf)             \includegraphics on input line 222.
 Package epstopdf Info: Output file is already uptodate.
 
-<connected-eps-converted-to.pdf, id=25, 831.105pt x 323.2075pt>
+<connected-eps-converted-to.pdf, id=25, 834.11626pt x 325.215pt>
 File: connected-eps-converted-to.pdf Graphic file (type pdf)
 
 <use connected-eps-converted-to.pdf>
 Package pdftex.def Info: connected-eps-converted-to.pdf used on input line 222.
 
-(pdftex.def)             Requested size: 831.10297pt x 323.20671pt.
+(pdftex.def)             Requested size: 834.11423pt x 325.2142pt.
  [6]
 Package epstopdf Info: Source file: <8-NN.eps>
 (epstopdf)                    date: 2014-05-22 14:02:36
@@ -1137,24 +1137,24 @@ Package pdftex.def Info: weighting-eps-converted-to.pdf used on input line 336.
  [11 <C:/Users/Ben/Dropbox/Kidney Morphogenesis/Modelling/Mathematical modellin
 g/Ret HL/weighting-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <axes.eps>
-(epstopdf)                    date: 2014-05-22 16:35:59
-(epstopdf)                    size: 197789 bytes
+(epstopdf)                    date: 2014-06-25 16:44:05
+(epstopdf)                    size: 197281 bytes
 (epstopdf)             Output file: <axes-eps-converted-to.pdf>
-(epstopdf)                    date: 2014-05-22 16:38:05
-(epstopdf)                    size: 94008 bytes
+(epstopdf)                    date: 2014-06-25 16:44:10
+(epstopdf)                    size: 93909 bytes
 (epstopdf)             Command: <epstopdf --outfile=axes-eps-converted-to.pdf a
 xes.eps>
 (epstopdf)             \includegraphics on input line 373.
 Package epstopdf Info: Output file is already uptodate.
 
-<axes-eps-converted-to.pdf, id=72, 1073.00874pt x 460.72125pt>
+<axes-eps-converted-to.pdf, id=72, 1089.06876pt x 460.72125pt>
 File: axes-eps-converted-to.pdf Graphic file (type pdf)
 
 <use axes-eps-converted-to.pdf>
 Package pdftex.def Info: axes-eps-converted-to.pdf used on input line 373.
-(pdftex.def)             Requested size: 1073.00612pt x 460.72012pt.
+(pdftex.def)             Requested size: 1089.0661pt x 460.72012pt.
 
-Overfull \hbox (11.26517pt too wide) in paragraph at lines 373--374
+Overfull \hbox (19.29517pt too wide) in paragraph at lines 373--374
  [][] 
  []
 
@@ -1286,7 +1286,7 @@ s/MiKTeX 2.9/fonts/type1/public/pxfonts/rpxmi.pfb><C:/Program Files/MiKTeX 2.9/
 fonts/type1/public/pxfonts/rpxr.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/ur
 w/palatino/uplb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/upl
 r8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on "Kidney - CA - model details.pdf" (22 pages, 664432 bytes).
+Output written on "Kidney - CA - model details.pdf" (22 pages, 664387 bytes).
 PDF statistics:
  183 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

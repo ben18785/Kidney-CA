@@ -2,6 +2,9 @@ function m_cell = f_create_random_epithelium_new_m(m_cell, c_xstart, c_ystart, c
 % A function which creates a random epithelium with a relatively smooth
 % boundary which is curvy by starting with a random location near the 
 
+c_xstart = round(c_xstart);
+c_ystart = round(c_ystart);
+
 % Generate a cell in the centre
 m_cell(c_xstart,c_ystart) = 1;
 m_cell(c_xstart,c_ystart+1) = 1;

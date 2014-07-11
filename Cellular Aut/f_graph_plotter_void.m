@@ -35,14 +35,14 @@ switch handles.graph_selector
             axes(handles.axes1)
             cmap = [0 0 1; 1 1 1; 1 1 0; 1 0 0];
             colormap(cmap);
-            imagesc(flip(m_cell))
+            imagesc((m_cell))
             freezeColors
 
             colormap('default')
             axes(handles.axes2)
-            imagesc(flip(m_GDNF))
+            imagesc((m_GDNF))
             hold on
-            c=contour(flip(m_GDNF));
+            c=contour((m_GDNF));
             clabel(c)
             hold off
             
@@ -174,7 +174,7 @@ switch handles.graph_selector
             axes(handles.axes1)
             cmap = [0 0 1; 1 1 1; 1 1 0; 1 0 0];
             colormap(cmap);
-            imagesc(flip(m_cell))
+            imagesc((m_cell))
             freezeColors
             
             colormap('default')
@@ -192,7 +192,7 @@ switch handles.graph_selector
 
             axes(handles.axes2)
 
-            imagesc(flip(skelImg)); 
+            imagesc((skelImg)); 
 
             pause(0.01)
             
@@ -203,11 +203,11 @@ switch handles.graph_selector
             cmap = [1 1 1; 0 0 1];
             colormap(cmap);
             axes(handles.axes1)
-            imagesc(flip(handles.m_mesenchyme_init))
+            imagesc((handles.m_mesenchyme_init))
             
             axes(handles.axes2)
             m_mesenchyme = double(m_cell==-1);
-            imagesc(flip(m_mesenchyme))
+            imagesc((m_mesenchyme))
             pause(0.01)
             
     case 6
@@ -241,7 +241,7 @@ switch handles.graph_selector
             cmap = [0 0 1; 1 1 1; 1 1 0; 1 0 0];
             colormap(cmap);
             axes(handles.axes1)
-            imagesc(flip(m_cell))
+            imagesc((m_cell))
             hold on
             
             c_depth_full = v_parameters(7);

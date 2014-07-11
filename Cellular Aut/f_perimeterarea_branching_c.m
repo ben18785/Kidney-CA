@@ -5,10 +5,10 @@ function [c_perimeter_approx,c_area_approx,c_area_true] = f_perimeterarea_branch
 % value is returned here.
 
 % Calculate the number of epithelium cells
-cn_nonzero = sum(sum(m_cell==1));
+cn_nonzero = sum(sum(m_cell>=1));
 
 % First of all make all the components of the image which are not 1 zero
-m_cell = m_cell.*(m_cell==1);
+m_cell = double(m_cell>=1);
 
 
 % Find the connected components of the image

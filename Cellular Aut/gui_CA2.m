@@ -72,12 +72,12 @@ handles.c_beta_mesmove = -3; % A coefficient measuring the strength of discrimin
 handles.c_mes_movement = 1; % Choose the rule for specifying the mesenchyme target cells. '1' means that the cells are chosen randomly. '2' means that the cells are chosen probabilistically weighted towards the direction they were pushed.
 handles.c_mes_trapped = 8; % The maximum number of 8-nearest neighbour epithelium cells which can be neighbouring on a given mesenchyme cell after moving it. Aims to stop MM becoming trapped!
 handles.c_mes_allowed = 1; % Choose the rule specifying whether a mesenchyme can occupy a spot. 1 means all vacant spots, 2 means only those spots which are connected less than c_mes_trapped
-handles.c_principal = 20; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
-handles.c_secondary = 10; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+handles.c_principal = 6; % The maximum number of moves forward (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
+handles.c_secondary = 2; % The maximum number of moves sideways (from direction pushed) considered for mesenchyme if implementing non-local mesenchyme movement rule
 
 % Active mesenchyme parameters
-handles.ck_mes_move = 0.4; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
-handles.ck_mes_prolif = 0.6; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
+handles.ck_mes_move = 0.2; % The probability of a mesenchyme choosing to go down branch corresponding to 'moving'. Not the same as moving, as it is yet to be determined whether the cell actually moves. Same for below 3. Local conditions and rules will determine if the action is actually taken.
+handles.ck_mes_prolif = 0.8; % The probability of a mesenchyme choosing to go down branch corresponding to 'proliferating'
 handles.ck_mes_diff = 0; % The probability of a mesenchyme choosing to go down branch corresponding to 'differentiating'
 handles.ck_mes_death = 1 - handles.ck_mes_move - handles.ck_mes_prolif - handles.ck_mes_diff; % The probability of a mesenchyme choosing to go down branch corresponding to 'die'
 handles.ck_mes_target_allowed = 1; % The rule to be used to determine those allowed cells which the mesenchyme can move into. 1 is local 8-NN if there are free cells.
@@ -91,7 +91,7 @@ handles.c_turn_on_active_mesenchyme = 1; % A switch to allow the user to turn on
 handles.ck_mes_moveprob_rule2_discons_move_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving
 handles.ck_mes_moveprob_rule2_discons_move_c2 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium moving. Should be negative
 handles.ck_mes_moveprob_rule2_discons_prolif_c1 = -1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating
-handles.ck_mes_moveprob_rule2_discons_prolif_c2 = -0.1; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating. Should be negative
+handles.ck_mes_moveprob_rule2_discons_prolif_c2 = -0.05; % A parameter specifying how much to weigh against mesenchyme distant from epithelium proliferating. Should be negative
 handles.ck_mes_move_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in moving a mesenchyme actively) which are further away from the mesenchyme are discriminated
 handles.ck_mes_prolif_target_disdiscrim = -10; % A negative parameter which governs the strength at which target cells (in proliferating a mesenchyme actively) which are further away from the mesenchyme are discriminated
 
